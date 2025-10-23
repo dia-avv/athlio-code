@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 export default function Auth() {
   const [mode, setMode] = useState("login"); // "login" | "signup"
@@ -13,15 +13,42 @@ export default function Auth() {
     e.preventDefault();
     setErr("");
 
-    const run =
-      mode === "signup"
-        ? () => supabase.auth.signUp({ email, password })
-        : () => supabase.auth.signInWithPassword({ email, password });
+    if (mode === "signup") {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        // emailRedirectTo not needed with confirm email OFF in dev
+        // options: { emailRedirectTo: "http://localhost:5173/auth" },
+      });
+      if (error) return setErr(error.message);
 
-    const { error } = await run();
-    if (error) return setErr(error.message);
+      // With confirm email OFF, we have a session now. Ensure a profiles row exists.
+      const uid =
+        data?.user?.id || (await supabase.auth.getUser()).data?.user?.id;
 
-    navigate("/home" /*{ replace: true }*/); // session exists now
+      if (uid) {
+        await supabase
+          .from("profiles")
+          .upsert({ id: uid }, { onConflict: "id" });
+      }
+
+      return navigate("/setup-profile", { replace: true });
+    }
+
+    // login path
+    const { data: loginData, error: loginErr } =
+      await supabase.auth.signInWithPassword({ email, password });
+    if (loginErr) return setErr(loginErr.message);
+
+    // Belt-and-suspenders: ensure a profiles row exists after login too
+    const uid =
+      loginData?.user?.id || (await supabase.auth.getUser()).data?.user?.id;
+
+    if (uid) {
+      await supabase.from("profiles").upsert({ id: uid }, { onConflict: "id" });
+    }
+
+    navigate("/home", { replace: true });
   }
 
   return (
