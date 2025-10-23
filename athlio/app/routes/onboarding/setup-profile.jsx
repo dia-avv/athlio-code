@@ -10,7 +10,7 @@ import SportsSelect from "../../components/domain/SportSelect";
 import PositionSelect from "../../components/domain/PositionSelect";
 import ClubPicker from "../../components/domain/ClubPicker";
 import LocationFields from "../../components/domain/LocationFields";
-import GoalsField from "../../components/domain/GoalsFields";
+import GoalsField from "../../components/domain/GoalsField";
 import { getSteps } from "../../utils/steps";
 import { buildProfilePayload } from "../../utils/payload";
 import Textarea from "../../components/inputs/TextArea";
@@ -62,11 +62,9 @@ export default function Setup() {
         .match({ id: user.id })
         .maybeSingle();
       if (!profile) {
-        // Ensure a row exists for this user (covers case where trigger didn't fire)
         const { error: insertErr } = await supabase
           .from("profiles")
           .insert({ id: user.id });
-        // Ignore conflict errors if some other path created it first
       }
 
       if (profile) {
