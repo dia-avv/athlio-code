@@ -1,4 +1,4 @@
-import { useProfile } from "../../hooks/useProfile.js";
+import { useProfile } from "../hooks/useProfile";
 
 export default function Profile() {
   const { profile, loading } = useProfile();

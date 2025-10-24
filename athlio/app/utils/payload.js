@@ -1,6 +1,6 @@
 import { feetToCm, lbToKg } from "./units";
 
-/*This is the object that gets sent to Supabase*/
+//This is the object that gets sent to Supabase
 export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
   let height_cm = null;
   let weight_kg = null;
@@ -17,7 +17,7 @@ export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
     else weight_kg = Math.round(weight_kg);
   }
 
-  /*This assures that everything is the right data type and converts empty fields to NULL*/
+  //This assures that everything is the right data type and converts empty fields to NULL
   return {
     role,
     full_name: form.full_name || null,
