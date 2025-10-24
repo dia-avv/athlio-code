@@ -11,6 +11,7 @@ export default [
     // login/signup
     route("auth", "routes/onboarding/auth.jsx"),
     route("setup-profile", "routes/onboarding/setup-profile.jsx"),
+    route("auth/callback", "routes/onboarding/auth-callback.jsx"),
 
     // your actual app screens
     route("home", "routes/home.jsx"),

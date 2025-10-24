@@ -2,6 +2,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { supabase } from "../../lib/supabase";
 
+const OAUTH_REDIRECT = window.location.origin + "/auth/callback";
+
+async function signInWithGoogle(setErr) {
+  setErr("");
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: OAUTH_REDIRECT,
+      queryParams: { prompt: "select_account" },
+    },
+  });
+  if (error) setErr(error.message);
+}
+
 export default function Auth() {
   const [mode, setMode] = useState("login"); // "login" | "signup"
   const [email, setEmail] = useState("");
@@ -88,6 +102,19 @@ export default function Auth() {
             ? "I already have an account"
             : "Create a new account"}
         </button>
+        <div>
+          <div>
+            <div />
+            <span>or</span>
+            <div />
+          </div>
+
+          <div>
+            <button type="button" onClick={() => signInWithGoogle(setErr)}>
+              Continue with Google
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );
