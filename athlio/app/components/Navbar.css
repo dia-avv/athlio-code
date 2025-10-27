@@ -1,0 +1,43 @@
+nav {
+  position: fixed;
+  bottom: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  padding: 12px 35px;
+  background-color: color-mix(
+    in srgb,
+    var(--color-background) 90%,
+    transparent
+  );
+  border-radius: 100px;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: 32px;
+  height: 32px;
+}
+
+nav a.active {
+  background-color: var(--color-gray-100);
+  border-radius: 50%;
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-gray-300);
+}

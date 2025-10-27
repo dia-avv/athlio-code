@@ -5,24 +5,37 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router";
 
 import "./app.css";
 import { UserProvider } from "./context/UserContext";
+import Navbar from "./components/NavBar";
 
 export function Layout({ children }) {
+  const { pathname } = useLocation();
+  const hideNavbar =
+    pathname.startsWith("/auth") ||
+    pathname.startsWith("/intro") ||
+    pathname.startsWith("/setup-profile");
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Athlio</title>
-        <link href="https://fonts.cdnfonts.com/css/tt-firs-neue-trl" rel="stylesheet" />
+        <link
+          href="https://fonts.cdnfonts.com/css/tt-firs-neue-trl"
+          rel="stylesheet"
+        />
         <Meta />
         <Links />
       </head>
       <body>
-        {children}
+        <UserProvider>
+          {!hideNavbar && <Navbar />}
+          {children}
+        </UserProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -31,11 +44,7 @@ export function Layout({ children }) {
 }
 
 export default function App() {
-  return (
-    <UserProvider>
-      <Outlet />
-    </UserProvider>
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary({ error }) {
