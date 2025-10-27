@@ -11,10 +11,15 @@ import {
 import "./app.css";
 import { UserProvider } from "./context/UserContext";
 import Navbar from "./components/NavBar";
+import Topbar from "./components/Topbar";
 
 export function Layout({ children }) {
   const { pathname } = useLocation();
   const hideNavbar =
+    pathname.startsWith("/auth") ||
+    pathname.startsWith("/intro") ||
+    pathname.startsWith("/setup-profile");
+  const hideTopbar =
     pathname.startsWith("/auth") ||
     pathname.startsWith("/intro") ||
     pathname.startsWith("/setup-profile");
@@ -33,8 +38,9 @@ export function Layout({ children }) {
       </head>
       <body>
         <UserProvider>
-          {!hideNavbar && <Navbar />}
+          {!hideTopbar && <Topbar />}
           {children}
+          {!hideNavbar && <Navbar />}
         </UserProvider>
         <ScrollRestoration />
         <Scripts />
