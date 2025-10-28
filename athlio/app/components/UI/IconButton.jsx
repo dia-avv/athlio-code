@@ -1,4 +1,6 @@
 import "./IconButton.css";
+//size - medium or small
+//type - primary, neutral or subtle
 
 export default function IconButton({
   size = "",
