@@ -2,6 +2,12 @@ body {
   font-family: "TT Firs Neue TRL", sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   /* Font Sizes */
   --text-2xl: 1.5rem;
