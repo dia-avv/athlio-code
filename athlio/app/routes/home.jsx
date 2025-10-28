@@ -1,11 +1,12 @@
-import Button from "../components/UI/Button";
+import StarIcon from "../assets/icons/star.svg?react";
+import IconButton from "../components/UI/IconButton";
 
 export default function Home() {
   return (
-    <Button
-      size="medium"
-      type="subtle"
-      label="Click Me"
+    <IconButton
+      size="small"
+      type="primary"
+      icon={StarIcon}
       onClick={() => alert("Button Clicked!")}
     />
   );
