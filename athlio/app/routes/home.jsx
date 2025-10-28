@@ -1,13 +1,5 @@
-import StarIcon from "../assets/icons/star.svg?react";
-import IconButton from "../components/UI/IconButton";
+import Tag from "../components/UI/Tag";
 
 export default function Home() {
-  return (
-    <IconButton
-      size="small"
-      type="primary"
-      icon={StarIcon}
-      onClick={() => alert("Button Clicked!")}
-    />
-  );
+  return <Tag label="Example Tag" />;
 }
