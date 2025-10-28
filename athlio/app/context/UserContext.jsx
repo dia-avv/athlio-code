@@ -21,7 +21,7 @@ export function UserProvider({ children }) {
       async (_, session) => {
         const currentUser = session?.user || null;
         setUser(currentUser);
-        if (currentUser) fetchProfile(currentUser.id);
+        if (currentUser) fetchProfileAndCounts(currentUser.id);
         else {
           setProfile(null);
           setCounts({ messages: 0, notifications: 0 });

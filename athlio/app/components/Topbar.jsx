@@ -17,7 +17,7 @@ const TOPBAR_CONFIG = {
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>
           <img src={NotificationsIcon} alt="Notifications" />
           {counts.notifications > 0 && (
-            <span className="badge">{counts.notifications}</span>
+            <span className="badge">+{counts.notifications}</span>
           )}
         </div>
         <div className="icon-with-badge" onClick={() => nav("/chat")}>
