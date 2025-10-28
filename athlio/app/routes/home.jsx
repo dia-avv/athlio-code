@@ -1,5 +1,7 @@
-import Tag from "../components/UI/Tag";
-
 export default function Home() {
-  return <Tag label="Example Tag" />;
+  return (
+    <>
+      <h1>Home Page</h1>
+    </>
+  );
 }
