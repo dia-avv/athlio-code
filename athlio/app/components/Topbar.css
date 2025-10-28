@@ -44,3 +44,8 @@ header {
   align-items: center;
   justify-content: center;
 }
+
+.main-logo {
+  width: 61px;
+  height: auto;
+}

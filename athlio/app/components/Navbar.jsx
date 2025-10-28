@@ -85,15 +85,18 @@ export default function Navbar() {
         </Link>
       )}
       <Link to="/profile" className={isActive("/profile") ? "active" : ""}>
-        {profile?.avatar_url ? (
-          <img
-            src={profile.avatar_url}
-            alt="Profile"
-            className="profile-avatar"
-          />
-        ) : (
-          <div className="profile-placeholder" />
-        )}
+        <div>
+          {profile?.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt="Profile"
+              className="profile-avatar"
+            />
+          ) : (
+            <div className="profile-placeholder" />
+          )}
+          {isActive("/profile") && <div className="circle"></div>}
+        </div>
       </Link>
     </nav>
   );

@@ -4,6 +4,7 @@ import MessagesIcon from "../assets/icons/messages.svg";
 import NotificationsIcon from "../assets/icons/notifications.svg";
 import BackIcon from "../assets/icons/back.svg";
 import CloseIcon from "../assets/icons/close.svg";
+import MainLogo from "../assets/logos/main-logo.svg?react";
 import "./Topbar.css";
 
 //changes how the topbar looks based on what page the user is on
@@ -11,7 +12,7 @@ import "./Topbar.css";
 const TOPBAR_CONFIG = {
   "/home": {
     title: null,
-    left: () => <p>athlio</p>,
+    left: () => <img src={MainLogo} alt="Athlio" className="main-logo" />,
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>
