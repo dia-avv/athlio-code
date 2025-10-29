@@ -11,7 +11,7 @@ export default function ProfilePicture({
       <img
         src={imgUrl}
         alt="Profile Picture"
-        className={`profile-picture ${size}`}
+        className={`profile-picture profile-picture--${size}`}
       />
       <div className="verification-badge-profile">
         {verified && (

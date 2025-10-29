@@ -4,7 +4,10 @@ import "./Button.css";
 
 export default function Button({ size = "", type = "", label, onClick, Icon }) {
   return (
-    <button className={`button ${size} ${type}`} onClick={onClick}>
+    <button
+      className={`button button--${size} button--${type}`}
+      onClick={onClick}
+    >
       {Icon && <Icon className="button-icon" />}
       <p>{label}</p>
     </button>
