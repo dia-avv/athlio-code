@@ -8,6 +8,7 @@ import {
 } from "react-router";
 
 import "./app.css";
+import { UserProvider } from "./context/UserContext";
 
 export function Layout({ children }) {
   return (
@@ -30,7 +31,11 @@ export function Layout({ children }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <UserProvider>
+      <Outlet />
+    </UserProvider>
+  );
 }
 
 export function ErrorBoundary({ error }) {
