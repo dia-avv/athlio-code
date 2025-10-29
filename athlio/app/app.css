@@ -1,5 +1,5 @@
 body {
-  font-family: "TT Firs Neue TRL", sans-serif;
+  font-family: "Geist", sans-serif;
 }
 
 * {
@@ -47,4 +47,8 @@ h2 {
 p {
   font-size: var(--text-sm);
   font-weight: 500;
+}
+
+main {
+  padding: 0 15px;
 }
