@@ -1,0 +1,25 @@
+.post {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.post-content {
+  color: var(--color-text);
+  font-weight: 300;
+}
+
+.post-media {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px; /* optional, makes it look less brutalist */
+  object-fit: cover; /* trims if you ever add fixed height */
+}
