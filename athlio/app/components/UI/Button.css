@@ -1,9 +1,10 @@
 .button {
   border: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
+  width: auto;
 }
 
 .button-icon {
