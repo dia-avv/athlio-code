@@ -1,5 +1,5 @@
 body {
-  font-family: "TT Firs Neue TRL", sans-serif;
+  font-family: "Geist", sans-serif;
 }
 
 * {
@@ -18,7 +18,7 @@ body {
   --text-xxs: 0.5rem;
 
   /* Custom Roles */
-  --text-secondary: var(--font-xs);
+  --text-secondary: var(--text-xs);
   --text-button: var(--text-sm);
 
   /* Colors */
@@ -47,4 +47,8 @@ h2 {
 p {
   font-size: var(--text-base);
   font-weight: 500;
+}
+
+main {
+  padding: 0 15px;
 }
