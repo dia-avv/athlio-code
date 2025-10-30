@@ -1,6 +1,4 @@
 import BasicPost from "../components/domain/Post/BasicPost";
-import PostActions from "../components/domain/Post/PostActions";
-import PostHeader from "../components/domain/Post/PostHeader";
 import Image from "../assets/images/Image.png";
 
 export default function Home() {
