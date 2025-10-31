@@ -1,4 +1,4 @@
-.post {
+.match-post {
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -6,7 +6,7 @@
   gap: 16px;
 }
 
-.post-content {
+.match-post-content {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -14,7 +14,7 @@
   font-weight: 400;
 }
 
-.post-content.expanded {
+.match-post-content.expanded {
   -webkit-line-clamp: unset;
 }
 
@@ -25,17 +25,4 @@
   cursor: pointer;
   font-size: var(--text-sm);
   margin-top: 4px;
-}
-
-.post-media {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.post-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px; /* optional, makes it look less brutalist */
-  object-fit: cover; /* trims if you ever add fixed height */
 }
