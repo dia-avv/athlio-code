@@ -1,0 +1,51 @@
+header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: var(--color-background);
+}
+
+.topbar-icons {
+  display: flex;
+  gap: 4px;
+}
+
+.topbar-left-with-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-with-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--color-accent);
+  color: white;
+  font-size: 8px;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-logo {
+  width: 61px;
+  height: auto;
+}

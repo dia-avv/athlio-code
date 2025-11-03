@@ -6,13 +6,14 @@ const UserContext = createContext();
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null); //supabase user object (id, email, etc)
   const [profile, setProfile] = useState(null); //the profile row with extra info
+  const [counts, setCounts] = useState({ messages: 0, notifications: 0 }); //counts of unread messages/notifications
   const [loading, setLoading] = useState(true); //loading state while fetching the data
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       const currentUser = data?.session?.user || null;
       setUser(currentUser);
-      if (currentUser) fetchProfile(currentUser.id);
+      if (currentUser) fetchProfileAndCounts(currentUser.id);
       else setLoading(false);
     });
 
@@ -20,9 +21,10 @@ export function UserProvider({ children }) {
       async (_, session) => {
         const currentUser = session?.user || null;
         setUser(currentUser);
-        if (currentUser) fetchProfile(currentUser.id);
+        if (currentUser) fetchProfileAndCounts(currentUser.id);
         else {
           setProfile(null);
+          setCounts({ messages: 0, notifications: 0 });
           setLoading(false);
         }
       },
@@ -34,7 +36,7 @@ export function UserProvider({ children }) {
 
   const [club, setClub] = useState(null);
 
-  async function fetchProfile(uid) {
+  async function fetchProfileAndCounts(uid) {
     const { data } = await supabase
       .from("profiles")
       .select("*, club:club_id (id, name, logo_url")
@@ -46,7 +48,7 @@ export function UserProvider({ children }) {
   }
 
   return (
-    <UserContext.Provider value={{ user, profile, loading }}>
+    <UserContext.Provider value={{ user, profile, counts, setCounts, loading }}>
       {children}
     </UserContext.Provider>
   );
