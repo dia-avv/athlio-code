@@ -68,6 +68,27 @@ const TOPBAR_CONFIG = {
       <button className="topbar-post-btn">Post it</button> //it will be a component later
     ),
   },
+    "/scouting": {
+    title: null,
+    left: () => <img src={MainLogo} alt="Athlio" className="main-logo" />,
+    right: (nav, _profile, counts) => (
+      <div className="topbar-icons">
+        <div className="icon-with-badge" onClick={() => nav("/notifications")}>
+          <img src={NotificationsIcon} alt="Notifications" />
+          {counts.notifications > 0 && (
+            <span className="badge">+{counts.notifications}</span>
+          )}
+        </div>
+        <div className="icon-with-badge" onClick={() => nav("/chat")}>
+          <img src={MessagesIcon} alt="Messages" />
+          {counts.messages > 0 && (
+            <span className="badge">{counts.messages}</span>
+          )}
+        </div>
+      </div>
+    ),
+  },
+
 };
 
 export default function Topbar() {
