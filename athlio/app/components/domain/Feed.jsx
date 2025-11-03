@@ -97,17 +97,42 @@ export default function Feed() {
       const followingIds = (followRows || []).map((r) => r.following_id);
 
       if (followingIds.length === 0) {
-        // optional: fallback to global posts for empty feed
         setPosts([]);
         setLoading(false);
         return;
       }
 
-      // 2) posts by followed authors, with joined profile fields
       const { data: postRows, error: postsErr } = await supabase
         .from("posts")
         .select(
-          `*, profiles:author_id (id, full_name, username, role, position, avatar_url, club_id, club:club_id (id, name, logo_url))`,
+          `
+  id,
+  type,
+  content,
+  media,
+  created_at,
+  aura_count,
+  goals,
+  assists,
+  minutes_played,
+  date_of_game,
+  league,
+  your_team,
+  opponent,
+  your_score,
+  opponent_score,
+  author_id,
+  profiles:author_id (
+    id,
+    full_name,
+    username,
+    role,
+    position,
+    avatar_url,
+    club_id,
+    club:club_id (id, name, logo_url)
+  )
+  `,
         )
         .in("author_id", followingIds)
         .order("created_at", { ascending: false })

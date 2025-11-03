@@ -78,7 +78,7 @@ export default function MatchPost({
         assistsCount={assistsCount}
         minCount={minCount}
       />
-      <PostActions id={1} auraCount={12} commentCount={2} />
+      <PostActions postId={id} auraCount={12} commentCount={2} />
     </article>
   );
 }
