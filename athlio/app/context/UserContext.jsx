@@ -32,13 +32,16 @@ export function UserProvider({ children }) {
     return () => listener.subscription.unsubscribe();
   }, []);
 
+  const [club, setClub] = useState(null);
+
   async function fetchProfile(uid) {
     const { data } = await supabase
       .from("profiles")
-      .select("*")
+      .select("*, club:club_id (id, name, logo_url")
       .eq("id", uid)
       .maybeSingle();
     setProfile(data);
+    setClub(data?.club || null);
     setLoading(false);
   }
 

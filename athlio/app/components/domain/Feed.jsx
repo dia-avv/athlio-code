@@ -1,4 +1,4 @@
-// app/components/domain/Feed.jsx
+import "./Feed.css";
 import { useEffect, useState } from "react";
 import BasicPost from "../domain/Post/BasicPost";
 import MatchPost from "../domain/Post/MatchPost";
@@ -9,11 +9,23 @@ import { useUser } from "../../context/UserContext";
 function PostSwitcher({ post }) {
   // prefer joined profile data if present
   const prof = post.profiles || {};
+  const club = prof.club || {};
+
+  const rawDate = post.created_at || post.createdAt || "";
+  const formattedDate = rawDate
+    ? new Date(rawDate).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+      })
+    : "";
+
   const common = {
     id: post.id,
     author: prof.full_name || prof.username || post.author || "",
-    author_role: prof.role || post.author_role || "",
-    createdAt: post.created_at || post.createdAt || "",
+    authorId: prof.id || post.author_id || "",
+    position: prof.position || "",
+    createdAt: formattedDate,
+    club: club,
   };
 
   if (post.type === "match") {
@@ -27,10 +39,10 @@ function PostSwitcher({ post }) {
         minCount={Number(post.minutes_played) || 0}
         date={post.date_of_game ?? ""}
         league={post.league ?? ""}
-        yourTeam={post.your_team ?? ""}
         opponent={post.opponent ?? ""}
         yourScore={Number(post.your_score) || 0}
         opponentScore={Number(post.opponent_score) || 0}
+        yourTeam={club.name}
       />
     );
   }
@@ -41,6 +53,7 @@ function PostSwitcher({ post }) {
       {...common}
       content={post.content ?? ""}
       imageUrl={post.media || undefined}
+      yourTeam={club.name}
     />
   );
 }
@@ -94,7 +107,7 @@ export default function Feed() {
       const { data: postRows, error: postsErr } = await supabase
         .from("posts")
         .select(
-          `*, profiles:author_id (id, full_name, username, role, avatar_url)`,
+          `*, profiles:author_id (id, full_name, username, role, position, avatar_url, club_id, club:club_id (id, name, logo_url))`,
         )
         .in("author_id", followingIds)
         .order("created_at", { ascending: false })

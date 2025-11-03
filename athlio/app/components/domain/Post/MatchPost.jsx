@@ -7,6 +7,7 @@ import PostActions from "./PostActions";
 export default function MatchPost({
   id,
   author,
+  authorId,
   createdAt,
   author_role,
   content,
@@ -20,6 +21,7 @@ export default function MatchPost({
   opponent,
   yourScore,
   opponentScore,
+  position,
 }) {
   const isImage = !!imageUrl;
 
@@ -36,7 +38,14 @@ export default function MatchPost({
 
   return (
     <article className="match-post" data-id={id}>
-      <PostHeader name={author} date={createdAt} role={author_role} />
+      <PostHeader
+        name={author}
+        date={createdAt}
+        role={author_role}
+        authorId={authorId}
+        position={position}
+        club={yourTeam}
+      />
 
       {content && (
         <div className="match-post-content-container">

@@ -6,10 +6,13 @@ import { useEffect, useRef, useState } from "react";
 export default function BasicPost({
   id,
   author,
+  authorId,
   content,
   imageUrl,
   createdAt,
   author_role,
+  position,
+  yourTeam,
 }) {
   if (!id) return null;
 
@@ -26,7 +29,14 @@ export default function BasicPost({
 
   return (
     <article className="post" data-id={id}>
-      <PostHeader name={author} date={createdAt} role={author_role} />
+      <PostHeader
+        name={author}
+        date={createdAt}
+        role={author_role}
+        authorId={authorId}
+        position={position}
+        club={yourTeam}
+      />
 
       {content && (
         <div className="post-content-container">
