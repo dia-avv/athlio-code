@@ -8,6 +8,7 @@ header {
   align-items: center;
   padding: 8px 16px;
   background-color: var(--color-background);
+  z-index: 1000;
 }
 
 .topbar-icons {
