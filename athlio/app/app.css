@@ -8,6 +8,12 @@ body {
   padding: 0;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
   /* Font Sizes */
   --text-2xl: 1.5rem;
@@ -34,6 +40,10 @@ body {
   --color-gray-300: #dfe0e7;
   --color-gray-500: #cbccd8;
   --color-gray-700: #a5a7bb;
+}
+
+main {
+  padding: 56px 15px 0 15px;
 }
 
 h1 {
