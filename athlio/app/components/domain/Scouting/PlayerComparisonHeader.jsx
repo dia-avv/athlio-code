@@ -8,7 +8,7 @@ import PlayerSelector from './PlayerSelector';
 const PlayerComparisonHeader = ({ onSave, onArchive, activeTab, onTabChange }) => {
   return (
     <>
-      <header className="header">
+      <header className="player-comparison-header">
         <div className="header-top">
           <div className="container">
             <div className="content">

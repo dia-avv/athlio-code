@@ -5,9 +5,8 @@
   font-size: var(--text-button);
   color: var(--color-gray-700);
   font-weight: 400;
-  white-space: nowrap;
   line-height: 1.3;
-  margin-top: 0; /* keep tabs flush with header bottom */
+  justify-content: space-between;
 }
 
 .tabContainer {
@@ -16,7 +15,6 @@
   min-width: 240px;
   width: 100%;
   align-items: center;
-  gap: 4px;
   justify-content: space-between;
   flex: 1 0 0%;
   margin: 0;
