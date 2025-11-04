@@ -1,4 +1,4 @@
-nav {
+.navbar {
   position: fixed;
   left: 0;
   right: 0;
@@ -6,7 +6,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 35px;
+  padding: 12px 28px;
   background-color: color-mix(
     in srgb,
     var(--color-background) 90%,
@@ -14,9 +14,10 @@ nav {
   );
   border-radius: 100px;
   z-index: 1000;
+  margin: 0 24px;
 }
 
-nav a {
+.navbar a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,7 +26,7 @@ nav a {
   height: 32px;
 }
 
-nav a.active {
+.navbar a.active {
   background-color: var(--color-gray-100);
   border-radius: 50%;
 }

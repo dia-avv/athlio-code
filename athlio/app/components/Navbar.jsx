@@ -19,7 +19,7 @@ export default function Navbar() {
 
   if (loading) {
     return (
-      <nav>
+      <nav className="navbar">
         <Link to="/home" className={isActive("/home") ? "active" : ""}>
           <img
             src={isActive("/home") ? HomeActive : HomeIcon}
@@ -39,7 +39,7 @@ export default function Navbar() {
   const role = profile?.role || "athlete";
 
   return (
-    <nav>
+    <nav className="navbar">
       <Link to="/home" className={isActive("/home") ? "active" : ""}>
         <img
           src={isActive("/home") ? HomeActive : HomeIcon}
