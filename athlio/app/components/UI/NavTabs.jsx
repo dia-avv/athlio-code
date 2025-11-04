@@ -13,7 +13,7 @@ const NavigationTabs = ({
 }) => {
 
   return (
-    <nav className="nav">
+    <nav className="navbartabs">
       <div className="tabContainer">
         {tabs.map((tab) => (
           <button

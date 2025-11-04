@@ -3,6 +3,10 @@
   background: #fff;
   display: flex;
   flex-direction: column;
+  /* ensure this header sits below a fixed Topbar; adjust --topbar-height in your global CSS if needed */
+  margin-top: var(--topbar-height, 64px);
+  position: relative;
+  z-index: 1;
 }
 
 /* Top row (title + actions) */
@@ -27,15 +31,31 @@
 }
 .actions { display: flex; gap: 12px; }
 
+.debug-nav-test {
+  background: rgba(255,0,0,0.1);
+  border: 1px dashed red;
+  padding: 8px 12px;
+  color: red;
+  display: inline-block;
+}
+
 .header-bottom {
   margin-top: 0;         
   padding: 0;        
   border-bottom: 1px solid #e0e0e0; 
+  /* keep the tabs visible under a fixed Topbar */
+  position: sticky;
+  top: var(--topbar-height, 64px);
+  z-index: 2;
+  background: #fff;
+
 }
 
 /* Make sure your NavigationTabs doesn't push down */
-.header-bottom .nav {
+.header-bottom .navbartabs {
   margin-top: 0;          /* override if NavTabs.css sets margin-top */
+  position: relative;
+  z-index: 2;
 }
 
 
