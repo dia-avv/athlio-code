@@ -12,7 +12,7 @@ import "./Topbar.css";
 const TOPBAR_CONFIG = {
   "/home": {
     title: null,
-    left: () => <img src={MainLogo} alt="Athlio" className="main-logo" />,
+    left: () => <MainLogo className="main-logo" />,
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>
@@ -42,7 +42,7 @@ const TOPBAR_CONFIG = {
     left: (nav) => (
       <div className="topbar-left-with-back">
         <img src={BackIcon} alt="Back" onClick={() => nav(-1)} />
-        <p>athlio</p>
+        <MainLogo className="main-logo" />
       </div>
     ),
   },
