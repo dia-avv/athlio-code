@@ -55,6 +55,6 @@ h2 {
   font-weight: 600;
 }
 p {
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: 500;
 }
