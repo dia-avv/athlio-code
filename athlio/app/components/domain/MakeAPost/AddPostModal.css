@@ -1,0 +1,37 @@
+/* Backdrop */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 65px;
+  display: flex;
+  z-index: 1000; /* higher than your navbar */
+  border-radius: 8px;
+}
+
+/* Panel */
+.modal-sheet {
+  background-color: var(--color-background);
+  color: var(--color-text, #fff);
+  border-radius: 8px;
+  padding: 10px 18px 10px 10px;
+  outline: none; /* allow focus without ugly outline if you style focus elsewhere */
+}
+
+/* Optional: small entry animation so it feels less dead */
+@media (prefers-reduced-motion: no-preference) {
+  .modal-sheet {
+    transform: translateY(6px);
+    opacity: 0;
+    animation: modal-in 160ms ease-out forwards;
+  }
+
+  @keyframes modal-in {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}
