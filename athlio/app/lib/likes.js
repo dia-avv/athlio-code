@@ -17,14 +17,15 @@ export async function getLikeState(postId) {
     .eq("user_id", me)
     .maybeSingle();
 
-  // current cached count from posts (trigger keeps it fresh)
-  const { data: row } = await supabase
-    .from("posts")
-    .select("aura_count")
-    .eq("id", postId)
-    .maybeSingle();
+  // count likes; RLS must allow select
+  const { count, error: cErr } = await supabase
+    .from("post_likes")
+    .select("*", { count: "exact", head: true })
+    .eq("post_id", postId);
 
-  return { liked: !!mine, likeCount: row?.aura_count ?? 0 };
+  if (cErr) throw cErr;
+
+  return { liked: !!mine, likeCount: count ?? 0 };
 }
 
 export async function like(postId) {

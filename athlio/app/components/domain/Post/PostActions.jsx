@@ -44,12 +44,11 @@ export default function PostActions({
           filter: `post_id=eq.${postId}`,
         },
         async () => {
-          const { data } = await supabase
-            .from("posts")
-            .select("aura_count")
-            .eq("id", postId)
-            .maybeSingle();
-          setLikes(data?.aura_count ?? 0);
+          const { count } = await supabase
+            .from("post_likes")
+            .select("*", { count: "exact", head: true })
+            .eq("post_id", postId);
+          setLikes(count ?? 0);
         },
       )
       .subscribe();
@@ -62,17 +61,16 @@ export default function PostActions({
 
   async function handleAura() {
     const next = !liked;
-    // optimistic
     setLiked(next);
     setLikes((n) => n + (next ? 1 : -1));
     try {
-      if (next) await like(postId);
-      else await unlike(postId);
+      const newCount = next ? await like(postId) : await unlike(postId);
+      setLikes(newCount); // authoritative sync
     } catch (e) {
-      // revert if server balks
       console.error("toggle like", e);
+      // revert
       setLiked(!next);
-      setLikes((n) => n + (next ? -1 : 1));
+      setLikes((n) => Number(n) + (next ? 1 : -1));
     }
   }
 
