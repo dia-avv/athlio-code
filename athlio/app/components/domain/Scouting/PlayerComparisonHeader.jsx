@@ -4,6 +4,7 @@ import NavigationTabs from '../../UI/NavTabs';
 import Button from '../../UI/Button';
 import ArchiveIcon from "../../../assets/icons/archive.svg?react";
 import PlayerSelector from './PlayerSelector';
+import IconButton from '../../UI/IconButton';
 
 const PlayerComparisonHeader = ({ onSave, onArchive, activeTab, onTabChange }) => {
   return (
@@ -14,10 +15,10 @@ const PlayerComparisonHeader = ({ onSave, onArchive, activeTab, onTabChange }) =
             <div className="content">
               <h1 className="title">Player Comparison</h1>
               <div className="actions">
-                <Button
+                <IconButton
                   size="small"
-                  type="subtle"
-                  Icon={ArchiveIcon}
+                  type="neutral"
+                  icon={ArchiveIcon}
                   onClick={onArchive}
                   
                 />
