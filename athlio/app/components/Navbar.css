@@ -1,4 +1,4 @@
-nav {
+.navbar {
   position: fixed;
   left: 0;
   right: 0;
@@ -17,7 +17,7 @@ nav {
   margin: 0 24px;
 }
 
-nav a {
+.navbar a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,7 +26,7 @@ nav a {
   height: 32px;
 }
 
-nav a.active {
+.navbar a.active {
   background-color: var(--color-gray-100);
   border-radius: 50%;
 }
