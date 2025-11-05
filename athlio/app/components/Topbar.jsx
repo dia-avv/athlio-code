@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router";
 import { useUser } from "../context/UserContext";
 import MessagesIcon from "../assets/icons/messages.svg";
+import BurgerMenuIcon from "../assets/icons/burger-menu.svg";
 import NotificationsIcon from "../assets/icons/notifications.svg";
 import BackIcon from "../assets/icons/back.svg";
 import CloseIcon from "../assets/icons/close.svg";
@@ -72,23 +73,26 @@ const TOPBAR_CONFIG = {
     title: null,
     left: (nav, profile) => (
       <div className="topbar-left-with-back">
-        <img src={BackIcon} alt="Back" onClick={() => nav(-1)} />
+        <img
+          src={BackIcon}
+          alt="Back"
+          onClick={() => nav(-1)}
+          className="topbar-back"
+        />
         <MainLogo className="main-logo" />
       </div>
     ),
     right: (nav, profile) => (
       <div className="topbar-icons">
-        <button
-          className="topbar-menu-btn"
-          aria-label="Profile menu"
+        <img
+          src={BurgerMenuIcon}
+          alt="Menu"
+          className="topbar-menu-icon"
           onClick={() => {
-            // simple toggle — replace with your menu component or nav logic
-            const evt = new CustomEvent("openProfileMenu");
-            window.dispatchEvent(evt);
+            // TODO: open your menu later
+            console.log("Menu clicked");
           }}
-        >
-          ⋯
-        </button>
+        />
       </div>
     ),
   },
