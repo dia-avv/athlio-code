@@ -30,6 +30,17 @@
   font-size: var(--text-xs);
 }
 
+.button--big {
+  display: flex;
+  width: 100%;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.button--big p {
+  font-size: var(--text-base);
+}
+
 .button--primary {
   background-color: var(--color-accent);
   color: var(--color-background);
@@ -39,7 +50,7 @@
   background-color: var(--color-buttons);
 }
 
-.button--rimary:disabled {
+.button--primary:disabled {
   background-color: var(--color-gray-100);
   color: var(--gray-500);
 }

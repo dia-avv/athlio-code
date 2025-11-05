@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { supabase } from "../../lib/supabase";
+import TextInput from "../../components/inputs/TextInput";
+import Button from "../../components/UI/Button";
+
 
 const OAUTH_REDIRECT = window.location.origin + "/auth/callback";
 
@@ -31,12 +34,9 @@ export default function Auth() {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        // emailRedirectTo not needed with confirm email OFF in dev
-        // options: { emailRedirectTo: "http://localhost:5173/auth" },
       });
       if (error) return setErr(error.message);
 
-      // With confirm email OFF, we have a session now. Ensure a profiles row exists.
       const uid =
         data?.user?.id || (await supabase.auth.getUser()).data?.user?.id;
 
@@ -49,12 +49,10 @@ export default function Auth() {
       return navigate("/setup-profile", { replace: true });
     }
 
-    // login path
     const { data: loginData, error: loginErr } =
       await supabase.auth.signInWithPassword({ email, password });
     if (loginErr) return setErr(loginErr.message);
 
-    // Belt-and-suspenders: ensure a profiles row exists after login too
     const uid =
       loginData?.user?.id || (await supabase.auth.getUser()).data?.user?.id;
 
@@ -68,30 +66,43 @@ export default function Auth() {
   return (
     <div className="min-h-dvh grid place-items-center p-6">
       <form onSubmit={submit} className="w-full max-w-sm space-y-3">
-        <h2 className="text-2xl font-semibold">
-          {mode === "signup" ? "Create account" : "Welcome back"}
-        </h2>
+        <h1 className="h1">
+          {mode === "signup" ? "Create account" : "Log in to an account"}
+        </h1>
+        <p style={{ color: "var(--color-gray-700)" }}>
+          {mode === "signup"
+            ? "Create an account and get access to the biggest database of athletes. Enter your email and password."
+            : "Log in to your account to access the biggest database of athletes. Enter your email and password."}
+        </p>
 
-        <input
-          className="w-full border rounded px-3 py-2"
-          placeholder="email"
+
+        {/* ✅ Using TextInput for email */}
+        <TextInput
+          label="Email"
+          placeholder="Enter your email"
+          name="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={setEmail}
         />
 
-        <input
-          className="w-full border rounded px-3 py-2"
-          placeholder="password"
+        {/* ✅ Using TextInput for password */}
+        <TextInput
+          label="Password"
+          placeholder="Enter your password"
+          name="password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={setPassword}
         />
 
         {err && <p className="text-red-600 text-sm">{err}</p>}
 
-        <button className="w-full bg-black text-white py-2 rounded">
-          {mode === "signup" ? "Sign up" : "Log in"}
-        </button>
+        <Button
+          size="big"
+          type="primary"
+          label={mode === "signup" ? "Sign up" : "Log in"}
+          onClick={submit}
+        />
 
         <button
           type="button"
@@ -102,6 +113,7 @@ export default function Auth() {
             ? "I already have an account"
             : "Create a new account"}
         </button>
+
         <div>
           <div>
             <div />
@@ -110,9 +122,7 @@ export default function Auth() {
           </div>
 
           <div>
-            <button type="button" onClick={() => signInWithGoogle(setErr)}>
-              Continue with Google
-            </button>
+            <Button size="big" type="outline" label="Continue with Google" onClick={() => signInWithGoogle(setErr)} />
           </div>
         </div>
       </form>
