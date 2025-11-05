@@ -71,7 +71,7 @@ export default function Navbar() {
         <button
           type="button"
           className={`navbar-plus ${isActive("/add-post") ? "active" : ""}`}
-          onClick={() => setShowPicker(true)}
+          onClick={() => setShowPicker((prev) => !prev)}
           aria-label="Create new post"
           style={{
             background: "transparent",
@@ -122,7 +122,7 @@ export default function Navbar() {
           </div>
         </Link>
       </nav>
-      <AddPostModal open={showPicker}>
+      <AddPostModal open={showPicker} onClose={() => setShowPicker(false)}>
         <PostTypePicker onChoose={handleChoose} />
       </AddPostModal>
     </>

@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  margin-bottom: 65px;
+  margin-bottom: 80px;
   display: flex;
   z-index: 1000; /* higher than your navbar */
   border-radius: 8px;
@@ -20,7 +20,6 @@
   outline: none; /* allow focus without ugly outline if you style focus elsewhere */
 }
 
-/* Optional: small entry animation so it feels less dead */
 @media (prefers-reduced-motion: no-preference) {
   .modal-sheet {
     transform: translateY(6px);
@@ -28,10 +27,25 @@
     animation: modal-in 160ms ease-out forwards;
   }
 
+  .modal-sheet.closing {
+    animation: modal-out 160ms ease-in forwards;
+  }
+
   @keyframes modal-in {
     to {
       transform: translateY(0);
       opacity: 1;
+    }
+  }
+
+  @keyframes modal-out {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(6px);
+      opacity: 0;
     }
   }
 }
