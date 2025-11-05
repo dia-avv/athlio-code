@@ -10,6 +10,7 @@ import {
   follow,
   unfollow,
 } from "../../../lib/follows";
+import { Link } from "react-router";
 
 export default function PostHeader({ name, position, club, date, authorId }) {
   const [isFollowing, setIsFollowing] = useState(null); // null = loading
@@ -47,13 +48,18 @@ export default function PostHeader({ name, position, club, date, authorId }) {
   }
 
   const loading = isFollowing === null || isPending;
+  const profileHref = `/u/&{authorId}`;
 
   return (
     <div className="post-header">
       <div className="header-left">
-        <ProfilePicture size="medium" verified={true} imgUrl={Player} />
+        <Link to={profileHref} className="author-link">
+          <ProfilePicture size="medium" verified={true} imgUrl={Player} />
+        </Link>
         <div className="header-text">
-          <p className="name">{name}</p>
+          <Link to={profileHref} className="author-link">
+            <p className="name">{name}</p>
+          </Link>
           <div className="subheader-text">
             <p className="role">
               {position && club
