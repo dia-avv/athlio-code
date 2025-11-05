@@ -1,3 +1,60 @@
 body {
   font-family: "Geist", sans-serif;
 }
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Font Sizes */
+  --text-2xl: 1.5rem;
+  --text-xl: 1.25rem;
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+  --text-xxs: 0.5rem;
+
+  /* Custom Roles */
+  --text-secondary: var(--text-xs);
+  --text-button: var(--text-sm);
+
+  /* Colors */
+  --color-background: #fbfbfb;
+  --color-text: #000215;
+  --color-accent: #4051fd;
+  --color-buttons: #2631a0;
+  --color-details: #c6cbfe;
+  --color-green: #00ab3d;
+  --color-red: #ff3d52;
+  --color-orange: #ff983d;
+  --color-gray-100: #f0f0f3;
+  --color-gray-300: #dfe0e7;
+  --color-gray-500: #cbccd8;
+  --color-gray-700: #a5a7bb;
+}
+
+.main-content {
+  padding: 56px 15px;
+}
+
+h1 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+}
+h2 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+p {
+  font-size: var(--text-base);
+  font-weight: 500;
+}
