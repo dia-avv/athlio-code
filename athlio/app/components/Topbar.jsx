@@ -68,6 +68,30 @@ const TOPBAR_CONFIG = {
       <button className="topbar-post-btn">Post it</button> //it will be a component later
     ),
   },
+  "/profile/me": {
+    title: null,
+    left: (nav, profile) => (
+      <div className="topbar-left-with-back">
+        <img src={BackIcon} alt="Back" onClick={() => nav(-1)} />
+        <MainLogo className="main-logo" />
+      </div>
+    ),
+    right: (nav, profile) => (
+      <div className="topbar-icons">
+        <button
+          className="topbar-menu-btn"
+          aria-label="Profile menu"
+          onClick={() => {
+            // simple toggle — replace with your menu component or nav logic
+            const evt = new CustomEvent("openProfileMenu");
+            window.dispatchEvent(evt);
+          }}
+        >
+          ⋯
+        </button>
+      </div>
+    ),
+  },
 };
 
 export default function Topbar() {

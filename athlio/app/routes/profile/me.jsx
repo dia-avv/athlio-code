@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
+import Topbar from "../../components/Topbar";
 
 export default function MyProfile() {
   const [state, setState] = useState("loading"); // loading | ready | unauth | error | notfound
@@ -51,5 +52,9 @@ export default function MyProfile() {
     return <div className="page">Couldn’t load your profile.</div>;
   if (!profile) return null;
 
-  return <div className="page profile self"></div>;
+  return (
+    <div className="page profile self">
+      <Topbar />
+    </div>
+  );
 }
