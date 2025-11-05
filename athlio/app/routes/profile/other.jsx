@@ -10,6 +10,7 @@ function isUuid(v) {
 
 export default function OtherProfile() {
   const { userKey } = useParams(); // handle or uuid
+  if (!userKey) return <div className="page">Invalid profile route.</div>;
   const [state, setState] = useState("loading"); // loading | ready | notfound | error
   const [profile, setProfile] = useState(null);
   const [meId, setMeId] = useState(null);
@@ -26,15 +27,38 @@ export default function OtherProfile() {
       const user = auth?.user ?? null;
       if (user && !ignore) setMeId(user.id);
 
-      // fetch target profile by id OR handle
-      const query = supabase.from("profiles").select("*").limit(1);
-      const { data, error } = isUuid(userKey)
-        ? await query.eq("id", userKey).single()
-        : await query.eq("handle", userKey).single();
+      // fetch target profile by id OR handle/username
+      let data, error;
 
-      if (ignore) return;
-      if (error || !data) {
+      if (isUuid(userKey)) {
+        ({ data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", userKey)
+          .maybeSingle());
+      } else {
+        // Try both handle and username columns
+        ({ data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .or("username", userKey)
+          .maybeSingle());
+      }
+
+      console.debug(
+        "[OtherProfile] userKey=",
+        userKey,
+        " isUuid=",
+        isUuid(userKey),
+      );
+      if (error) console.error("[OtherProfile] profile fetch error:", error);
+
+      if (!data) {
         setState("notfound");
+        return;
+      }
+      if (error) {
+        setState("error");
         return;
       }
 
@@ -90,5 +114,21 @@ export default function OtherProfile() {
 
   const canFollow = meId && meId !== profile.id;
 
-  return <div className="page profile other"></div>;
+  return (
+    <div className="page profile other">
+      <h2>
+        {profile.display_name ||
+          profile.full_name ||
+          profile.username ||
+          profile.handle ||
+          "Profile"}
+      </h2>
+      <p>@{profile.handle || profile.username || profile.id}</p>
+      {canFollow && (
+        <button onClick={toggleFollow} disabled={busy}>
+          {isFollowing ? "Unfollow" : "Follow"}
+        </button>
+      )}
+    </div>
+  );
 }
