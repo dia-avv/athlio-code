@@ -1,0 +1,11 @@
+.table-variant-3players{width:100%;border:1px solid var(--gray-300,#dfe0e7);border-radius:8px;overflow:hidden;background:#fbfbfb;font-family:Geist, sans-serif;font-size:12px;color:var(--text,#000215); --row-height:32px}
+.tv3-header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px}
+.tv3-title{font-weight:500}
+.tv3-players{display:flex;gap:8px}
+.tv3-player-name{min-width:100px;text-align:center;font-weight:600}
+.tv3-body{display:flex;flex-direction:column}
+.tv3-row{display:flex;align-items:center;justify-content:space-between;height:var(--row-height);padding:0 16px}
+.tv3-row.alt{background:var(--gray-100,#f0f0f3)}
+.tv3-label{width:180px}
+.tv3-values{display:flex;gap:8px}
+.tv3-value{min-width:57px;text-align:center;display:flex;align-items:center;justify-content:center;height:100%}
