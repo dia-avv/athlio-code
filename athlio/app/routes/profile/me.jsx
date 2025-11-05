@@ -33,7 +33,7 @@ export default function MyProfile() {
         setState(error.code === "PGRST116" ? "notfound" : "error");
         return;
       }
-
+      console.log("Loaded profile:", data.id);
       setProfile(data);
       setState("ready");
     })();
