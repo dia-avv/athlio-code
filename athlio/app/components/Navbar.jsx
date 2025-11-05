@@ -122,11 +122,8 @@ export default function Navbar() {
           </div>
         </Link>
       </nav>
-      <AddPostModal open={showPicker} onClose={() => setShowPicker(false)}>
-        <PostTypePicker
-          onChoose={handleChoose}
-          onClose={() => setShowPicker(false)}
-        />
+      <AddPostModal open={showPicker}>
+        <PostTypePicker onChoose={handleChoose} />
       </AddPostModal>
     </>
   );

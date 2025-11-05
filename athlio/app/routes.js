@@ -15,7 +15,13 @@ export default [
     route("home", "routes/home.jsx"),
     route("profile", "routes/profile.jsx"),
     route("notifications", "routes/notifications.jsx"),
-    route("new-post", "routes/new-post.jsx"),
+    route("add-post", "routes/add-post/layout.jsx", [
+      index("routes/add-post/index.jsx"), // maybe redirect or show picker
+      route("post", "routes/add-post/post.jsx"),
+      route("match", "routes/add-post/match.jsx"),
+      route("activity", "routes/add-post/activity.jsx"),
+      route("event", "routes/add-post/event.jsx"),
+    ]),
     route("chat", "routes/chat.jsx"),
     route("scouting", "routes/scouting.jsx"),
   ]),

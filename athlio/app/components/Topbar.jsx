@@ -46,7 +46,7 @@ const TOPBAR_CONFIG = {
       </div>
     ),
   },
-  "/new-post": {
+  "/add-post": {
     title: null,
     left: (nav, profile) => (
       <>
@@ -75,7 +75,12 @@ export default function Topbar() {
   const navigate = useNavigate();
   const { profile, counts } = useUser();
 
-  const config = TOPBAR_CONFIG[pathname];
+  let config = TOPBAR_CONFIG[pathname];
+  // Use the add-post layout for all nested add-post routes
+  if (!config && pathname.startsWith("/add-post")) {
+    config = TOPBAR_CONFIG["/add-post"];
+  }
+
   if (!config) return null;
 
   return (
