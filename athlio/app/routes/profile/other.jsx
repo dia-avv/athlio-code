@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
+import Topbar from "../../components/Topbar";
 
 export default function OtherProfile() {
   const { id } = useParams(); // profile id (uuid)
@@ -94,6 +95,7 @@ export default function OtherProfile() {
 
   return (
     <div className="page profile other">
+      <Topbar />
       <h2>
         {profile.display_name ||
           profile.full_name ||

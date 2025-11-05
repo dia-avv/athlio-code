@@ -2,11 +2,13 @@ import { useLocation, useNavigate } from "react-router";
 import { useUser } from "../context/UserContext";
 import MessagesIcon from "../assets/icons/messages.svg";
 import BurgerMenuIcon from "../assets/icons/burger-menu.svg";
+import ShareIcon from "../assets/icons/share.svg";
 import NotificationsIcon from "../assets/icons/notifications.svg";
 import BackIcon from "../assets/icons/back.svg";
 import CloseIcon from "../assets/icons/close.svg";
 import MainLogo from "../assets/logos/main-logo.svg?react";
 import "./Topbar.css";
+import Button from "./UI/Button";
 
 //changes how the topbar looks based on what page the user is on
 //doing it this way instead of per-page to avoid code duplication and also its easier to maintain
@@ -96,6 +98,30 @@ const TOPBAR_CONFIG = {
       </div>
     ),
   },
+  "/profile/other": {
+    title: null,
+    left: (nav) => (
+      <div className="topbar-left-with-back">
+        <img
+          src={BackIcon}
+          alt="Back"
+          onClick={() => nav(-1)}
+          className="topbar-back"
+        />
+        <MainLogo className="main-logo" />
+      </div>
+    ),
+    right: () => (
+      <Button
+        size="small"
+        type="outline"
+        onClick={() => {
+          console.log("Share clicked");
+        }}
+        Icon={() => <img src={ShareIcon} alt="Share" />}
+      />
+    ),
+  },
 };
 
 export default function Topbar() {
@@ -107,6 +133,12 @@ export default function Topbar() {
   // Use the add-post layout for all nested add-post routes
   if (!config && pathname.startsWith("/add-post")) {
     config = TOPBAR_CONFIG["/add-post"];
+  }
+
+  if (!config && pathname.startsWith("/profile/")) {
+    if (!pathname.startsWith("/profile/me")) {
+      config = TOPBAR_CONFIG["/profile/other"];
+    }
   }
 
   if (!config) return null;
