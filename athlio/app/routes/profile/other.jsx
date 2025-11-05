@@ -2,15 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
-function isUuid(v) {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-    v,
-  );
-}
-
 export default function OtherProfile() {
-  const { userKey } = useParams(); // handle or uuid
-  if (!userKey) return <div className="page">Invalid profile route.</div>;
+  const { id } = useParams(); // profile id (uuid)
+  if (!id) return <div className="page">Invalid profile route.</div>;
   const [state, setState] = useState("loading"); // loading | ready | notfound | error
   const [profile, setProfile] = useState(null);
   const [meId, setMeId] = useState(null);
@@ -27,30 +21,14 @@ export default function OtherProfile() {
       const user = auth?.user ?? null;
       if (user && !ignore) setMeId(user.id);
 
-      // fetch target profile by id OR handle/username
-      let data, error;
+      // fetch target profile strictly by id
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
 
-      if (isUuid(userKey)) {
-        ({ data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", userKey)
-          .maybeSingle());
-      } else {
-        // Try both handle and username columns
-        ({ data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .or("username", userKey)
-          .maybeSingle());
-      }
-
-      console.debug(
-        "[OtherProfile] userKey=",
-        userKey,
-        " isUuid=",
-        isUuid(userKey),
-      );
+      console.debug("[OtherProfile] lookup", { id, mode: "by-id" });
       if (error) console.error("[OtherProfile] profile fetch error:", error);
 
       if (!data) {
@@ -80,7 +58,7 @@ export default function OtherProfile() {
     return () => {
       ignore = true;
     };
-  }, [userKey]);
+  }, [id]);
 
   async function toggleFollow() {
     if (!meId || !profile || busy) return;
@@ -120,10 +98,9 @@ export default function OtherProfile() {
         {profile.display_name ||
           profile.full_name ||
           profile.username ||
-          profile.handle ||
           "Profile"}
       </h2>
-      <p>@{profile.handle || profile.username || profile.id}</p>
+      <p>@{profile.username || profile.id}</p>
       {canFollow && (
         <button onClick={toggleFollow} disabled={busy}>
           {isFollowing ? "Unfollow" : "Follow"}

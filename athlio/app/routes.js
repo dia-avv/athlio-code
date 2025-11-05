@@ -14,7 +14,7 @@ export default [
     // your actual app screens
     route("home", "routes/home.jsx"),
     route("me", "routes/profile/me.jsx"),
-    route("u/:userKey", "routes/profile/other.jsx"),
+    route("profile/:id", "routes/profile/other.jsx"),
     route("notifications", "routes/notifications.jsx"),
     route("add-post", "routes/add-post/layout.jsx", [
       index("routes/add-post/index.jsx"), // maybe redirect or show picker

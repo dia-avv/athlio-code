@@ -48,7 +48,7 @@ export default function PostHeader({ name, position, club, date, authorId }) {
   }
 
   const loading = isFollowing === null || isPending;
-  const profileHref = `/u/&{authorId}`;
+  const profileHref = `/profile/${authorId}`;
 
   return (
     <div className="post-header">
