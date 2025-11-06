@@ -44,7 +44,12 @@ body {
 }
 
 .main-content {
-  padding: 56px 15px;
+  padding: 56px 16px;
+}
+
+main:has(.profile-posts-tab) {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 h1 {

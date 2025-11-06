@@ -130,10 +130,12 @@ export default function PostsTab({ profile }) {
   if (!posts.length) return <p>No posts yet.</p>;
 
   return (
-    <div className="profile-posts-tab">
-      {posts.map((post) => (
-        <PostSwitcher key={post.id} post={post} />
-      ))}
-    </div>
+    <main>
+      <div className="profile-posts-tab">
+        {posts.map((post) => (
+          <PostSwitcher key={post.id} post={post} />
+        ))}
+      </div>
+    </main>
   );
 }
