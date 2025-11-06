@@ -47,11 +47,6 @@ body {
   padding: 56px 16px;
 }
 
-main:has(.profile-posts-tab) {
-  padding-left: 0;
-  padding-right: 0;
-}
-
 h1 {
   font-size: var(--text-2xl);
   font-weight: 600;

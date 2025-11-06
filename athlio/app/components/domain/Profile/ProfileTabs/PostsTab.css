@@ -5,3 +5,8 @@
   background-color: var(--color-gray-100);
   padding: 24px 8px;
 }
+
+main:has(.profile-posts-tab) {
+  padding-left: 0;
+  padding-right: 0;
+}
