@@ -3,9 +3,11 @@ import { useUser } from "../context/UserContext";
 import MessagesIcon from "../assets/icons/messages.svg";
 import NotificationsIcon from "../assets/icons/notifications.svg";
 import BackIcon from "../assets/icons/back.svg";
-import CloseIcon from "../assets/icons/close.svg";
+import CloseIcon from "../assets/icons/close.svg?react";
 import MainLogo from "../assets/logos/main-logo.svg?react";
 import "./Topbar.css";
+import Button from "./UI/Button";
+import IconButton from "./UI/IconButton";
 
 //changes how the topbar looks based on what page the user is on
 //doing it this way instead of per-page to avoid code duplication and also its easier to maintain
@@ -49,10 +51,13 @@ const TOPBAR_CONFIG = {
   "/add-post": {
     title: null,
     left: (nav, profile) => (
-      <>
-        <button onClick={() => nav(-1)}>
-          <img src={CloseIcon} alt="Close" />
-        </button>
+      <div className="button-avatar">
+        <IconButton
+          onClick={() => nav(-1)}
+          size="large"
+          type="subtle"
+          icon={CloseIcon}
+        />
         {profile?.avatar_url ? (
           <img
             src={profile.avatar_url}
@@ -62,11 +67,9 @@ const TOPBAR_CONFIG = {
         ) : (
           <div className="topbar-avatar placeholder" />
         )}
-      </>
+      </div>
     ),
-    right: () => (
-      <button className="topbar-post-btn">Post it</button> //it will be a component later
-    ),
+    right: () => <Button size="medium" type="primary" label="Post it" />,
   },
 };
 
