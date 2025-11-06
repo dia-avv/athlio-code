@@ -53,27 +53,42 @@
   margin: 0;
 }
 
+/* Updated meta layout */
 .profile-meta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 4px;
   font-size: var(--text-sm);
   color: var(--color-gray-900);
+  max-width: 80%;
 }
 
-.profile-followers strong {
+/* Followers + Following line */
+.profile-follow-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 8px;
+}
+
+.profile-followers strong,
+.profile-following strong {
   color: var(--color-text);
   font-weight: 600;
+}
+
+/* Location (always below follow line) */
+.profile-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-sm);
+  color: var(--color-gray-900);
 }
 
 /* 3️⃣ Buttons */
 .profile-buttons {
   display: flex;
   gap: 10px;
-}
-
-.profile-location {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
-import Topbar from "../../components/Topbar";
 import ProfileHeader from "../../components/domain/Profile/ProfileHeader";
 import { isFollowing, follow, unfollow } from "../../lib/follows";
 
@@ -110,7 +109,6 @@ export default function OtherProfile() {
 
   return (
     <div className="page profile other">
-      <Topbar />
       <ProfileHeader
         profile={profile}
         isMe={!canFollow}

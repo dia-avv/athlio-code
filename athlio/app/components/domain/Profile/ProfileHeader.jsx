@@ -6,6 +6,9 @@ import Player from "../../../assets/images/player.jpg";
 import PlusIcon from "../../../assets/icons/plus.svg?react";
 import CheckIcon from "../../../assets/icons/check.svg?react";
 import LocationIcon from "../../../assets/icons/location.svg?react";
+import EditIcon from "../../../assets/icons/edit.svg?react";
+import VerifyIcon from "../../../assets/icons/verify.svg?react";
+import ShareIcon from "../../../assets/icons/share.svg?react";
 
 import "./ProfileHeader.css";
 
@@ -49,10 +52,21 @@ export default function ProfileHeader({
       {/* === Middle section: bio and stats === */}
       <div className="profile-header-row profile-info">
         {profile.bio && <p className="profile-bio">{profile.bio}</p>}
+
         <div className="profile-meta">
-          <span className="profile-followers">
-            <strong>{profile.follower_count ?? 0}</strong> followers
-          </span>
+          <div className="profile-follow-line">
+            <span className="profile-followers">
+              <strong>{profile.follower_count ?? 0}</strong> followers
+            </span>
+
+            {isMe && (
+              <span className="profile-following">
+                <strong>{profile.following_count ?? 0}</strong> following
+              </span>
+            )}
+          </div>
+
+          {/* show location for everyone; on `isMe` it will still sit below follow-line */}
           {locationText && (
             <div className="profile-location">
               <LocationIcon />
@@ -63,24 +77,43 @@ export default function ProfileHeader({
       </div>
 
       {/* ===  Bottom section: buttons === */}
-      {!isMe && (
-        <div className="profile-header-row profile-buttons">
-          <Button
-            size="medium"
-            type={isFollowing ? "outline" : "primary"}
-            label={isFollowing ? "Following" : "Follow"}
-            onClick={toggleFollow}
-            disabled={busy}
-            Icon={isFollowing ? CheckIcon : PlusIcon}
-          />
-          <Button
-            size="medium"
-            type="outline"
-            label="Message"
-            onClick={() => console.log("Message clicked")}
-          />
-        </div>
-      )}
+      <div className="profile-header-row profile-buttons">
+        {isMe ? (
+          <>
+            <Button
+              size="medium"
+              type="outline"
+              label="Edit Profile"
+              onClick={() => console.log("Edit Profile clicked")}
+              Icon={EditIcon}
+            />
+            <Button
+              size="medium"
+              type="outline"
+              label="Verify"
+              Icon={VerifyIcon}
+            />
+            <Button size="medium" type="outline" Icon={ShareIcon} />
+          </>
+        ) : (
+          <>
+            <Button
+              size="medium"
+              type={isFollowing ? "outline" : "primary"}
+              label={isFollowing ? "Following" : "Follow"}
+              onClick={toggleFollow}
+              disabled={busy}
+              Icon={isFollowing ? CheckIcon : PlusIcon}
+            />
+            <Button
+              size="medium"
+              type="outline"
+              label="Message"
+              onClick={() => console.log("Message clicked")}
+            />
+          </>
+        )}
+      </div>
     </section>
   );
 }
