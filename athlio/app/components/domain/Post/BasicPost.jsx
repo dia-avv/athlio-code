@@ -13,6 +13,7 @@ export default function BasicPost({
   author_role,
   position,
   yourTeam,
+  hideFollow = false,
 }) {
   if (!id) return null;
 
@@ -36,6 +37,7 @@ export default function BasicPost({
         authorId={authorId}
         position={position}
         club={yourTeam}
+        hideFollow={hideFollow}
       />
 
       {content && (
@@ -62,6 +64,7 @@ export default function BasicPost({
           <img className="post-image" src={imageUrl} alt="" />
         </div>
       )}
+
       <PostActions postId={id} auraCount={12} commentCount={3} />
     </article>
   );

@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import ProfileHeader from "../../components/domain/Profile/ProfileHeader";
+import NavigationTabs from "../../components/UI/NavTabs";
+import PostsTab from "../../components/domain/Profile/ProfileTabs/PostsTab";
+import StatsTab from "../../components/domain/Profile/ProfileTabs/StatsTab";
+import InfoTab from "../../components/domain/Profile/ProfileTabs/InfoTab";
+import MatchesTab from "../../components/domain/Profile/ProfileTabs/MatchesTab";
 
 export default function MyProfile() {
   const [state, setState] = useState("loading"); // loading | ready | unauth | error | notfound
   const [profile, setProfile] = useState(null);
+  const [activeTab, setActiveTab] = useState("posts");
 
   useEffect(() => {
     let ignore = false;
@@ -55,6 +61,22 @@ export default function MyProfile() {
   return (
     <div className="page profile self">
       <ProfileHeader profile={profile} isMe={true} />
+      <NavigationTabs
+        tabs={[
+          { id: "posts", label: "Posts" },
+          { id: "info", label: "Info" },
+          { id: "stats", label: "Stats" },
+          { id: "matches", label: "Matches " },
+        ]}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
+      <div className="profile-tab-content">
+        {activeTab === "posts" && <PostsTab profile={profile} />}
+        {activeTab === "stats" && <StatsTab profile={profile} />}
+        {activeTab === "info" && <InfoTab profile={profile} />}
+        {activeTab === "matches" && <MatchesTab profile={profile} />}
+      </div>
     </div>
   );
 }
