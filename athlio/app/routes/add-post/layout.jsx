@@ -1,8 +1,6 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 export default function AddPostLayout() {
-  const navigate = useNavigate();
-
   return (
     <section>
       <main>

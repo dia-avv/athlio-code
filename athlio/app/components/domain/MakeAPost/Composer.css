@@ -1,0 +1,11 @@
+.composer-wrap {
+  height: 100%;
+  background-color: var(--color-gray-100);
+  padding: 16px;
+  height: 100vh;
+}
+
+main:has(.composer-wrap) {
+  padding-right: 0;
+  padding-left: 0;
+}

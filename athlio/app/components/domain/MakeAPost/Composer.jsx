@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from "react";
-import AutoGrowTextarea from "../../inputs/GrowingTextArea";
 import GrowingTextArea from "../../inputs/GrowingTextArea";
+import PostPillBar from "./PostPillBar";
+import "./Composer.css";
 
-export default function Composer({ onSubmit, autoFocus = true }) {
+export default function Composer({ onSubmit }) {
   const [text, setText] = useState("");
-  const [audience, setAudience] = useState("followers");
   const taRef = useRef(null);
 
   // autogrow
@@ -21,11 +21,11 @@ export default function Composer({ onSubmit, autoFocus = true }) {
   useEffect(() => {
     const handler = () => {
       if (!canPost) return;
-      onSubmit?.({ text: text.trim(), audience });
+      onSubmit?.({ text: text.trim() });
     };
     document.addEventListener("composer:submit", handler);
     return () => document.removeEventListener("composer:submit", handler);
-  }, [canPost, text, audience, onSubmit]);
+  }, [canPost, text, onSubmit]);
 
   return (
     <div className="composer-wrap">
@@ -34,22 +34,7 @@ export default function Composer({ onSubmit, autoFocus = true }) {
         onChange={setText}
         placeholder="What is this post about?"
       />
-      {/*
-      <div className="composer-pillbar">
-        <button className="composer-fab" type="button">
-          +
-        </button>
-        <button className="composer-chip" type="button">
-          Match
-        </button>
-        <button className="composer-chip" type="button">
-          Picture
-        </button>
-        <button className="composer-chip" type="button">
-          Event
-        </button>
-      </div>
-      */}
+      <PostPillBar />
     </div>
   );
 }
