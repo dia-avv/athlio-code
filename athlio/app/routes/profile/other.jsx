@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import Topbar from "../../components/Topbar";
+import ProfileHeader from "../../components/domain/Profile/ProfileHeader";
+import { isFollowing, follow, unfollow } from "../../lib/follows";
 
 export default function OtherProfile() {
   const { id } = useParams(); // profile id (uuid)
   if (!id) return <div className="page">Invalid profile route.</div>;
-  const [state, setState] = useState("loading"); // loading | ready | notfound | error
+
+  const [state, setState] = useState("loading");
   const [profile, setProfile] = useState(null);
   const [meId, setMeId] = useState(null);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowingState, setIsFollowing] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -17,45 +20,44 @@ export default function OtherProfile() {
     (async () => {
       setState("loading");
 
-      //currently logged in user - useful to check if one user follows the other
+      // Logged-in user
       const { data: auth } = await supabase.auth.getUser();
       const user = auth?.user ?? null;
       if (user && !ignore) setMeId(user.id);
 
-      // fetch target profile strictly by id
+      // Fetch target profile
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", id)
         .maybeSingle();
 
-      console.debug("[OtherProfile] lookup", { id, mode: "by-id" });
-      if (error) console.error("[OtherProfile] profile fetch error:", error);
+      if (error) {
+        console.error("[OtherProfile] profile fetch error:", error);
+        setState("error");
+        return;
+      }
 
       if (!data) {
         setState("notfound");
         return;
       }
-      if (error) {
-        setState("error");
-        return;
-      }
 
       setProfile(data);
 
-      // prefetch follow state if logged in
+      // Prefetch follow state
       if (user) {
-        const { data: f } = await supabase
-          .from("follows")
-          .select("id")
-          .eq("follower_id", user.id)
-          .eq("followed_id", data.id)
-          .maybeSingle();
-        if (!ignore) setIsFollowing(!!f);
+        try {
+          const following = await isFollowing(data.id);
+          if (!ignore) setIsFollowing(following);
+        } catch (err) {
+          console.error("isFollowing check failed:", err);
+        }
       }
 
       setState("ready");
     })();
+
     return () => {
       ignore = true;
     };
@@ -64,22 +66,35 @@ export default function OtherProfile() {
   async function toggleFollow() {
     if (!meId || !profile || busy) return;
     setBusy(true);
-    const next = !isFollowing;
+
+    const next = !isFollowingState;
     setIsFollowing(next);
+
     try {
       if (next) {
-        await supabase
-          .from("follows")
-          .insert({ follower_id: meId, followed_id: profile.id });
+        await follow(profile.id);
       } else {
-        await supabase
-          .from("follows")
-          .delete()
-          .eq("follower_id", meId)
-          .eq("followed_id", profile.id);
+        await unfollow(profile.id);
       }
-    } catch {
-      setIsFollowing(!next); // revert on fail
+
+      // Wait a moment for DB trigger to update counts
+      await new Promise((r) => setTimeout(r, 300));
+
+      // Re-fetch updated profile
+      const { data: updatedProfile, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", profile.id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching updated profile:", error);
+      } else {
+        setProfile(updatedProfile);
+      }
+    } catch (err) {
+      console.error("Toggle follow error:", err);
+      setIsFollowing(!next); // revert on failure
     } finally {
       setBusy(false);
     }
@@ -96,18 +111,13 @@ export default function OtherProfile() {
   return (
     <div className="page profile other">
       <Topbar />
-      <h2>
-        {profile.display_name ||
-          profile.full_name ||
-          profile.username ||
-          "Profile"}
-      </h2>
-      <p>@{profile.username || profile.id}</p>
-      {canFollow && (
-        <button onClick={toggleFollow} disabled={busy}>
-          {isFollowing ? "Unfollow" : "Follow"}
-        </button>
-      )}
+      <ProfileHeader
+        profile={profile}
+        isMe={!canFollow}
+        isFollowing={isFollowingState}
+        toggleFollow={toggleFollow}
+        busy={busy}
+      />
     </div>
   );
 }
