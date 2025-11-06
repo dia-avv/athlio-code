@@ -9,21 +9,21 @@ export default function PostPillBar() {
     <div className="pill-bar">
       <Button
         size="small"
-        type="primary"
+        type="gray"
         label="Match"
         Icon={MatchIcon}
         className="pill-button"
       />
       <Button
         size="small"
-        type="primary"
+        type="gray"
         label="Picture"
         Icon={PictureIcon}
         className="pill-button"
       />
       <Button
         size="small"
-        type="primary"
+        type="gray"
         label="Event"
         Icon={EventIcon}
         className="pill-button"
