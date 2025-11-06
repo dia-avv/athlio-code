@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
+import AutoGrowTextarea from "../../inputs/GrowingTextArea";
+import GrowingTextArea from "../../inputs/GrowingTextArea";
 
 export default function Composer({ onSubmit, autoFocus = true }) {
   const [text, setText] = useState("");
@@ -27,16 +29,12 @@ export default function Composer({ onSubmit, autoFocus = true }) {
 
   return (
     <div className="composer-wrap">
-      <textarea
-        ref={taRef}
-        className="composer-textarea"
-        placeholder="What is this post about?"
+      <GrowingTextArea
         value={text}
-        onChange={(e) => setText(e.target.value)}
-        rows={1}
-        autoFocus={autoFocus}
+        onChange={setText}
+        placeholder="What is this post about?"
       />
-
+      {/*
       <div className="composer-pillbar">
         <button className="composer-fab" type="button">
           +
@@ -51,6 +49,7 @@ export default function Composer({ onSubmit, autoFocus = true }) {
           Event
         </button>
       </div>
+      */}
     </div>
   );
 }

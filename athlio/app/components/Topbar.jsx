@@ -69,7 +69,14 @@ const TOPBAR_CONFIG = {
         )}
       </div>
     ),
-    right: () => <Button size="medium" type="primary" label="Post it" />,
+    right: () => (
+      <Button
+        size="medium"
+        type="primary"
+        label="Post it"
+        onClick={() => document.dispatchEvent(new Event("composer:submit"))}
+      />
+    ),
   },
 };
 
