@@ -80,6 +80,11 @@
   color: var(--color-gray-700);
 }
 
+.button--gray {
+  background-color: var(--color-gray-100);
+  color: var(--color-text);
+}
+
 .button--following {
   background-color: var(--color-gray-100);
   color: var(--color-accent);
