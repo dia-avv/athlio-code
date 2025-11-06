@@ -3,6 +3,11 @@ import { useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import ProfileHeader from "../../components/domain/Profile/ProfileHeader";
 import { isFollowing, follow, unfollow } from "../../lib/follows";
+import NavigationTabs from "../../components/UI/NavTabs";
+import PostsTab from "../../components/domain/Profile/ProfileTabs/PostsTab";
+import StatsTab from "../../components/domain/Profile/ProfileTabs/StatsTab";
+import InfoTab from "../../components/domain/Profile/ProfileTabs/InfoTab";
+import MatchesTab from "../../components/domain/Profile/ProfileTabs/MatchesTab";
 
 export default function OtherProfile() {
   const { id } = useParams(); // profile id (uuid)
@@ -10,6 +15,7 @@ export default function OtherProfile() {
 
   const [state, setState] = useState("loading");
   const [profile, setProfile] = useState(null);
+  const [activeTab, setActiveTab] = useState("posts");
   const [meId, setMeId] = useState(null);
   const [isFollowingState, setIsFollowing] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -116,6 +122,22 @@ export default function OtherProfile() {
         toggleFollow={toggleFollow}
         busy={busy}
       />
+      <NavigationTabs
+        tabs={[
+          { id: "posts", label: "Posts" },
+          { id: "info", label: "Info" },
+          { id: "stats", label: "Stats" },
+          { id: "matches", label: "Matches " },
+        ]}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
+      <div className="profile-tab-content">
+        {activeTab === "posts" && <PostsTab profile={profile} />}
+        {activeTab === "stats" && <StatsTab profile={profile} />}
+        {activeTab === "info" && <InfoTab profile={profile} />}
+        {activeTab === "matches" && <MatchesTab profile={profile} />}
+      </div>
     </div>
   );
 }
