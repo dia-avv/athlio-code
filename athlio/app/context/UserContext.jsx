@@ -34,76 +34,19 @@ export function UserProvider({ children }) {
     return () => listener.subscription.unsubscribe();
   }, []);
 
+  const [club, setClub] = useState(null);
+
   async function fetchProfileAndCounts(uid) {
     const { data } = await supabase
       .from("profiles")
-      .select("*")
-      .eq("id", uid) //filter by user id (where id===uid)
+      .select("*, club:club_id (id, name, logo_url")
+      .eq("id", uid)
       .maybeSingle();
     setProfile(data);
-    setLoading(false);
-
-    await fetchCounts(uid);
-    subscribeToChanges(uid);
+    setClub(data?.club || null);
     setLoading(false);
   }
 
-  async function fetchCounts(uid) {
-    const { count: msgCount } = await supabase
-      .from("messages")
-      .select("*", { count: "exact", head: true })
-      .eq("receiver_id", uid)
-      .eq("read", false);
-
-    const { count: notifCount } = await supabase
-      .from("notifications")
-      .select("*", { count: "exact", head: true })
-      .eq("user_id", uid)
-      .eq("read", false);
-
-    setCounts({
-      messages: msgCount || 0,
-      notifications: notifCount || 0,
-    });
-  }
-
-  // live updates
-  function subscribeToChanges(uid) {
-    const msgSub = supabase
-      .channel("messages-changes")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "messages" },
-        (payload) => {
-          if (
-            payload.new?.receiver_id === uid ||
-            payload.old?.receiver_id === uid
-          ) {
-            fetchCounts(uid);
-          }
-        },
-      )
-      .subscribe();
-
-    const notifSub = supabase
-      .channel("notifications-changes")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "notifications" },
-        (payload) => {
-          if (payload.new?.user_id === uid || payload.old?.user_id === uid) {
-            fetchCounts(uid);
-          }
-        },
-      )
-      .subscribe();
-
-    // cleanup
-    return () => {
-      supabase.removeChannel(msgSub);
-      supabase.removeChannel(notifSub);
-    };
-  }
   return (
     <UserContext.Provider value={{ user, profile, counts, setCounts, loading }}>
       {children}

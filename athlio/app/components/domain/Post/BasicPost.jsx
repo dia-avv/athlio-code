@@ -6,10 +6,14 @@ import { useEffect, useRef, useState } from "react";
 export default function BasicPost({
   id,
   author,
+  authorId,
   content,
   imageUrl,
   createdAt,
   author_role,
+  position,
+  yourTeam,
+  hideFollow = false,
 }) {
   if (!id) return null;
 
@@ -26,7 +30,15 @@ export default function BasicPost({
 
   return (
     <article className="post" data-id={id}>
-      <PostHeader name={author} date={createdAt} role={author_role} />
+      <PostHeader
+        name={author}
+        date={createdAt}
+        role={author_role}
+        authorId={authorId}
+        position={position}
+        club={yourTeam}
+        hideFollow={hideFollow}
+      />
 
       {content && (
         <div className="post-content-container">
@@ -52,6 +64,7 @@ export default function BasicPost({
           <img className="post-image" src={imageUrl} alt="" />
         </div>
       )}
+
       <PostActions postId={id} auraCount={12} commentCount={3} />
     </article>
   );

@@ -3,6 +3,9 @@
   flex-direction: column;
   justify-content: start;
   align-items: flex-start;
+  background-color: var(--color-background);
+  padding: 8px;
+  border-radius: 8px;
   gap: 16px;
 }
 

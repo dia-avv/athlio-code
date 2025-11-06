@@ -7,6 +7,7 @@ import PostActions from "./PostActions";
 export default function MatchPost({
   id,
   author,
+  authorId,
   createdAt,
   author_role,
   content,
@@ -20,6 +21,8 @@ export default function MatchPost({
   opponent,
   yourScore,
   opponentScore,
+  position,
+  hideFollow = false,
 }) {
   const isImage = !!imageUrl;
 
@@ -36,7 +39,15 @@ export default function MatchPost({
 
   return (
     <article className="match-post" data-id={id}>
-      <PostHeader name={author} date={createdAt} role={author_role} />
+      <PostHeader
+        name={author}
+        date={createdAt}
+        role={author_role}
+        authorId={authorId}
+        position={position}
+        club={yourTeam}
+        hideFollow={hideFollow}
+      />
 
       {content && (
         <div className="match-post-content-container">
@@ -69,7 +80,7 @@ export default function MatchPost({
         assistsCount={assistsCount}
         minCount={minCount}
       />
-      <PostActions id={1} auraCount={12} commentCount={2} />
+      <PostActions postId={id} auraCount={12} commentCount={2} />
     </article>
   );
 }
