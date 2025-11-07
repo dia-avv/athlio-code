@@ -30,12 +30,25 @@ export default function Auth() {
     e.preventDefault();
     setErr("");
 
+    function formatAuthError(message) {
+      if (!message) return "An error occurred";
+      // remap common backend messages to friendlier UI text
+      if (message.toLowerCase().includes("password") && message.match(/\d+/)) {
+        // messages like: "Password should be at least 6 characters"
+        return "Password must be at least 6 characters";
+      }
+      if (message.toLowerCase().includes("missing email") || message.toLowerCase().includes("missing email or phone")) {
+        return "Please enter your email";
+      }
+      return message;
+    }
+
     if (mode === "signup") {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
-      if (error) return setErr(error.message);
+      if (error) return setErr(formatAuthError(error.message));
 
       const uid =
         data?.user?.id || (await supabase.auth.getUser()).data?.user?.id;
@@ -51,7 +64,7 @@ export default function Auth() {
 
     const { data: loginData, error: loginErr } =
       await supabase.auth.signInWithPassword({ email, password });
-    if (loginErr) return setErr(loginErr.message);
+  if (loginErr) return setErr(formatAuthError(loginErr.message));
 
     const uid =
       loginData?.user?.id || (await supabase.auth.getUser()).data?.user?.id;
