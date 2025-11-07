@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../../UI/Button";
-import IconButton from "../../UI/IconButton";
+import Button from "../../../UI/Button";
+import IconButton from "../../../UI/IconButton";
 import "./OnboardingNavbar.css";
 
 function ArrowLeft(props) {
@@ -25,6 +25,7 @@ export default function OnboardingNavbar({
   showBack = true,
   showNext = true,
   showFinish = false,
+  canContinue = true,
 }) {
   const handleContinue = () => {
     if (showNext && typeof onNext === "function") return onNext();
@@ -41,8 +42,8 @@ export default function OnboardingNavbar({
         )}
       </div>
 
-      <div className="onboarding-right">
-        <Button size="medium" type="primary" label="Continue" onClick={handleContinue} />
+      <div className={`onboarding-right ${!canContinue ? "continue-disabled" : ""}`}>
+        <Button size="medium" type="primary" label="Continue" onClick={canContinue ? handleContinue : undefined} />
       </div>
     </div>
   );

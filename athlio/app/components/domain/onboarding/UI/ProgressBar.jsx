@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./ProgressBar.module.css";
-import MainLogoSmall from "../../../assets/logos/main-logo-small.svg";
+import MainLogoSmall from "../../../../assets/logos/main-logo-small.svg";
 
 const ProgressBar = ({ currentStep = 1, totalSteps = 7 }) => {
   // Normalize and clamp values: currentStep is expected 1-based, totalSteps >= 1

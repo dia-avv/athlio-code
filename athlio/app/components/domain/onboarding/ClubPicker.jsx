@@ -56,6 +56,14 @@ export default function ClubPicker({ sport, value, onChange }) {
   // --- Render ---
   return (
     <div>
+      <div
+        className="role-header"
+        style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
+      >
+        <h1 className="role-header-title">add the team you play for</h1>
+        <p className="role-header-subtitle">This will help you post match results and stats</p>
+      </div>
+
       <TextInput placeholder="Search club" value={query} onChange={setQuery} />
 
       <ul>

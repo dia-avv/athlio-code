@@ -24,3 +24,11 @@
 .onboarding-navbar .button {
   min-width: 120px;
 }
+
+/* When the container has `continue-disabled`, make the button look disabled
+   without changing the Button component. We disable pointer events and
+   dim the button to indicate disabled state. */
+.continue-disabled .button {
+  pointer-events: none;
+  opacity: 0.5;
+}

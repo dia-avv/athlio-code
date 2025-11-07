@@ -135,13 +135,41 @@ export default function Setup() {
     navigate("/home");
   }
 
+  // Determine whether the Continue button should be enabled for the current
+  // step. Default to true for steps without specific rules.
+  const canContinue = (() => {
+    try {
+      switch (stepId) {
+        case "basic":
+          return (
+            (form.full_name || "").toString().trim() !== "" &&
+            (form.username || "").toString().trim() !== ""
+          );
+        case "role":
+          return Boolean(role);
+        case "sport":
+          return Array.isArray(form.sports) && form.sports.length > 0;
+        case "position":
+          return role !== "athlete" ? true : Boolean(form.position);
+        case "club":
+          return Boolean(form.club_id) || ((form.club_other_name || "").toString().trim() !== "");
+        case "bio":
+          return (form.bio || "").toString().trim() !== "";
+        default:
+          return true;
+      }
+    } catch (e) {
+      return true;
+    }
+  })();
+
   return (
-    <div>
+    <div className="setup-profile-page">
       <Stepper steps={steps} current={idx} />
       <ProgressBar currentStep={idx + 1} totalSteps={steps.length} />
 
       {/* Skip button (subtle, medium) aligned right under the progress bar */}
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "0 16px", marginTop: 8, marginBottom: 88 }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", padding: "0 16px" }}>
         <Button
           size="medium"
           type="subtle"
@@ -161,6 +189,13 @@ export default function Setup() {
       >
         {stepId === "basic" && (
           <div>
+            <div
+              className="role-header"
+              style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
+            >
+              <h1 className="role-header-title">Profile setup</h1>
+              <p className="role-header-subtitle">tell us about yourself</p>
+            </div>
             <TextInput
               label="Full name"
               value={form.full_name}
@@ -313,6 +348,7 @@ export default function Setup() {
         showBack={idx > 0}
         showNext={idx < steps.length - 1}
         showFinish={idx === steps.length - 1}
+        canContinue={canContinue}
       />
     </div>
   );

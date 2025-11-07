@@ -1,63 +1,32 @@
 .role-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* allow items to flow to the next line on overflow */
   gap: 12px;
   width: 100%;
   margin: 12px 0 24px;
+  align-items: flex-start;
 }
 
-.role-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid var(--color-gray-300);
-  background: white;
-  cursor: pointer;
-  transition: box-shadow 160ms ease, border-color 160ms ease, transform 120ms ease;
-  outline: none;
+/* Header shown above the role cards */
+.role-header {
+  margin-bottom: 12px;
 }
 
-.role-card:focus {
-  box-shadow: 0 6px 18px rgba(38,49,160,0.08);
-  transform: translateY(-2px);
+.role-header-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text, #0b0b0b);
 }
 
-.role-card.selected {
-  border-color: var(--color-accent);
-  box-shadow: 0 8px 20px rgba(64,81,253,0.08);
-}
-
-.role-icon {
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
-  object-fit: contain;
-}
-
-.role-body {
-  display: flex;
-  flex-direction: column;
-}
-
-.role-title {
-  font-size: var(--text-base);
-  font-weight: 600;
-  margin: 0 0 4px 0;
-}
-
-.role-desc {
-  font-size: var(--text-sm);
-  color: var(--color-gray-700);
+.role-header-subtitle {
   margin: 0;
+  font-size: 14px;
+  color: var(--color-gray-900, #111827); /* gray-900 */
 }
 
-.visually-hidden {
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
-  white-space: nowrap;
-}
+/*
+  Role card visual styles live in `SelectionCard.css` so we avoid duplicating
+  rules here. Keep this file focused on layout. If you need role-card overrides
+  for this page, add them below.
+*/
