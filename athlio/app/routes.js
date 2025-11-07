@@ -3,13 +3,15 @@ import { index, route } from "@react-router/dev/routes";
 export default [
   route("/", "routes/layout.jsx", [
     // landing gate
-    index("routes/landing.jsx"),
+    index("routes/onboarding/landing.jsx"),
 
     // onboarding
-    route("intro", "routes/intro.jsx"),
+    route("intro", "routes/onboarding/intro.jsx"),
 
     // login/signup
-    route("auth", "routes/auth.jsx"),
+    route("auth", "routes/onboarding/auth.jsx"),
+    route("setup-profile", "routes/onboarding/setup-profile.jsx"),
+    route("auth/callback", "routes/onboarding/auth-callback.jsx"),
 
     // your actual app screens
     route("home", "routes/home.jsx"),
