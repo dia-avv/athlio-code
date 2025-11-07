@@ -1,0 +1,24 @@
+.onboarding-navbar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), #ffffff);
+  gap: 12px;
+}
+
+.onboarding-left {
+  display: flex;
+  align-items: center;
+}
+
+.onboarding-right {
+  display: flex;
+  align-items: center;
+}
+
+.onboarding-navbar .button {
+  min-width: 120px;
+}

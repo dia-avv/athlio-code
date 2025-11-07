@@ -1,0 +1,51 @@
+.role-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-gray-300);
+  background: white;
+  cursor: pointer;
+  transition: box-shadow 160ms ease, border-color 160ms ease, transform 120ms ease;
+  outline: none;
+}
+
+.role-card:focus {
+  box-shadow: 0 6px 18px rgba(38,49,160,0.08);
+  transform: translateY(-2px);
+}
+
+.role-card.selected {
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 20px rgba(64,81,253,0.08);
+}
+
+/* Flexbox for text area */
+
+.role-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main text */
+.role-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.role-desc {
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}

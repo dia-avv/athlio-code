@@ -17,6 +17,7 @@ import { getSteps } from "../../utils/steps";
 import { buildProfilePayload } from "../../utils/payload";
 import Textarea from "../../components/inputs/TextArea";
 import ProgressBar from "../../components/domain/UI/ProgressBar";
+import OnboardingNavbar from "../../components/domain/UI/OnboardingNavbar";
 
 export default function Setup() {
   const navigate = useNavigate();
@@ -141,9 +142,11 @@ export default function Setup() {
         onBack={back}
         onNext={next}
         onFinish={finish}
-        showBack={idx > 0}
-        showNext={idx < steps.length - 1}
-        showFinish={idx === steps.length - 1}
+        /* hide the built-in StepContainer buttons - we'll render our
+           OnboardingNavbar below which uses the same callbacks */
+        showBack={false}
+        showNext={false}
+        showFinish={false}
       >
         {stepId === "basic" && (
           <div>
@@ -292,6 +295,14 @@ export default function Setup() {
           <pre>{JSON.stringify({ role, ...form }, null, 2)}</pre>
         )}
       </StepContainer>
+      <OnboardingNavbar
+        onBack={back}
+        onNext={next}
+        onFinish={finish}
+        showBack={idx > 0}
+        showNext={idx < steps.length - 1}
+        showFinish={idx === steps.length - 1}
+      />
     </div>
   );
 }
