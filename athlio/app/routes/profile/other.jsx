@@ -133,7 +133,7 @@ export default function OtherProfile() {
         onTabChange={setActiveTab}
       />
       <div className="profile-tab-content">
-        {activeTab === "posts" && <PostsTab profile={profile} />}
+        {activeTab === "posts" && <PostsTab profile={profile} isMe={false} />}
         {activeTab === "stats" && <StatsTab profile={profile} />}
         {activeTab === "info" && <InfoTab profile={profile} />}
         {activeTab === "matches" && <MatchesTab profile={profile} />}

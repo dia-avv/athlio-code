@@ -72,7 +72,7 @@ export default function MyProfile() {
         onTabChange={setActiveTab}
       />
       <div className="profile-tab-content">
-        {activeTab === "posts" && <PostsTab profile={profile} />}
+        {activeTab === "posts" && <PostsTab profile={profile} isMe={true} />}
         {activeTab === "stats" && <StatsTab profile={profile} />}
         {activeTab === "info" && <InfoTab profile={profile} />}
         {activeTab === "matches" && <MatchesTab profile={profile} />}
