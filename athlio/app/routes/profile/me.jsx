@@ -73,8 +73,8 @@ export default function MyProfile() {
       />
       <div className="profile-tab-content">
         {activeTab === "posts" && <PostsTab profile={profile} isMe={true} />}
-        {activeTab === "stats" && <StatsTab profile={profile} />}
-        {activeTab === "info" && <InfoTab profile={profile} />}
+        {activeTab === "stats" && <StatsTab profile={profile} isMe={true} />}
+        {activeTab === "info" && <InfoTab profile={profile} isMe={true} />}
         {activeTab === "matches" && (
           <MatchesTab profile={profile} isMe={true} />
         )}

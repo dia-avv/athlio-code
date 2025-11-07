@@ -134,8 +134,8 @@ export default function OtherProfile() {
       />
       <div className="profile-tab-content">
         {activeTab === "posts" && <PostsTab profile={profile} isMe={false} />}
-        {activeTab === "stats" && <StatsTab profile={profile} />}
-        {activeTab === "info" && <InfoTab profile={profile} />}
+        {activeTab === "stats" && <StatsTab profile={profile} isMe={false} />}
+        {activeTab === "info" && <InfoTab profile={profile} isMe={false} />}
         {activeTab === "matches" && (
           <MatchesTab profile={profile} isMe={false} />
         )}
