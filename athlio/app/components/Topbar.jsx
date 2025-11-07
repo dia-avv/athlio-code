@@ -6,7 +6,7 @@ import ShareIcon from "../assets/icons/share.svg";
 import NotificationsIcon from "../assets/icons/notifications.svg";
 import BackIcon from "../assets/icons/back.svg";
 import CloseIcon from "../assets/icons/close.svg";
-import MainLogo from "../assets/logos/main-logo.svg?react";
+import MainLogo from "../assets/logos/main-logo.svg";
 import "./Topbar.css";
 import Button from "./UI/Button";
 
@@ -15,7 +15,7 @@ import Button from "./UI/Button";
 const TOPBAR_CONFIG = {
   "/home": {
     title: null,
-    left: () => <MainLogo className="main-logo" />,
+    left: () => <img src={MainLogo} className="main-logo" alt="Athlio" />,
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>
@@ -45,7 +45,7 @@ const TOPBAR_CONFIG = {
     left: (nav) => (
       <div className="topbar-left-with-back">
         <img src={BackIcon} alt="Back" onClick={() => nav(-1)} />
-        <MainLogo className="main-logo" />
+        <img src={MainLogo} className="main-logo" alt="Athlio" />
       </div>
     ),
   },
@@ -81,7 +81,7 @@ const TOPBAR_CONFIG = {
           onClick={() => nav(-1)}
           className="topbar-back"
         />
-        <MainLogo className="main-logo" />
+        <img src={MainLogo} className="main-logo" alt="Athlio" />
       </div>
     ),
     right: (nav, profile) => (
@@ -124,7 +124,7 @@ const TOPBAR_CONFIG = {
   },
   "/scouting": {
     title: null,
-    left: () => <MainLogo className="main-logo" />,
+    left: () => <img src={MainLogo} className="main-logo" alt="Athlio" />,
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>

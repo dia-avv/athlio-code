@@ -2,7 +2,7 @@ import React from 'react';
 import './PlayerComparisonHeader.css';
 import NavigationTabs from '../../UI/NavTabs';
 import Button from '../../UI/Button';
-import ArchiveIcon from "../../../assets/icons/archive.svg?react";
+import ArchiveIcon from "../../../assets/icons/archive.svg";
 import PlayerSelector from './PlayerSelector';
 import IconButton from '../../UI/IconButton';
 
