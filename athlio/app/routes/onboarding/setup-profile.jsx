@@ -16,8 +16,8 @@ import Premium from "../../components/domain/onboarding/Premium";
 import { getSteps } from "../../utils/steps";
 import { buildProfilePayload } from "../../utils/payload";
 import Textarea from "../../components/inputs/TextArea";
-import ProgressBar from "../../components/domain/UI/ProgressBar";
-import OnboardingNavbar from "../../components/domain/UI/OnboardingNavbar";
+import ProgressBar from "../../components/domain/onboarding/UI/ProgressBar";
+import OnboardingNavbar from "../../components/domain/onboarding/UI/OnboardingNavbar";
 import Button from "../../components/UI/Button";
 
 export default function Setup() {

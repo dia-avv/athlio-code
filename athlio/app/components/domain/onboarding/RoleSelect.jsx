@@ -1,5 +1,5 @@
 import "./RoleSelect.css";
-import SelectionCard from "../UI/SelectionCard";
+import SelectionCard from "./UI/SelectionCard";
 
 const ROLES = [
   {
