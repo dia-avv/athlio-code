@@ -1,0 +1,12 @@
+.profile-stats-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* spacing between posts */
+  background-color: var(--color-gray-100);
+  padding: 24px 8px;
+}
+
+main:has(.profile-stats-tab) {
+  padding-left: 0;
+  padding-right: 0;
+}
