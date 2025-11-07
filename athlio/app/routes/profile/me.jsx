@@ -75,7 +75,9 @@ export default function MyProfile() {
         {activeTab === "posts" && <PostsTab profile={profile} isMe={true} />}
         {activeTab === "stats" && <StatsTab profile={profile} />}
         {activeTab === "info" && <InfoTab profile={profile} />}
-        {activeTab === "matches" && <MatchesTab profile={profile} />}
+        {activeTab === "matches" && (
+          <MatchesTab profile={profile} isMe={true} />
+        )}
       </div>
     </div>
   );
