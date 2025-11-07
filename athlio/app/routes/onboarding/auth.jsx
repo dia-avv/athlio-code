@@ -4,6 +4,7 @@ import { supabase } from "../../lib/supabase";
 import TextInput from "../../components/inputs/TextInput";
 import Button from "../../components/UI/Button";
 import GoogleIcon from "../../assets/logos/Google.svg";
+import MainLogoSmall from "../../assets/logos/main-logo-small.svg";
 
 const OAUTH_REDIRECT = window.location.origin + "/auth/callback";
 
@@ -79,6 +80,23 @@ export default function Auth() {
   return (
     <div className="min-h-dvh grid place-items-center p-6">
       <form onSubmit={submit} className="w-full max-w-sm space-y-3">
+        {/* Figma icon (wrapped) */}
+        <div
+          style={{
+            background: "var(--color-gray-100)",
+            padding: 10,
+            borderRadius: 12,
+            width: 48,
+            height: 48,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 12,
+          }}
+        >
+          <img src={MainLogoSmall} alt="Auth icon" style={{ width: 32, height: 32 }} />
+        </div>
+
         <h1 className="h1">
           {mode === "signup" ? "Create account" : "Log in to an account"}
         </h1>

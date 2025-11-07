@@ -67,6 +67,7 @@ export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
         : null,
     org_description:
       role === "organization" ? form.org_description || null : null,
+    bio: form.bio || null,
     onboarded: true,
   };
 }

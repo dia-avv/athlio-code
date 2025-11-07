@@ -1,8 +1,11 @@
 export function getSteps(role) {
-  const base = ["basic", "role"];
+  // Make 'role' the first step in the onboarding flow so users
+  // pick their role before filling other profile details.
+  const base = ["role", "sport"];
+  // For athletes show a dedicated position step and a bio + premium screen
   if (role === "athlete")
-    return [...base, "sport", "measure", "club", "location", "goals", "review"];
+    return [...base, "position", "basic", "club", "bio", "goals", "premium", "review"];
   if (role === "scout")
-    return [...base, "sport", "location", "scout", "review"];
-  return [...base, "sport", "org", "location", "review"];
+    return [...base, "basic", "location", "scout", "bio", "premium", "review"];
+  return [...base, "basic", "sport", "org", "location", "bio", "premium", "review"];
 }

@@ -7,13 +7,16 @@ import TextInput from "../../components/inputs/TextInput";
 import UnitInput from "../../components/inputs/UnitInput";
 import RoleSelect from "../../components/domain/onboarding/RoleSelect";
 import SportsSelect from "../../components/domain/onboarding/SportSelect";
-import PositionSelect from "../../components/domain/onboarding/PositionSelect";
+import PositionPage from "../../components/domain/onboarding/PositionPage";
 import ClubPicker from "../../components/domain/onboarding/ClubPicker";
 import LocationFields from "../../components/domain/onboarding/LocationFields";
 import GoalsField from "../../components/domain/onboarding/GoalsField";
+import Bio from "../../components/domain/onboarding/Bio";
+import Premium from "../../components/domain/onboarding/Premium";
 import { getSteps } from "../../utils/steps";
 import { buildProfilePayload } from "../../utils/payload";
 import Textarea from "../../components/inputs/TextArea";
+import ProgressBar from "../../components/domain/UI/ProgressBar";
 
 export default function Setup() {
   const navigate = useNavigate();
@@ -33,6 +36,7 @@ export default function Setup() {
     height: "",
     weight: "",
     position: "",
+  bio: "",
     club_id: null,
     club_other_name: "",
     country: "",
@@ -82,6 +86,7 @@ export default function Setup() {
           height: profile.height_cm ?? "",
           weight: profile.weight_kg ?? "",
           position: profile.position || "",
+          bio: profile.bio || profile.description || "",
           club_id: profile.club_id || null,
           club_other_name: profile.club_other_name || "",
           country: profile.country || "",
@@ -131,6 +136,7 @@ export default function Setup() {
   return (
     <div>
       <Stepper steps={steps} current={idx} />
+      <ProgressBar currentStep={idx + 1} totalSteps={steps.length} />
       <StepContainer
         onBack={back}
         onNext={next}
@@ -176,14 +182,23 @@ export default function Setup() {
               primarySport={form.primarySport}
               onPrimaryChange={(v) => set({ primarySport: v, position: "" })}
             />
-            {role === "athlete" && form.primarySport ? (
-              <PositionSelect
-                sport={form.primarySport}
-                value={form.position}
-                onChange={(v) => set({ position: v })}
-              />
-            ) : null}
           </div>
+        )}
+
+        {stepId === "position" && role === "athlete" && (
+          <PositionPage
+            sport={form.primarySport}
+            value={form.position}
+            onChange={(v) => set({ position: v })}
+          />
+        )}
+
+        {stepId === "bio" && (
+          <Bio value={form.bio} onChange={(v) => set({ bio: v })} />
+        )}
+
+        {stepId === "premium" && (
+          <Premium onContinue={() => next()} />
         )}
 
         {stepId === "measure" && role === "athlete" && (
