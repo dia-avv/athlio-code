@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { supabase } from "../../lib/supabase";
 import TextInput from "../../components/inputs/TextInput";
 import Button from "../../components/UI/Button";
-
+import GoogleIcon from "../../assets/logos/Google.svg";
 
 const OAUTH_REDIRECT = window.location.origin + "/auth/callback";
 
@@ -20,7 +20,7 @@ async function signInWithGoogle(setErr) {
 }
 
 export default function Auth() {
-  const [mode, setMode] = useState("login"); // "login" | "signup"
+  const [mode, setMode] = useState("signup"); // "login" | "signup"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
@@ -104,26 +104,63 @@ export default function Auth() {
           onClick={submit}
         />
 
-        <button
-          type="button"
-          className="text-sm underline"
-          onClick={() => setMode((m) => (m === "signup" ? "login" : "signup"))}
-        >
+        <div>
+         <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                margin: "16px 0",
+              }}
+            >
+              <div
+                style={{
+                  flex: 1,
+                  height: "1px",
+                  backgroundColor: "#d1d5db",
+                }}
+              ></div>
+              <span
+                style={{
+                  margin: "0 24px",
+                  color: "#6b7280",
+                  fontSize: "14px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                or
+              </span>
+              <div
+                style={{
+                  flex: 1,
+                  height: "1px",
+                  backgroundColor: "#d1d5db",
+                }}
+              ></div>
+            </div>
+
+
+
+          <div>
+            <Button size="big" type="outline" label="Continue with Google" Icon={() => <img src={GoogleIcon} alt="Google" />} onClick={() => signInWithGoogle(setErr)} />
+          </div>
+        </div>
+        <div>
+        <p style={{ color: "var(--color-gray-700)" }}>
           {mode === "signup"
             ? "I already have an account"
-            : "Create a new account"}
-        </button>
-
-        <div>
-          <div>
-            <div />
-            <span>or</span>
-            <div />
-          </div>
-
-          <div>
-            <Button size="big" type="outline" label="Continue with Google" onClick={() => signInWithGoogle(setErr)} />
-          </div>
+            : "Don't have an account?"}
+        </p>
+         <Button
+          type="subtle"
+          size="medium"
+          label={
+            mode === "signup"
+              ? "Log in"
+              : "Sign up"
+          }
+          onClick={() => setMode((m) => (m === "signup" ? "login" : "signup"))}
+        />
         </div>
       </form>
     </div>
