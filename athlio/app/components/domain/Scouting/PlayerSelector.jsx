@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './PlayerSelector.css';
 import Button from '../../UI/Button';
-import PlusIcon from '../../../assets/icons/plus.svg';
+import PlusIcon from '../../../assets/icons/plus.svg?react';
 
 const SEASONS = [
   "Season 2025-26",

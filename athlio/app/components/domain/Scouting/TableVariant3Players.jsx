@@ -3,9 +3,9 @@ import './TableVariant3Players.css';
 
 export default function TableVariant3Players({
   players = [
-    { name: 'Player A', stats: { totalPlayed: 20, started: 12, minutesPerGame: '12.2', totalMinutes: '1,098' } },
-    { name: 'Player B', stats: { totalPlayed: 18, started: 10, minutesPerGame: '25.1', totalMinutes: '452' } },
-    { name: 'Player C', stats: { totalPlayed: 15, started: 8, minutesPerGame: '30.4', totalMinutes: '456' } }
+    { stats: { totalPlayed: 20, started: 12, minutesPerGame: '12.2', totalMinutes: '1,098' } },
+    { stats: { totalPlayed: 18, started: 10, minutesPerGame: '25.1', totalMinutes: '452' } },
+    { stats: { totalPlayed: 15, started: 8, minutesPerGame: '30.4', totalMinutes: '456' } }
   ]
 }) {
   const keys = [

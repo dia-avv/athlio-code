@@ -1,8 +1,8 @@
 import React from 'react';
 import './SearchBarCard.css';
 import defaultAvatar from '../../../assets/images/player.jpg';
-import defaultTeamLogo from '../../../assets/logos/main-logo.svg';
-import defaultFlag from '../../../assets/icons/verification.svg';
+import defaultTeamLogo from '../../../assets/logos/main-logo.svg?react';
+import defaultFlag from '../../../assets/icons/verification.svg?react';
 
 const SearchBarCard = ({
   playerName = 'Thomás De Martis',
