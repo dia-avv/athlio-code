@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { supabase } from "../../lib/supabase";
-import TextInput from "../inputs/TextInput";
+import { supabase } from "../../../lib/supabase.js";
+import TextInput from "../../inputs/TextInput";
 
 export default function ClubPicker({ sport, value, onChange }) {
   const [query, setQuery] = useState("");

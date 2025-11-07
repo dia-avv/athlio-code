@@ -1,4 +1,4 @@
-import TextInput from "../inputs/TextInput";
+import TextInput from "../../inputs/TextInput";
 export default function LocationFields({ country, region, city, onChange }) {
   return (
     <div>

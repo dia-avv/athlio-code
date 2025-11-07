@@ -1,4 +1,4 @@
-import MultiSelectComma from "../inputs/MultiSelectComma";
+import MultiSelectComma from "../../inputs/MultiSelectComma";
 export default function SportsSelect({
   sports,
   onChange,
