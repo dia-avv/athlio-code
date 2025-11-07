@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./ProgressBar.module.css";
+import MainLogoSmall from "../../../assets/logos/main-logo-small.svg";
 
 const ProgressBar = ({ currentStep = 1, totalSteps = 7 }) => {
   // Normalize and clamp values: currentStep is expected 1-based, totalSteps >= 1
@@ -16,6 +17,10 @@ const ProgressBar = ({ currentStep = 1, totalSteps = 7 }) => {
       aria-valuenow={percent}
       aria-label={`Onboarding progress ${percent}%`}
     >
+      {/* small centered logo (styled like the skip button) */}
+      <div className={styles.logoWrapper} aria-hidden>
+        <img src={MainLogoSmall} alt="" className={styles.logoImage} />
+      </div>
       <div className={styles.track}>
         <div
           className={styles.fill}

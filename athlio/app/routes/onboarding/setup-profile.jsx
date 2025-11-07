@@ -18,6 +18,7 @@ import { buildProfilePayload } from "../../utils/payload";
 import Textarea from "../../components/inputs/TextArea";
 import ProgressBar from "../../components/domain/UI/ProgressBar";
 import OnboardingNavbar from "../../components/domain/UI/OnboardingNavbar";
+import Button from "../../components/UI/Button";
 
 export default function Setup() {
   const navigate = useNavigate();
@@ -138,6 +139,16 @@ export default function Setup() {
     <div>
       <Stepper steps={steps} current={idx} />
       <ProgressBar currentStep={idx + 1} totalSteps={steps.length} />
+
+      {/* Skip button (subtle, medium) aligned right under the progress bar */}
+      <div style={{ display: "flex", justifyContent: "flex-end", padding: "0 16px", marginTop: 8, marginBottom: 88 }}>
+        <Button
+          size="medium"
+          type="subtle"
+          label="Skip"
+          onClick={() => (idx < steps.length - 1 ? next() : finish())}
+        />
+      </div>
       <StepContainer
         onBack={back}
         onNext={next}
