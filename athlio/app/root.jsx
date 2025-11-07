@@ -10,7 +10,7 @@ import {
 
 import "./app.css";
 import { UserProvider } from "./context/UserContext";
-import Navbar from "./components/NavBar";
+import Navbar from "./components/Navbar";
 import Topbar from "./components/Topbar";
 
 export function Layout({ children }) {

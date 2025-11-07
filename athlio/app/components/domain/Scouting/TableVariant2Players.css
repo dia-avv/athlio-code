@@ -1,0 +1,71 @@
+.table-variant-2players {
+    width: 100%;
+    border: 1px solid var(--gray-300, #dfe0e7);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fbfbfb;
+    font-family: Geist, sans-serif;
+    font-size: 12px;
+    color: var(--text, #000215);
+    --row-height: 32px
+}
+
+.tv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px
+}
+
+.tv-title {
+    font-family: Geist, sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--text, #000215)
+}
+
+.tv-players {
+    display: flex;
+    gap: 8px
+}
+
+.tv-player-name {
+    min-width: 120px;
+    text-align: center;
+    font-weight: 600
+}
+
+.tv-body {
+    display: flex;
+    flex-direction: column
+}
+
+.tv-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--row-height);
+    padding: 0 16px
+}
+
+.tv-row.alt {
+    background: var(--gray-100, #f0f0f3)
+}
+
+.tv-label {
+    width: 180px
+}
+
+.tv-values {
+    display: flex;
+    gap: 8px
+}
+
+.tv-value {
+    min-width: 57px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%
+}

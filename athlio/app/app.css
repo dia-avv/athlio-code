@@ -44,7 +44,7 @@ body {
 }
 
 .main-content {
-  padding: 56px 15px;
+  padding: 56px 16px;
 }
 
 h1 {
@@ -56,6 +56,6 @@ h2 {
   font-weight: 600;
 }
 p {
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: 500;
 }

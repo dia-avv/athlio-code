@@ -1,9 +1,5 @@
-import Button from "../components/UI/Button";
+import Feed from "../components/domain/Feed";
 
 export default function Home() {
-  return (
-    <>
-      <h1>Home</h1>
-    </>
-  );
+  return <Feed />;
 }

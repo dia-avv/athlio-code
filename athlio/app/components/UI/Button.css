@@ -5,6 +5,14 @@
   justify-content: center;
   gap: 4px;
   width: auto;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    padding 220ms ease,
+    gap 220ms ease;
+  will-change: transform;
 }
 
 .button-icon {
@@ -90,4 +98,48 @@
 
 .button--subtle:disabled {
   color: var(--color-gray-700);
+}
+
+.button--following {
+  background-color: var(--color-gray-100);
+  color: var(--color-accent);
+  gap: 0;
+  animation: button-pop 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.button--following .button-icon {
+  animation: icon-pop-in 350ms ease-out 40ms both;
+}
+
+@keyframes button-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes icon-pop-in {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+    animation: none;
+  }
+  .button .button-icon {
+    animation: none;
+  }
 }
