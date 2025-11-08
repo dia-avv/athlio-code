@@ -68,6 +68,18 @@ export async function fetchSeasonStats(playerIds = [], { season } = {}) {
         started: r.starts ?? r.started ?? 0,
         minutesPerGame: mpg ?? 0,
         totalMinutes: minutes,
+        scoringPerMinute: Number(r.scoring_per_minute ?? 0),
+        goals: Number(r.goals ?? 0),
+        goalsPerGame: Number(r.goals_per_game ?? 0),
+        shotsPerGame: Number(r.shots_per_game ?? 0),
+        assists: Number(r.assists ?? 0),
+        touchesPerGame: Number(r.touches_per_game ?? 0),
+        bigChancesCreated: Number(r.big_chances_created ?? 0),
+        keyPassesPerGame: Number(r.key_passes_per_game ?? 0),
+        tacklesPerGame: Number(r.tackles_per_game ?? 0),
+        interceptionsPerGame: Number(r.interceptions_per_game ?? 0),
+        ballsRecovered: Number(r.balls_recovered ?? 0),
+        penaltiesCommitted: Number(r.penalties_committed ?? 0),
       },
     };
   });

@@ -82,10 +82,13 @@ export default function ScoutingLayout() {
     });
   }
 
-  function handleRemovePlayer() {
+  function handleRemovePlayer(playerId) {
     setSelectedPlayerIds((prev) => {
-      if (prev.length <= 1) return prev;
-      return prev.slice(0, -1);
+      if (!playerId) {
+        if (prev.length <= 1) return prev;
+        return prev.slice(0, -1);
+      }
+      return prev.filter((id) => id !== playerId);
     });
   }
 
@@ -113,4 +116,3 @@ export default function ScoutingLayout() {
 
   return <Outlet context={context} />;
 }
-

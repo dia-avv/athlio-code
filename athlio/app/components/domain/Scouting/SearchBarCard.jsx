@@ -32,7 +32,7 @@ const SearchBarCard = ({
       setState((s) => ({ ...s, loading: true }));
       const { data, error } = await supabase
         .from('profiles')
-        .select('full_name, avatar_url, country, club_other_name, club:club_id (name, logo_url)')
+        .select('full_name, avatar_url, country, club_other_name, club_id')
         .eq('id', profileId)
         .maybeSingle();
       if (cancelled) return;
@@ -41,8 +41,20 @@ const SearchBarCard = ({
         setState((s) => ({ ...s, loading: false }));
         return;
       }
-      const teamName = data?.club_other_name || data?.club?.name || fallbackTeam;
-      const teamLogo = data?.club?.logo_url || fallbackTeamLogo;
+      let teamName = data?.club_other_name || fallbackTeam;
+      let teamLogo = fallbackTeamLogo;
+
+      if (data?.club_id) {
+        const { data: clubRow, error: clubErr } = await supabase
+          .from('clubs')
+          .select('name, logo_url')
+          .eq('id', data.club_id)
+          .maybeSingle();
+        if (!clubErr && clubRow) {
+          teamName = data?.club_other_name || clubRow.name || fallbackTeam;
+          teamLogo = clubRow.logo_url || fallbackTeamLogo;
+        }
+      }
       const country = data?.country || fallbackCountry;
       setState({
         loading: false,

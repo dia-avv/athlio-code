@@ -22,8 +22,7 @@ export default function ScoutingIndex() {
         onTabChange={setActiveTab}
         onAddPlayer={handleAddPlayer}
         onRemovePlayer={handleRemovePlayer}
-        playerName={players[0]?.name || "Select a player"}
-        playerAvatar={players[0]?.avatar || undefined}
+        players={players}
         onSeasonChange={handleSeasonChange}
       />
       {activeTab === "stats" && <Tables players={players} />}
@@ -34,4 +33,3 @@ export default function ScoutingIndex() {
     </>
   );
 }
-
