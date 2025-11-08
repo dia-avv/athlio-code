@@ -107,8 +107,8 @@ export default function Auth() {
         </p>
 
 
-        {/* ✅ Using TextInput for email + password (24px gap) */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+  {/* ✅ Using TextInput for email + password (24px gap). Added marginTop to match Figma spacing */}
+  <div style={{ display: "flex", flexDirection: "column", gap: 24, marginTop: 28 }}>
           <TextInput
             label="Email"
             placeholder="Enter your email"
@@ -129,12 +129,14 @@ export default function Auth() {
 
         {err && <p className="text-red-600 text-sm">{err}</p>}
 
-        <Button
-          size="big"
-          type="primary"
-          label={mode === "signup" ? "Sign up" : "Log in"}
-          onClick={submit}
-        />
+        <div style={{ marginTop: 32 }}>
+          <Button
+            size="big"
+            type="primary"
+            label={mode === "signup" ? "Sign up" : "Log in"}
+            onClick={submit}
+          />
+        </div>
 
         <div>
          <div
@@ -177,8 +179,8 @@ export default function Auth() {
             <Button size="big" type="outline" label="Continue with Google" Icon={() => <img src={GoogleIcon} alt="Google" />} onClick={() => signInWithGoogle(setErr)} />
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, marginTop: 8 }}>
-          <p style={{ color: "var(--color-gray-700)", textAlign: "center", margin: 0 }}>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 8, flexWrap: "wrap" }}>
+          <p style={{ color: "var(--color-gray-700)", margin: 0 }}>
             {mode === "signup" ? "I already have an account" : "Don't have an account?"}
           </p>
           <Button
