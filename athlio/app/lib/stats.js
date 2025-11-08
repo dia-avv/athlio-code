@@ -4,7 +4,15 @@ export async function fetchProfiles(playerIds = []) {
   if (!playerIds?.length) return [];
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, full_name, avatar_url")
+    .select(
+      `
+      id,
+      full_name,
+      avatar_url,
+      club_other_name,
+      club:club_id (name, logo_url)
+      `
+    )
     .in("id", playerIds);
   if (error) throw error;
   return data || [];
@@ -83,66 +91,4 @@ export async function fetchSeasonStats(playerIds = [], { season } = {}) {
       },
     };
   });
-}
-
-export async function fetchPlayerInfo(playerIds = [], { season } = {}) {
-  if (!playerIds?.length) return [];
-  let seasonId = null;
-  if (season && season !== "all") {
-    try {
-      seasonId = await fetchSeasonIdByLabel(season);
-    } catch {}
-  }
-
-  let query = supabase
-    .from("info")
-    .select(
-      `
-      profile_id,
-      nationality,
-      nationality_code,
-      birth_date,
-      weight_kg,
-      height_cm,
-      position,
-      shirt_number,
-      preferred_foot,
-      club_other_name,
-      club:club_id (name, logo_url),
-      updated_at
-      `
-    )
-    .in("profile_id", playerIds)
-    .order("updated_at", { ascending: false });
-
-  if (seasonId) {
-    query = query.eq("season_id", seasonId);
-  }
-
-  const { data, error } = await query;
-  if (error) throw error;
-  const rows = data || [];
-
-  const byPlayer = new Map();
-  for (const row of rows) {
-    if (!byPlayer.has(row.profile_id)) {
-      byPlayer.set(row.profile_id, row);
-    }
-  }
-
-  return Array.from(byPlayer.values()).map((row) => ({
-    profile_id: row.profile_id,
-    info: {
-      country: row.nationality || null,
-      nationalityCode: row.nationality_code || null,
-      birthdate: row.birth_date || null,
-      weightKg: row.weight_kg ?? null,
-      heightCm: row.height_cm ?? null,
-      position: row.position || null,
-      shirtNumber: row.shirt_number || null,
-      preferredFoot: row.preferred_foot || null,
-      teamName: row.club_other_name || row?.club?.name || null,
-      teamLogo: row?.club?.logo_url || null,
-    },
-  }));
 }

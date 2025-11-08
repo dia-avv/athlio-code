@@ -3,7 +3,8 @@ import PlayerComparisonHeader from "../../components/domain/Scouting/PlayerCompa
 import Tables from "../../components/domain/Scouting/Tables";
 import InfoCards from "../../components/UI/InfoCards";
 import Position from "../../components/domain/Scouting/Position";
-import SearchBarCard from "../../components/domain/Scouting/SearchBarCard";
+import TableInfo from "../../components/domain/Scouting/TableInfo";
+import ExperienceList from "../../components/domain/Scouting/ExperienceList";
 
 export default function ScoutingIndex() {
   const {
@@ -26,10 +27,21 @@ export default function ScoutingIndex() {
         onSeasonChange={handleSeasonChange}
       />
       {activeTab === "stats" && <Tables players={players} />}
-      {activeTab === "info" && <InfoCards /> && (
-        <Position label="Preferred Position" value="Midfielder" />
+      {activeTab === "info" && (
+        <>
+          <TableInfo players={players} />
+          <InfoCards />
+          <Position
+            label="Preferred Position"
+            value={players[0]?.info?.position || "Midfielder"}
+          />
+        </>
       )}
-    
+      {activeTab === "experience" && (
+        <>
+          <ExperienceList players={players} />
+        </>
+      )}
     </>
   );
 }
