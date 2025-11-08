@@ -49,9 +49,12 @@ export default function SelectionCard({
           name={inputType === "checkbox" ? undefined : groupName}
           value={value}
           checked={checked}
-          /* Activation is handled by the card itself (click / keyboard),
-             avoid calling onChange twice by not wiring the input's
-             onChange handler. The input remains present for semantics. */
+       /* Activation is handled by the card itself (click / keyboard),
+         avoid calling onChange twice by not wiring the input's
+         onChange handler. The input remains present for semantics.
+         To avoid React's controlled-without-onChange warning we mark
+         the input as readOnly since the card handles interaction. */
+       readOnly
           aria-checked={checked}
           tabIndex={-1} /* keep only the card itself focusable */
         />

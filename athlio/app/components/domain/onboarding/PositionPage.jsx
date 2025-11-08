@@ -1,68 +1,93 @@
-import { SPORT_POSITIONS } from "../../../utils/positions";
+import footballPitch from "../../../assets/graphics/football_pitch.svg";
 
 export default function PositionPage({ sport, value, onChange }) {
-  const options = sport ? SPORT_POSITIONS[sport] || [] : [];
+  // Define a sensible default layout for football positions. Coordinates are
+  // expressed as percentages relative to the pitch container (which we size
+  // to the requested 358x202). These can be fine-tuned later against the
+  // actual artwork.
+  // Positions in the exact order requested: lw, st, rw, cm, cdm, cm, lb, cb, cb, rb, gk
+  // Duplicate position types (e.g. two CBs, two CMs) use unique ids internally.
+  const positions = [
+    { id: "lw", short: "LW", full: "Left Winger", left: 18, top: 22 },
+    { id: "st", short: "ST", full: "Striker", left: 50, top: 18 },
+    { id: "rw", short: "RW", full: "Right Winger", left: 82, top: 22 },
+    { id: "cm_l", short: "CM", full: "Central Midfielder (Left)", left: 38, top: 36 },
+    { id: "cdm", short: "CDM", full: "Defensive Midfielder", left: 50, top: 48 },
+    { id: "cm_r", short: "CM", full: "Central Midfielder (Right)", left: 62, top: 36 },
+    { id: "lb", short: "LB", full: "Left Back", left: 18, top: 70 },
+    { id: "cb_l", short: "CB", full: "Center Back (Left)", left: 38, top: 74 },
+    { id: "cb_r", short: "CB", full: "Center Back (Right)", left: 62, top: 74 },
+    { id: "rb", short: "RB", full: "Right Back", left: 82, top: 70 },
+    { id: "gk", short: "GK", full: "Goalkeeper", left: 50, top: 92 },
+  ];
 
-  // Header consistent with RoleSelect
-  const header = (
-    <div
-      className="role-header"
-      style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
-    >
-      <h1 className="role-header-title">Choose your position</h1>
-      <p className="role-header-subtitle">You can select multiple</p>
-    </div>
-  );
-
-  if (!sport) {
-    return (
-      <div>
-        {header}
-        <p>Please select a sport first</p>
-      </div>
-    );
+  function toggle(id) {
+    // Multi-select semantics: maintain an array of selected ids. Add the id
+    // when clicked; remove it when clicked again.
+    const current = Array.isArray(value) ? value.slice() : [];
+    const idx = current.indexOf(id);
+    if (idx >= 0) {
+      current.splice(idx, 1);
+    } else {
+      current.push(id);
+    }
+    onChange(current);
   }
 
-  // Football: show a responsive grid of position cards
-  if (sport === "football") {
-    return (
-      <div>
-        {header}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px,1fr))", gap: 12 }}>
-          {options.map((p) => (
-            <button
-              key={p}
-              type="button"
-              onClick={() => onChange(p)}
-              aria-pressed={value === p}
-              style={{
-                padding: 12,
-                borderRadius: 8,
-                border: value === p ? "2px solid var(--color-accent)" : "1px solid var(--color-gray-300)",
-                background: value === p ? "rgba(64,81,253,0.07)" : "white",
-                textAlign: "left",
-              }}
-            >
-              <div style={{ fontWeight: 600 }}>{p}</div>
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // Basketball or other: simple select
   return (
     <div>
-      {header}
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
-        <option value="">Select position</option>
-        {options.map((p) => (
-          <option key={p} value={p}>
-            {p}
-          </option>
-        ))}
-      </select>
+      <div
+        className="role-header"
+        style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
+      >
+        <h1 className="role-header-title">Choose your position</h1>
+        <p className="role-header-subtitle">You can select multiple</p>
+      </div>
+
+
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ position: "relative", width: 202, height: 340 }}>
+          <img
+            src={footballPitch}
+            alt="Football pitch"
+            style={{ width: 202, height: 340, display: "block" }}
+          />
+
+        {positions.map((p) => {
+          const selected = Array.isArray(value) && value.includes(p.id);
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => toggle(p.id)}
+              aria-pressed={selected}
+              aria-label={p.full}
+              title={p.full}
+              style={{
+                position: "absolute",
+                left: `${p.left}%`,
+                top: `${p.top}%`,
+                transform: "translate(-50%, -50%)",
+                minWidth: 36,
+                height: 36,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 0,
+                borderRadius: 18,
+                border: `1px solid ${selected ? "var(--color-accent)" : "#E1E4FE"}`,
+                background: selected ? "var(--color-accent)" : "#E1E4FE",
+                color: selected ? "#ffffff" : "#000000",
+                cursor: "pointer",
+                boxShadow: selected ? "0 6px 18px rgba(59, 130, 246, 0.18)" : "none",
+              }}
+            >
+              <span style={{ margin: 0, fontSize: 12, fontWeight: 600 }}>{p.short}</span>
+            </button>
+          );
+        })}
+        </div>
+      </div>
     </div>
   );
 }

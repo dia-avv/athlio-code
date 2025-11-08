@@ -8,11 +8,19 @@ export default function ProfilePicture({
 }) {
   return (
     <div className="profile-picture-container">
-      <img
-        src={imgUrl}
-        alt="Profile Picture"
-        className={`profile-picture profile-picture--${size}`}
-      />
+      {imgUrl ? (
+        <img
+          src={imgUrl}
+          alt="Profile Picture"
+          className={`profile-picture profile-picture--${size}`}
+        />
+      ) : (
+        // render a placeholder element instead of an <img> with empty src
+        <div
+          className={`profile-picture profile-picture--${size} profile-picture--placeholder`}
+          aria-hidden="true"
+        />
+      )}
       <div className="verification-badge-profile">
         {verified && (
           <VerifiedBadge

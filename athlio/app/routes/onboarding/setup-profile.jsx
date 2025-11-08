@@ -9,6 +9,7 @@ import RoleSelect from "../../components/domain/onboarding/RoleSelect";
 import SportsSelect from "../../components/domain/onboarding/SportSelect";
 import PositionPage from "../../components/domain/onboarding/PositionPage";
 import ClubPicker from "../../components/domain/onboarding/ClubPicker";
+import AvatarPicker from "../../components/domain/onboarding/AvatarPicker";
 import LocationFields from "../../components/domain/onboarding/LocationFields";
 import GoalsField from "../../components/domain/onboarding/GoalsField";
 import Bio from "../../components/domain/onboarding/Bio";
@@ -37,7 +38,7 @@ export default function Setup() {
     gender: "",
     height: "",
     weight: "",
-    position: "",
+  position: [],
   bio: "",
     club_id: null,
     club_other_name: "",
@@ -76,7 +77,7 @@ export default function Setup() {
       if (profile) {
         const sports = Array.isArray(profile.sports) ? profile.sports : [];
         setRole(profile.role || "athlete");
-        setForm((f) => ({
+          setForm((f) => ({
           ...f,
           full_name: profile.full_name || "",
           username: profile.username || "",
@@ -87,7 +88,11 @@ export default function Setup() {
           gender: profile.gender || "",
           height: profile.height_cm ?? "",
           weight: profile.weight_kg ?? "",
-          position: profile.position || "",
+          position: profile.position
+            ? Array.isArray(profile.position)
+              ? profile.position
+              : [profile.position]
+            : [],
           bio: profile.bio || profile.description || "",
           club_id: profile.club_id || null,
           club_other_name: profile.club_other_name || "",
@@ -150,7 +155,9 @@ export default function Setup() {
         case "sport":
           return Array.isArray(form.sports) && form.sports.length > 0;
         case "position":
-          return role !== "athlete" ? true : Boolean(form.position);
+          return role !== "athlete"
+            ? true
+            : Array.isArray(form.position) && form.position.length > 0;
         case "club":
           return Boolean(form.club_id) || ((form.club_other_name || "").toString().trim() !== "");
         case "bio":
@@ -196,26 +203,26 @@ export default function Setup() {
               <h1 className="role-header-title">Profile setup</h1>
               <p className="role-header-subtitle">tell us about yourself</p>
             </div>
-            <TextInput
-              label="Full name"
-              value={form.full_name}
-              onChange={(v) => set({ full_name: v })}
-            />
-            <TextInput
-              label="Username"
-              value={form.username}
-              onChange={(v) => set({ username: v })}
-            />
-            <TextInput
-              label="Avatar URL"
-              value={form.avatar_url}
-              onChange={(v) => set({ avatar_url: v })}
-            />
-            <TextInput
-              label="Age"
-              value={form.age}
-              onChange={(v) => set({ age: v })}
-            />
+            {/* Avatar picker and input fields grouped together */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <AvatarPicker value={form.avatar_url} onChange={(v) => set({ avatar_url: v })} />
+
+              <TextInput
+                label="Full name"
+                value={form.full_name}
+                onChange={(v) => set({ full_name: v })}
+              />
+              <TextInput
+                label="Username"
+                value={form.username}
+                onChange={(v) => set({ username: v })}
+              />
+              <TextInput
+                label="Age"
+                value={form.age}
+                onChange={(v) => set({ age: v })}
+              />
+            </div>
           </div>
         )}
 
@@ -226,10 +233,10 @@ export default function Setup() {
             <SportsSelect
               sports={form.sports}
               onChange={(arr) =>
-                set({ sports: arr, primarySport: arr[0] || "", position: "" })
+                set({ sports: arr, primarySport: arr[0] || "", position: [] })
               }
               primarySport={form.primarySport}
-              onPrimaryChange={(v) => set({ primarySport: v, position: "" })}
+              onPrimaryChange={(v) => set({ primarySport: v, position: [] })}
             />
           </div>
         )}

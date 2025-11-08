@@ -39,7 +39,7 @@ export function UserProvider({ children }) {
   async function fetchProfileAndCounts(uid) {
     const { data } = await supabase
       .from("profiles")
-      .select("*, club:club_id (id, name, logo_url")
+      .select("*, club:club_id (id, name, logo_url)")
       .eq("id", uid)
       .maybeSingle();
     setProfile(data);

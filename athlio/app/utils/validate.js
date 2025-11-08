@@ -6,7 +6,7 @@ export function validateStep({ stepId, role, form }) {
       return "Choose at least on sport.";
     if (role === "athlete" && !form.primarySport)
       return "Choose a primary sport.";
-    if (role === "athlete" && form.primarySport && !form.position)
+    if (role === "athlete" && form.primarySport && (!Array.isArray(form.position) || form.position.length === 0))
       return "Choose a position.";
   }
   if (stepId === "measure") {
