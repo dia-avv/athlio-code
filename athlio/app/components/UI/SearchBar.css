@@ -21,3 +21,13 @@
 .search-label{ color: #9B9B9B; font-size:16px; }
 .search-clear{ margin-left:auto; background:transparent; border:none; padding:8px; display:flex; align-items:center; }
 .search-clear svg{ width:16px; height:16px; }
+
+/* Editable input inside the search bar */
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+  color: inherit;
+}

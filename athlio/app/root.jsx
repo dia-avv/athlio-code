@@ -18,7 +18,8 @@ export function Layout({ children }) {
   const hideNavbar =
     pathname.startsWith("/auth") ||
     pathname.startsWith("/intro") ||
-    pathname.startsWith("/setup-profile");
+    pathname.startsWith("/setup-profile") ||
+    pathname.includes("/setup-profile");
   const hideTopbar =
     pathname.startsWith("/auth") ||
     pathname.startsWith("/intro") ||
