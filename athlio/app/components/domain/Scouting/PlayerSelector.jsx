@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './PlayerSelector.css';
 import Button from '../../UI/Button';
-import PlusIcon from '../../../assets/icons/plus.svg?react';
+import PlusIcon from '../../../assets/icons/plus.svg';
+import { useNavigate } from 'react-router';
 
 const SEASONS = [
   "Season 2025-26",
@@ -20,6 +21,7 @@ const PlayerSelector = ({
   const [selectedSeason, setSelectedSeason] = useState(SEASONS[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -36,6 +38,8 @@ const PlayerSelector = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isDropdownOpen]);
+
+  // navigation to dedicated search page happens on button click
 
   const handleSeasonSelect = (season) => {
     setSelectedSeason(season);
@@ -80,7 +84,7 @@ const PlayerSelector = ({
             type="primary"
             label="Add a new player"
             Icon={PlusIcon}
-            onClick={onAddPlayer}
+            onClick={() => navigate('/scouting/search')}
           />
         </div>
         <div className="player-card">

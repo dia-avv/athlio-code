@@ -1,10 +1,18 @@
 .search-card-item {
   display: flex;
   gap: 10px;
-  align-items: center;
+  alignments: center;
   padding: 8px 12px;
   background: var(--background, #fbfbfb);
   border-radius: 8px;
+  border: 1px solid var(--color-gray-300, #dfe0e7);
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 120ms ease;
+}
+.search-card-item:hover {
+  border-color: var(--color-accent, #4051fd);
 }
 .avatar-wrap { width: 44px; height: 44px; flex: 0 0 44px; }
 .avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }

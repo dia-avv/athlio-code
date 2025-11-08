@@ -6,7 +6,7 @@ import ArchiveIcon from "../../../assets/icons/archive.svg?react";
 import PlayerSelector from './PlayerSelector';
 import IconButton from '../../UI/IconButton';
 
-const PlayerComparisonHeader = ({ onSave, onArchive, activeTab, onTabChange }) => {
+const PlayerComparisonHeader = ({ onSave, onArchive, activeTab, onTabChange, onAddPlayer, onRemovePlayer, onSeasonChange, playerName, playerAvatar }) => {
   return (
     <>
       <header className="player-comparison-header">
@@ -39,7 +39,13 @@ const PlayerComparisonHeader = ({ onSave, onArchive, activeTab, onTabChange }) =
       </header>
 
       <div>
-        <PlayerSelector />
+        <PlayerSelector
+          playerName={playerName}
+          playerAvatar={playerAvatar}
+          onAddPlayer={onAddPlayer}
+          onRemovePlayer={onRemovePlayer}
+          onSeasonChange={onSeasonChange}
+        />
       </div>
     </>
   );

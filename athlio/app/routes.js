@@ -24,6 +24,9 @@ export default [
       route("event", "routes/add-post/event.jsx"),
     ]),
     route("chat", "routes/chat.jsx"),
-    route("scouting", "routes/scouting.jsx"),
+    route("scouting", "routes/scouting/_layout.jsx", [
+      index("routes/scouting/_index.jsx"),
+      route("search", "routes/scouting/search.jsx"),
+    ]),
   ]),
 ];

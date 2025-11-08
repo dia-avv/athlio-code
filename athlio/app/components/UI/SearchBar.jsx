@@ -1,14 +1,14 @@
 import React from 'react';
 import './SearchBar.css';
-import SearchIcon from '../../../assets/icons/search.svg?react';
-import CloseIcon from '../../../assets/icons/close.svg?react';
+import SearchIcon from '../../assets/icons/search.svg';
+import CloseIcon from '../../assets/icons/close.svg';
 
 const SearchBar = ({ label = 'Search', onClick, onClear }) => {
   return (
     <div className="search-card" role="button" onClick={onClick} tabIndex={0}>
       <div className="search-content">
         <span className="search-icon" aria-hidden>
-          <SearchIcon/>
+          <img src={SearchIcon} alt="" />
         </span>
         <span className="search-label">{label}</span>
         {onClear && (
@@ -17,7 +17,7 @@ const SearchBar = ({ label = 'Search', onClick, onClear }) => {
             onClick={(e) => { e.stopPropagation(); onClear(); }}
             aria-label="Clear search"
           >
-            <CloseIcon />
+            <img src={CloseIcon} alt="" />
           </button>
         )}
       </div>
