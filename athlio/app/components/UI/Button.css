@@ -41,7 +41,8 @@
 .button--big {
   display: flex;
   width: 100%;
-  padding: 16px;
+  /* 8px vertical padding as requested, keep horizontal spacing at 16px */
+  padding: 8px 16px;
   border-radius: 8px;
 }
 

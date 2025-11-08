@@ -107,24 +107,25 @@ export default function Auth() {
         </p>
 
 
-        {/* ✅ Using TextInput for email */}
-        <TextInput
-          label="Email"
-          placeholder="Enter your email"
-          name="email"
-          value={email}
-          onChange={setEmail}
-        />
+        {/* ✅ Using TextInput for email + password (24px gap) */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          <TextInput
+            label="Email"
+            placeholder="Enter your email"
+            name="email"
+            value={email}
+            onChange={setEmail}
+          />
 
-        {/* ✅ Using TextInput for password */}
-        <TextInput
-          label="Password"
-          placeholder="Enter your password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={setPassword}
-        />
+          <TextInput
+            label="Password"
+            placeholder="Enter your password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={setPassword}
+          />
+        </div>
 
         {err && <p className="text-red-600 text-sm">{err}</p>}
 
@@ -176,22 +177,16 @@ export default function Auth() {
             <Button size="big" type="outline" label="Continue with Google" Icon={() => <img src={GoogleIcon} alt="Google" />} onClick={() => signInWithGoogle(setErr)} />
           </div>
         </div>
-        <div>
-        <p style={{ color: "var(--color-gray-700)" }}>
-          {mode === "signup"
-            ? "I already have an account"
-            : "Don't have an account?"}
-        </p>
-         <Button
-          type="subtle"
-          size="medium"
-          label={
-            mode === "signup"
-              ? "Log in"
-              : "Sign up"
-          }
-          onClick={() => setMode((m) => (m === "signup" ? "login" : "signup"))}
-        />
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, marginTop: 8 }}>
+          <p style={{ color: "var(--color-gray-700)", textAlign: "center", margin: 0 }}>
+            {mode === "signup" ? "I already have an account" : "Don't have an account?"}
+          </p>
+          <Button
+            type="subtle"
+            size="medium"
+            label={mode === "signup" ? "Log in" : "Sign up"}
+            onClick={() => setMode((m) => (m === "signup" ? "login" : "signup"))}
+          />
         </div>
       </form>
     </div>
