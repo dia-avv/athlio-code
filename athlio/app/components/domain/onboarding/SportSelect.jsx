@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import SelectionCard from "./UI/SelectionCard";
+import FootballIcon from "../../../assets/icons/football.svg?react";
+import BasketballIcon from "../../../assets/icons/basketball.svg?react";
 import { supabase } from "../../../lib/supabase";
 
 export default function SportsSelect({
@@ -29,12 +31,14 @@ export default function SportsSelect({
               name: "Football",
               description:
                 "Show your talent and connect with the global football network.",
+              icon: <FootballIcon />,
             },
             {
               id: "basketball",
               name: "Basketball",
               description:
                 "Play hard, get noticed, and take your game to the next level.",
+              icon: <BasketballIcon className="role-icon-svg--stroke" />,
             },
           ]);
         } else {
@@ -44,7 +48,15 @@ export default function SportsSelect({
               name: r.name,
               description: r.description ||
                 "Show your talent and connect with the global network.",
-              icon: r.icon_url,
+              // prefer remote icon URL when present, otherwise fall back to
+              // our local SVG React components for common sports
+              icon: r.icon_url
+                ? r.icon_url
+                : (r.id === "football" || (r.name || "").toLowerCase() === "football")
+                ? <FootballIcon />
+                : (r.id === "basketball" || (r.name || "").toLowerCase() === "basketball")
+                ? <BasketballIcon className="role-icon-svg--stroke" />
+                : null,
             }))
           );
         }

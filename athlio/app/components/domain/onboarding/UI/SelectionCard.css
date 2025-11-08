@@ -56,6 +56,21 @@
   stroke: currentColor !important;
 }
 
+/* For icons that should be stroke-only (no fill), apply this class
+   to the SVG element: <BasketballIcon className="role-icon-svg--stroke" />
+   This forces no fill and a consistent stroke width. */
+.role-icon svg.role-icon-svg--stroke path,
+.role-icon svg.role-icon-svg--stroke circle,
+.role-icon svg.role-icon-svg--stroke rect,
+.role-icon svg.role-icon-svg--stroke line,
+.role-icon svg.role-icon-svg--stroke polyline,
+.role-icon svg.role-icon-svg--stroke polygon {
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.5px !important;
+  vector-effect: non-scaling-stroke;
+}
+
 .role-icon img {
   width: 100%;
   height: 100%;

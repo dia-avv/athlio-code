@@ -1,0 +1,8 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stroke-only basketball icon. Color comes from currentColor. -->
+  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5" />
+  <path d="M2 12h20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M12 2v20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M4.5 4.5l15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M19.5 4.5l-15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

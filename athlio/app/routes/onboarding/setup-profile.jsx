@@ -250,7 +250,15 @@ export default function Setup() {
         )}
 
         {stepId === "bio" && (
-          <Bio value={form.bio} onChange={(v) => set({ bio: v })} />
+          <Bio
+            value={form.bio}
+            onChange={(v) => set({ bio: v })}
+            sport={form.primarySport}
+            position={form.position}
+            clubId={form.club_id}
+            clubOtherName={form.club_other_name}
+            country={form.country}
+          />
         )}
 
         {stepId === "premium" && (

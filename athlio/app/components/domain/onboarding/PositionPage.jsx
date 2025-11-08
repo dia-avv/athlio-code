@@ -1,13 +1,12 @@
 import footballPitch from "../../../assets/graphics/football_pitch.svg";
+import basketballCourt from "../../../assets/graphics/basketball-court.svg";
 
 export default function PositionPage({ sport, value, onChange }) {
-  // Define a sensible default layout for football positions. Coordinates are
-  // expressed as percentages relative to the pitch container (which we size
-  // to the requested 358x202). These can be fine-tuned later against the
-  // actual artwork.
-  // Positions in the exact order requested: lw, st, rw, cm, cdm, cm, lb, cb, cb, rb, gk
-  // Duplicate position types (e.g. two CBs, two CMs) use unique ids internally.
-  const positions = [
+  // Define position layouts. Use the football pitch and football positions by
+  // default, but switch to a basketball court + basketball roles when the
+  // selected sport is basketball.
+  const footballPositions = [
+    // Positions in the exact order requested: lw, st, rw, cm, cdm, cm, lb, cb, cb, rb, gk
     { id: "lw", short: "LW", full: "Left Winger", left: 18, top: 22 },
     { id: "st", short: "ST", full: "Striker", left: 50, top: 18 },
     { id: "rw", short: "RW", full: "Right Winger", left: 82, top: 22 },
@@ -20,6 +19,19 @@ export default function PositionPage({ sport, value, onChange }) {
     { id: "rb", short: "RB", full: "Right Back", left: 82, top: 70 },
     { id: "gk", short: "GK", full: "Goalkeeper", left: 50, top: 92 },
   ];
+
+  const basketballPositions = [
+    // Five standard basketball roles placed in the upper half of the court.
+    // PG should be the most 'down' (closest to mid-court) among the group.
+    { id: "pg", short: "PG", full: "Point Guard", left: 50, top: 34 },
+    { id: "sg", short: "SG", full: "Shooting Guard", left: 32, top: 28 },
+    { id: "sf", short: "SF", full: "Small Forward", left: 70, top: 28 },
+    { id: "pf", short: "PF", full: "Power Forward", left: 34, top: 16 },
+    { id: "c", short: "C", full: "Center", left: 64, top: 16 },
+  ];
+
+  const usingBasketball = String(sport).toLowerCase() === "basketball";
+  const positions = usingBasketball ? basketballPositions : footballPositions;
 
   function toggle(id) {
     // Multi-select semantics: maintain an array of selected ids. Add the id
@@ -48,8 +60,8 @@ export default function PositionPage({ sport, value, onChange }) {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div style={{ position: "relative", width: 202, height: 340 }}>
           <img
-            src={footballPitch}
-            alt="Football pitch"
+            src={usingBasketball ? basketballCourt : footballPitch}
+            alt={usingBasketball ? "Basketball court" : "Football pitch"}
             style={{ width: 202, height: 340, display: "block" }}
           />
 
