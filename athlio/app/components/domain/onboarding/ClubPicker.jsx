@@ -72,7 +72,7 @@ export default function ClubPicker({ sport, value, onChange }) {
         className="role-header"
         style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
       >
-        <h1 className="role-header-title">add the team you play for</h1>
+        <h1 className="role-header-title">Add the team you play for</h1>
         <p className="role-header-subtitle">This will help you post match results and stats</p>
       </div>
 
