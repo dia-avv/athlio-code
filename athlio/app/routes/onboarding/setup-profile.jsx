@@ -13,6 +13,7 @@ import AvatarPicker from "../../components/domain/onboarding/AvatarPicker";
 import LocationFields from "../../components/domain/onboarding/LocationFields";
 import GoalsField from "../../components/domain/onboarding/GoalsField";
 import Bio from "../../components/domain/onboarding/Bio";
+import FollowSuggestions from "../../components/domain/onboarding/FollowSuggestions";
 import Premium from "../../components/domain/onboarding/Premium";
 import { getSteps } from "../../utils/steps";
 import { buildProfilePayload } from "../../utils/payload";
@@ -317,6 +318,16 @@ export default function Setup() {
 
         {stepId === "goals" && role === "athlete" && (
           <GoalsField value={form.goals} onChange={(v) => set({ goals: v })} />
+        )}
+
+        {stepId === "follow" && role === "athlete" && (
+          <FollowSuggestions
+            sport={form.primarySport}
+            position={form.position}
+            clubId={form.club_id}
+            country={form.country}
+            goals={form.goals}
+          />
         )}
 
         {stepId === "scout" && role === "scout" && (

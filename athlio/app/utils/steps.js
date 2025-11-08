@@ -4,7 +4,8 @@ export function getSteps(role) {
   const base = ["role", "sport"];
   // For athletes show a dedicated position step and a bio + premium screen
   if (role === "athlete")
-    return [...base, "position", "basic", "club", "bio", "goals", "premium", "review"];
+    // Insert a 'follow' step after goals so users can follow suggested people
+    return [...base, "position", "basic", "club", "bio", "goals", "follow", "premium", "review"];
   if (role === "scout")
     return [...base, "basic", "location", "scout", "bio", "premium", "review"];
   return [...base, "basic", "sport", "org", "location", "bio", "premium", "review"];
