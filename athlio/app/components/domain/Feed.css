@@ -1,5 +1,12 @@
 .posts-feed {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 12px;
+  padding: 16px 8px 80px 8px;
+  background-color: var(--color-gray-100);
+}
+
+main:has(.posts-feed) {
+  padding-left: 0;
+  padding-right: 0;
 }

@@ -1,5 +1,4 @@
-import { Outlet } from "react-router";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router";
 import Topbar from "../components/Topbar";
 import Navbar from "../components/Navbar";
 
@@ -9,13 +8,15 @@ export default function Layout() {
     location.pathname === "/add-post" ||
     location.pathname.startsWith("/add-post/");
 
+const { pathname } = useLocation();
+  const hideNavbar = pathname.startsWith("/auth") || pathname.startsWith("/intro") || pathname.startsWith("/setup-profile");
   return (
     <div className="app-layout">
       <Topbar />
       <main className="main-content">
         <Outlet />
       </main>
-      {!isAddPost && <Navbar />}
+      {!isAddPost && {!hideNavbar && <Navbar />}}
     </div>
   );
 }

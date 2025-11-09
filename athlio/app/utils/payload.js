@@ -18,13 +18,12 @@ export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
   }
 
   //This assures that everything is the right data type and converts empty fields to NULL
-  return {
-    role,
-    full_name: form.full_name || null,
-    username: form.username || null,
-    avatar_url: form.avatar_url || null,
-    sports: form.sports,
-    primary_sport: form.primarySport || null,
+   const payload = {
+     role,
+     full_name: form.full_name || null,
+     username: form.username || null,
+     avatar_url: form.avatar_url || null,
+     primary_sport: form.primarySport || null,
     gender: role === "athlete" ? form.gender || null : null,
     age: role === "athlete" ? (form.age ? Number(form.age) : null) : null,
     height_cm: role === "athlete" ? height_cm : null,
@@ -67,8 +66,22 @@ export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
         : null,
     org_description:
       role === "organization" ? form.org_description || null : null,
-    onboarded: true,
-  };
+     bio: form.bio || null,
+     onboarded: true,
+   };
+
+  // NOTE: the `sports` column was removed from the DB schema; we only
+  // persist `primary_sport` now. Do NOT include `sports` in the payload.
+
+  // Defensive cleanup: remove keys with null/undefined values so we don't send
+  // columns that don't exist in the target table (PostgREST will error).
+  const cleaned = {};
+  for (const k of Object.keys(payload)) {
+    const v = payload[k];
+    if (v !== null && v !== undefined) cleaned[k] = v;
+  }
+
+  return cleaned;
 }
 
 function tryParseJSON(s) {

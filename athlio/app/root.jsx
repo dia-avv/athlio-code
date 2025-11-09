@@ -19,7 +19,8 @@ export function Layout({ children }) {
     pathname.startsWith("/auth") ||
     pathname.startsWith("/intro") ||
     pathname.startsWith("/setup-profile") ||
-    pathname.startsWith("/add-post");
+    pathname.startsWith("/add-post") ||
+    pathname.includes("/setup-profile");
   const hideTopbar =
     pathname.startsWith("/auth") ||
     pathname.startsWith("/intro") ||

@@ -1,19 +1,26 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { supabase } from "../../lib/supabase";
-import Stepper from "../../components/wizard/Stepper";
 import StepContainer from "../../components/wizard/StepContainer";
 import TextInput from "../../components/inputs/TextInput";
 import UnitInput from "../../components/inputs/UnitInput";
-import RoleSelect from "../../components/domain/RoleSelect";
-import SportsSelect from "../../components/domain/SportSelect";
-import PositionSelect from "../../components/domain/PositionSelect";
-import ClubPicker from "../../components/domain/ClubPicker";
-import LocationFields from "../../components/domain/LocationFields";
-import GoalsField from "../../components/domain/GoalsField";
+import RoleSelect from "../../components/domain/onboarding/RoleSelect";
+import SportsSelect from "../../components/domain/onboarding/SportSelect";
+import PositionPage from "../../components/domain/onboarding/PositionPage";
+import ClubPicker from "../../components/domain/onboarding/ClubPicker";
+import AvatarPicker from "../../components/domain/onboarding/AvatarPicker";
+import LocationFields from "../../components/domain/onboarding/LocationFields";
+import GoalsField from "../../components/domain/onboarding/GoalsField";
+import Bio from "../../components/domain/onboarding/Bio";
+import FollowSuggestions from "../../components/domain/onboarding/FollowSuggestions";
+import Premium from "../../components/domain/onboarding/Premium";
 import { getSteps } from "../../utils/steps";
 import { buildProfilePayload } from "../../utils/payload";
 import Textarea from "../../components/inputs/TextArea";
+import ProgressBar from "../../components/domain/onboarding/UI/ProgressBar";
+import OnboardingNavbar from "../../components/domain/onboarding/UI/OnboardingNavbar";
+import Button from "../../components/UI/Button";
+import "./setup-profile.css";
 
 export default function Setup() {
   const navigate = useNavigate();
@@ -32,7 +39,8 @@ export default function Setup() {
     gender: "",
     height: "",
     weight: "",
-    position: "",
+  position: [],
+  bio: "",
     club_id: null,
     club_other_name: "",
     country: "",
@@ -70,7 +78,7 @@ export default function Setup() {
       if (profile) {
         const sports = Array.isArray(profile.sports) ? profile.sports : [];
         setRole(profile.role || "athlete");
-        setForm((f) => ({
+          setForm((f) => ({
           ...f,
           full_name: profile.full_name || "",
           username: profile.username || "",
@@ -81,7 +89,12 @@ export default function Setup() {
           gender: profile.gender || "",
           height: profile.height_cm ?? "",
           weight: profile.weight_kg ?? "",
-          position: profile.position || "",
+          position: profile.position
+            ? Array.isArray(profile.position)
+              ? profile.position
+              : [profile.position]
+            : [],
+          bio: profile.bio || profile.description || "",
           club_id: profile.club_id || null,
           club_other_name: profile.club_other_name || "",
           country: profile.country || "",
@@ -128,39 +141,91 @@ export default function Setup() {
     navigate("/home");
   }
 
+  // Determine whether the Continue button should be enabled for the current
+  // step. Default to true for steps without specific rules.
+  const canContinue = (() => {
+    try {
+      switch (stepId) {
+        case "basic":
+          return (
+            (form.full_name || "").toString().trim() !== "" &&
+            (form.username || "").toString().trim() !== ""
+          );
+        case "role":
+          return Boolean(role);
+        case "sport":
+          return Array.isArray(form.sports) && form.sports.length > 0;
+        case "position":
+          return role !== "athlete"
+            ? true
+            : Array.isArray(form.position) && form.position.length > 0;
+        case "club":
+          return Boolean(form.club_id) || ((form.club_other_name || "").toString().trim() !== "");
+        case "bio":
+          return (form.bio || "").toString().trim() !== "";
+        default:
+          return true;
+      }
+    } catch (e) {
+      return true;
+    }
+  })();
+
   return (
-    <div>
-      <Stepper steps={steps} current={idx} />
+    <div className="setup-profile-page">
+      {/* Step list (Stepper) hidden per request */}
+      <div style={{ marginTop: 0 }}>
+        <ProgressBar currentStep={idx + 1} totalSteps={steps.length} />
+      </div>
+
+      {/* Skip button (subtle, medium) aligned right under the progress bar */}
+      <div style={{ display: "flex", justifyContent: "flex-end", padding: "0 16px" }}>
+        <Button
+          size="medium"
+          type="subtle"
+          label="Skip"
+          onClick={() => (idx < steps.length - 1 ? next() : finish())}
+        />
+      </div>
       <StepContainer
         onBack={back}
         onNext={next}
         onFinish={finish}
-        showBack={idx > 0}
-        showNext={idx < steps.length - 1}
-        showFinish={idx === steps.length - 1}
+        /* hide the built-in StepContainer buttons - we'll render our
+           OnboardingNavbar below which uses the same callbacks */
+        showBack={false}
+        showNext={false}
+        showFinish={false}
       >
         {stepId === "basic" && (
           <div>
-            <TextInput
-              label="Full name"
-              value={form.full_name}
-              onChange={(v) => set({ full_name: v })}
-            />
-            <TextInput
-              label="Username"
-              value={form.username}
-              onChange={(v) => set({ username: v })}
-            />
-            <TextInput
-              label="Avatar URL"
-              value={form.avatar_url}
-              onChange={(v) => set({ avatar_url: v })}
-            />
-            <TextInput
-              label="Age"
-              value={form.age}
-              onChange={(v) => set({ age: v })}
-            />
+            <div
+              className="role-header"
+              style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
+            >
+              <h1 className="role-header-title">Profile setup</h1>
+              <p className="role-header-subtitle">tell us about yourself</p>
+            </div>
+            {/* Avatar picker and input fields grouped together */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <AvatarPicker value={form.avatar_url} onChange={(v) => set({ avatar_url: v })} />
+
+              <TextInput
+                label="Full name"
+                value={form.full_name}
+                onChange={(v) => set({ full_name: v })}
+              />
+              <TextInput
+                label="Username"
+                value={form.username}
+                onChange={(v) => set({ username: v })}
+              />
+              <TextInput
+                label="Age"
+                value={form.age}
+                onChange={(v) => set({ age: v })}
+              />
+            </div>
           </div>
         )}
 
@@ -171,23 +236,40 @@ export default function Setup() {
             <SportsSelect
               sports={form.sports}
               onChange={(arr) =>
-                set({ sports: arr, primarySport: arr[0] || "", position: "" })
+                set({ sports: arr, primarySport: arr[0] || "", position: [] })
               }
               primarySport={form.primarySport}
-              onPrimaryChange={(v) => set({ primarySport: v, position: "" })}
+              onPrimaryChange={(v) => set({ primarySport: v, position: [] })}
             />
-            {role === "athlete" && form.primarySport ? (
-              <PositionSelect
-                sport={form.primarySport}
-                value={form.position}
-                onChange={(v) => set({ position: v })}
-              />
-            ) : null}
           </div>
         )}
 
+        {stepId === "position" && role === "athlete" && (
+          <PositionPage
+            sport={form.primarySport}
+            value={form.position}
+            onChange={(v) => set({ position: v })}
+          />
+        )}
+
+        {stepId === "bio" && (
+          <Bio
+            value={form.bio}
+            onChange={(v) => set({ bio: v })}
+            sport={form.primarySport}
+            position={form.position}
+            clubId={form.club_id}
+            clubOtherName={form.club_other_name}
+            country={form.country}
+          />
+        )}
+
+        {stepId === "premium" && (
+          <Premium onContinue={() => next()} />
+        )}
+
         {stepId === "measure" && role === "athlete" && (
-          <div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <UnitInput
               label="Height"
               value={form.height}
@@ -216,7 +298,7 @@ export default function Setup() {
           </div>
         )}
 
-        {stepId === "club" && role === "athlete" && (
+        {(stepId === "club") && (role === "athlete" || role === "scout") && (
           <ClubPicker
             sport={form.primarySport || "football"}
             value={{
@@ -230,7 +312,6 @@ export default function Setup() {
         {stepId === "location" && (
           <LocationFields
             country={form.country}
-            region={form.region}
             city={form.city}
             onChange={(v) => set(v)}
           />
@@ -240,11 +321,32 @@ export default function Setup() {
           <GoalsField value={form.goals} onChange={(v) => set({ goals: v })} />
         )}
 
+        {stepId === "follow" && (role === "athlete" || role === "scout") && (
+          <FollowSuggestions
+            role={role}
+            sport={form.primarySport}
+            position={form.position}
+            clubId={form.club_id}
+            country={form.country}
+            goals={role === "athlete" ? form.goals : (typeof form.talent_preferences === "string" ? form.talent_preferences : "")}
+          />
+        )}
+
         {stepId === "scout" && role === "scout" && (
-          <Textarea
-            label="Talent preferences"
+          <GoalsField
             value={form.talent_preferences}
             onChange={(v) => set({ talent_preferences: v })}
+            items={[
+              "Discover new talent",
+              "Expand your scouting network",
+              "Find new players",
+              "Build a strong team",
+              "Post tryouts or events",
+              "Build partnerships",
+              "Collaborate with scouts and coaches",
+            ]}
+            title="Select your scouting goals"
+            subtitle="Choose the goals that reflect what you want to accomplish on Athlio. Pick multiple."
           />
         )}
 
@@ -273,10 +375,17 @@ export default function Setup() {
           </div>
         )}
 
-        {stepId === "review" && (
-          <pre>{JSON.stringify({ role, ...form }, null, 2)}</pre>
-        )}
+        {/* Removed final 'review' step per request (auto-finish after last configured step) */}
       </StepContainer>
+      <OnboardingNavbar
+        onBack={back}
+        onNext={next}
+        onFinish={finish}
+        showBack={idx > 0}
+        showNext={idx < steps.length - 1}
+        showFinish={idx === steps.length - 1}
+        canContinue={canContinue}
+      />
     </div>
   );
 }

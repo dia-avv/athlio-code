@@ -1,3 +1,5 @@
+import "./TextArea.css";
+
 export default function TextArea({
   label,
   value,
@@ -6,14 +8,16 @@ export default function TextArea({
   rows = 3,
 }) {
   return (
-    <label>
-      {label ? <span>{label}</span> : null}
-      <textarea
-        rows={rows}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </label>
+    <div className="ta-wrapper">
+      {label ? <div className="ta-label">{label}</div> : null}
+      <div className="ta-input">
+        <textarea
+          rows={rows}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </div>
+    </div>
   );
 }

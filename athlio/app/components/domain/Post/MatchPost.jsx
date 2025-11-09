@@ -22,6 +22,7 @@ export default function MatchPost({
   yourScore,
   opponentScore,
   position,
+  hideFollow = false,
 }) {
   const isImage = !!imageUrl;
 
@@ -45,6 +46,7 @@ export default function MatchPost({
         authorId={authorId}
         position={position}
         club={yourTeam}
+        hideFollow={hideFollow}
       />
 
       {content && (
