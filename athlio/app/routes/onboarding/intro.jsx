@@ -10,6 +10,7 @@ import FootballRun from "../../assets/images/footballrun.png"; // requested firs
 import HockeyTeam from "../../assets/images/hockeyteam.jpg"; // requested third slide image
 import AmericanFootball from "../../assets/images/americanfootball.jpg"; // requested fourth slide image
 import { supabase } from "../../lib/supabase";
+import GoogleIcon from "../../assets/icons/google.svg";
 
 // Intro (preboarding) page based on Figma node 2396:15993
 // Reuses existing Button component and Geist font tokens.
@@ -221,6 +222,7 @@ export default function Intro() {
           type="outline"
           label="Google"
           onClick={goGoogle}
+          Icon={GoogleIcon}
         />
       </div>
       <p className="intro-legal">
