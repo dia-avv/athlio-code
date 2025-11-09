@@ -1,8 +1,23 @@
 import { useEffect, useState } from "react";
-import NumberInput from "../../inputs/NumberInput";
 import TextInput from "../../inputs/TextInput";
-import ClubPicker from "../ClubPicker";
+import ClubPicker from "../onboarding/ClubPicker";
 import { supabase } from "../../../lib/supabase";
+
+async function resolveClubName(club) {
+  if (!club) return null;
+  if (club.club_other_name && club.club_other_name.trim()) {
+    return club.club_other_name.trim();
+  }
+  if (club.club_id) {
+    const { data, error } = await supabase
+      .from("clubs")
+      .select("name")
+      .eq("id", club.club_id)
+      .single();
+    if (!error && data?.name) return data.name;
+  }
+  return null;
+}
 
 export default function MatchPostForm({ onCreated }) {
   const [saving, setSaving] = useState(false);
@@ -47,6 +62,9 @@ export default function MatchPostForm({ onCreated }) {
     setSaving(true);
 
     try {
+      const yourTeamName = await resolveClubName(form.your_team);
+      const opponentName = await resolveClubName(form.opponent_team);
+
       // Build row for `posts` table. Adjust keys to your exact schema names.
       const row = {
         type: "match",
@@ -54,11 +72,9 @@ export default function MatchPostForm({ onCreated }) {
         location: form.location?.trim() || null,
         date_of_game: form.date_of_game || null,
 
-        // team links
-        your_team_id: form.your_team.club_id,
-        your_team: form.your_team.club_other_name,
-        opponent_team_id: form.opponent_team.club_id,
-        opponent: form.opponent_team.club_other_name,
+        // team names (posts table has no club id columns)
+        your_team: yourTeamName,
+        opponent: opponentName,
 
         // numbers
         your_score: Number(form.your_score) || 0,
@@ -69,6 +85,7 @@ export default function MatchPostForm({ onCreated }) {
 
         // optional author if your schema needs it (remove if handled by DB default)
         author_id: meId || undefined,
+        aura_count: 0,
       };
 
       const { data, error } = await supabase
@@ -147,14 +164,14 @@ export default function MatchPostForm({ onCreated }) {
           <div className="score-inputs-container">
             <div className="your-score">
               <p>Your Score*</p>
-              <NumberInput
+              <TextInput
                 label="Score"
                 value={form.your_score}
                 onChange={(v) => patch({ your_score: Number(v) || 0 })}
               />
             </div>
             <div className="opponent-score">
-              <NumberInput
+              <TextInput
                 label="Score"
                 value={form.opponent_score}
                 onChange={(v) => patch({ opponent_score: Number(v) || 0 })}
@@ -165,17 +182,17 @@ export default function MatchPostForm({ onCreated }) {
         </div>
       </div>
       <div className="stats-section">
-        <NumberInput
+        <TextInput
           label="Minutes Played"
           value={form.minutes_played}
           onChange={(v) => patch({ minutes_played: Number(v) || 0 })}
         />
-        <NumberInput
+        <TextInput
           label="Goals"
           value={form.goals}
           onChange={(v) => patch({ goals: Number(v) || 0 })}
         />
-        <NumberInput
+        <TextInput
           label="Assists"
           value={form.assists}
           onChange={(v) => patch({ assists: Number(v) || 0 })}
