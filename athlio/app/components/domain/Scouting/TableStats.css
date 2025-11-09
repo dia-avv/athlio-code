@@ -32,6 +32,11 @@
     background: var(--background, #fbfbfb)
 }
 
+.table-values {
+    display: flex;
+    gap: 8px;
+}
+
 .table-row.alt {
     background: var(--gray-100, #f0f0f3)
 }
@@ -52,4 +57,9 @@
     align-items: center;
     justify-content: center;
     height: 100%
+}
+
+.value--highlight {
+    color: var(--color-accent, #4051fd);
+    font-weight: 600;
 }

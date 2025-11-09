@@ -1,36 +1,98 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './SearchBarCard.css';
 import defaultAvatar from '../../../assets/images/player.jpg';
-import defaultTeamLogo from '../../../assets/logos/main-logo.svg?react';
-import defaultFlag from '../../../assets/icons/verification.svg?react';
+import defaultTeamLogo from '../../../assets/logos/main-logo.svg';
+import defaultFlag from '../../../assets/icons/verification.svg';
+import { supabase } from '../../../lib/supabase';
 
 const SearchBarCard = ({
-  playerName = 'Thomás De Martis',
-  teamName = 'Lanús',
-  nationality = 'Argentina',
-  avatar = defaultAvatar,
-  teamLogo = defaultTeamLogo,
-  flag = defaultFlag
+  profileId,
+  playerName: fallbackName = 'Player',
+  teamName: fallbackTeam = '—',
+  nationality: fallbackCountry = '—',
+  avatar: fallbackAvatar = defaultAvatar,
+  teamLogo: fallbackTeamLogo = defaultTeamLogo,
+  flag: fallbackFlag = defaultFlag,
+  onSelect,
 }) => {
+  const [state, setState] = useState({
+    loading: !!profileId,
+    name: fallbackName,
+    team: fallbackTeam,
+    country: fallbackCountry,
+    avatar: fallbackAvatar,
+    teamLogo: fallbackTeamLogo,
+    flag: fallbackFlag,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      if (!profileId) return;
+      setState((s) => ({ ...s, loading: true }));
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('full_name, avatar_url, country, club_other_name, club_id')
+        .eq('id', profileId)
+        .maybeSingle();
+      if (cancelled) return;
+      if (error) {
+        console.error('SearchBarCard profile fetch', error);
+        setState((s) => ({ ...s, loading: false }));
+        return;
+      }
+      let teamName = data?.club_other_name || fallbackTeam;
+      let teamLogo = fallbackTeamLogo;
+
+      if (data?.club_id) {
+        const { data: clubRow, error: clubErr } = await supabase
+          .from('clubs')
+          .select('name, logo_url')
+          .eq('id', data.club_id)
+          .maybeSingle();
+        if (!clubErr && clubRow) {
+          teamName = data?.club_other_name || clubRow.name || fallbackTeam;
+          teamLogo = clubRow.logo_url || fallbackTeamLogo;
+        }
+      }
+      const country = data?.country || fallbackCountry;
+      setState({
+        loading: false,
+        name: data?.full_name || fallbackName,
+        team: teamName,
+        country,
+        avatar: data?.avatar_url || fallbackAvatar,
+        teamLogo,
+        flag: fallbackFlag,
+      });
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [profileId]);
+
+  const { name, team, country, avatar, teamLogo, flag } = state;
+
   return (
-    <div className="search-card-item">
+    <button className="search-card-item" onClick={() => onSelect?.(profileId)}>
       <div className="avatar-wrap" aria-hidden>
-        <img src={avatar} alt={`${playerName} avatar`} className="avatar-img" />
+        <img src={avatar} alt={`${name} avatar`} className="avatar-img" />
       </div>
 
       <div className="info">
-        <div className="name">{playerName}</div>
+        <div className="name">{name}</div>
         <div className="meta">
           <span className="position">Midfielder</span>
 
-          {teamLogo && <img src={teamLogo} alt={`${teamName} logo`} className="team-logo" />}
-          <span className="team-name">{teamName}</span>
+          {teamLogo && <img src={teamLogo} alt={`${team} logo`} className="team-logo" />}
+          <span className="team-name">{team}</span>
 
-          {flag && <img src={flag} alt={nationality} className="flag" />}
-          <span className="country">{nationality}</span>
+          {flag && <img src={flag} alt={country} className="flag" />}
+          <span className="country">{country}</span>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 

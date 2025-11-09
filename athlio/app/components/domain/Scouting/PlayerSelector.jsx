@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './PlayerSelector.css';
 import Button from '../../UI/Button';
-import PlusIcon from '../../../assets/icons/plus.svg?react';
+import PlusIcon from '../../../assets/icons/plus.svg';
+import { useNavigate } from 'react-router';
+import PlayerComparisonCard from './PlayerComparisonCard';
 
 const SEASONS = [
   "Season 2025-26",
@@ -10,16 +12,18 @@ const SEASONS = [
   "Season 2022-23"
 ];
 
+const MAX_PLAYERS = 3;
+
 const PlayerSelector = ({
-  playerName = "Haine Eames",
-  playerAvatar,
+  players = [],
   onAddPlayer,
   onRemovePlayer,
-  onSeasonChange
+  onSeasonChange,
 }) => {
   const [selectedSeason, setSelectedSeason] = useState(SEASONS[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -48,6 +52,9 @@ const PlayerSelector = ({
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+  const canAddMore = players.length < MAX_PLAYERS;
+  const listModifier = players.length >= 2 ? ` player-selector-list--${Math.min(players.length, 3)}` : '';
+
   return (
     <div className="player-selector">
       <div className="player-selector-container">
@@ -80,25 +87,25 @@ const PlayerSelector = ({
             type="primary"
             label="Add a new player"
             Icon={PlusIcon}
-            onClick={onAddPlayer}
+            onClick={() => navigate('/scouting/search')}
+            disabled={!canAddMore}
           />
         </div>
-        <div className="player-card">
-          <div className="player-info">
-            <img
-              src={playerAvatar || "https://api.builder.io/api/v1/image/assets/e9cac1e18ae64186984fb4d639c633bc/ca6a6b3bca92753f7368d77ac0c3b68ccfcd5f6d?placeholderIfAbsent=true"}
-              alt={playerName}
-              className="player-avatar"
-            />
-            <div className="player-name">{playerName}</div>
-          </div>
-          <button className="remove-player-btn" onClick={onRemovePlayer} aria-label="Remove player">
-            <img
-              src="https://api.builder.io/api/v1/image/assets/e9cac1e18ae64186984fb4d639c633bc/9a4bd8d25649802c53894292b42a945f813bd1cd?placeholderIfAbsent=true"
-              alt=""
-              className="remove-icon"
-            />
-          </button>
+        <div className={`player-selector-list${listModifier}`}>
+          {players.length === 0 ? (
+            <p className="player-selector-empty">Add up to 3 players to compare.</p>
+          ) : (
+            players.map((player, index) => (
+              <PlayerComparisonCard
+                key={player.id}
+                playerName={player.name}
+                playerAvatar={player.avatar}
+                onRemove={() => onRemovePlayer(player.id)}
+                playerIndex={index}
+                totalPlayers={players.length}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

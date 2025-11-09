@@ -1,20 +1,21 @@
 .player-selector {
   border-bottom: 1px solid var(--color-gray-300);
   backdrop-filter: blur(4px);
-  background-color: rgba(240, 240, 243, 0.80);
+  background-color: rgba(240, 240, 243, 0.8);
   padding: 16px;
 }
 
 .player-selector-container {
-  min-width: 240px;
-  width: 305px;
-  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .player-selector-controls {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   font-family: Geist, -apple-system, Roboto, Helvetica, sans-serif;
   font-weight: 500;
 }
@@ -95,64 +96,27 @@
   background-color: var(--color-gray-300);
 }
 
-.player-card {
-  position: relative;
-  border-radius: 8px;
-  margin-top: 16px;
-  width: 132px;
-  max-width: 100%;
-  background-color: var(--color-background);
-  padding: 18px 0;
-}
-
-.player-info {
+.player-selector-list {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #000;
-  padding: 0 7.5px 0 14px;
-  font: 500 16px/19px Geist, -apple-system, Roboto, Helvetica, sans-serif;
+  gap: 16px;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
 }
 
-.player-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 100px;
-  object-fit: contain;
-  flex-shrink: 0;
+.player-selector-list--2{
+  padding-left: calc(196px);
+gap: 12px;
+}
+.player-selector-list--3 {
+  padding-left: calc(138px);
+gap: 12px;
 }
 
-.player-name {
-  font-size: 16px;
-  width: 88px;
+@media (max-width: 768px) {
+
 }
 
-.remove-player-btn {
-  position: absolute;
-  top: -12px;
-  right: -11px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 6px;
-  border: 1.5px solid var(--color-gray-300);
-  min-height: 24px;
-  width: 24px;
-  height: 24px;
-  overflow: hidden;
-  padding: 4px;
-  background-color: var(--color-gray-100);
-  cursor: pointer;
-  transition: background-color 200ms ease, border-color 200ms ease;
-}
-
-.remove-player-btn:hover {
-  background-color: var(--color-gray-300);
-  border-color: var(--color-gray-500);
-}
-
-.remove-icon {
-  width: 12px;
-  height: 12px;
-  object-fit: contain;
+.player-selector-empty {
+  font-size: 12px;
+  color: var(--color-gray-700);
 }
