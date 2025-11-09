@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"; // 👈 import this
 import Button from "../../UI/Button";
 import ProfilePicture from "../../UI/ProfilePicture";
 import Tag from "../../UI/Tag";
@@ -19,6 +20,8 @@ export default function ProfileHeader({
   toggleFollow,
   busy,
 }) {
+  const navigate = useNavigate(); // ✅ create the navigate hook
+
   if (!profile) return null;
 
   const hasTags = profile.role || profile.position;
@@ -66,7 +69,6 @@ export default function ProfileHeader({
             )}
           </div>
 
-          {/* show location for everyone; on `isMe` it will still sit below follow-line */}
           {locationText && (
             <div className="profile-location">
               <LocationIcon />
@@ -76,7 +78,7 @@ export default function ProfileHeader({
         </div>
       </div>
 
-      {/* ===  Bottom section: buttons === */}
+      {/* === Bottom section: buttons === */}
       <div className="profile-header-row profile-buttons">
         {isMe ? (
           <>
@@ -84,8 +86,8 @@ export default function ProfileHeader({
               size="medium"
               type="outline"
               label="Edit Profile"
-              onClick={() => console.log("Edit Profile clicked")}
               Icon={EditIcon}
+              onClick={() => navigate("/profile/me/edit")} // ✅ navigate to edit page
             />
             <Button
               size="medium"
