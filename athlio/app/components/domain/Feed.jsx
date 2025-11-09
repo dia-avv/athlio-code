@@ -64,6 +64,14 @@ export default function Feed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    const onPosted = () => setRefreshKey((k) => k + 1);
+    document.addEventListener("composer:posted", onPosted);
+    return () => document.removeEventListener("composer:posted", onPosted);
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -96,11 +104,8 @@ export default function Feed() {
 
       const followingIds = (followRows || []).map((r) => r.following_id);
 
-      if (followingIds.length === 0) {
-        setPosts([]);
-        setLoading(false);
-        return;
-      }
+      // Always include my own user id so I see my posts
+      const authorIds = Array.from(new Set([user.id, ...followingIds]));
 
       const { data: postRows, error: postsErr } = await supabase
         .from("posts")
@@ -134,7 +139,7 @@ export default function Feed() {
   )
   `,
         )
-        .in("author_id", followingIds)
+        .in("author_id", authorIds)
         .order("created_at", { ascending: false })
         .limit(50);
 
@@ -152,7 +157,7 @@ export default function Feed() {
     return () => {
       cancelled = true;
     };
-  }, [user, userLoading]);
+  }, [user, userLoading, refreshKey]);
 
   if (userLoading || loading) return <p>Loading feed…</p>;
   if (error) return <p className="error">{error}</p>;
