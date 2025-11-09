@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
+  gap: 24px; /* increased spacing for cleaner separation */
   background-color: var(--color-gray-100);
   padding: 24px 16px;
+  border-radius: 12px;
 }
 
 main:has(.profile-info-tab) {
@@ -14,6 +15,32 @@ main:has(.profile-info-tab) {
 
 .info-tab-header {
   display: flex;
-  justify-content: flex-end; /* Aligns to the right ✅ */
+  justify-content: flex-end; /* aligns Edit button to the right */
   align-items: center;
+}
+
+/* === Experience Section === */
+.info-experience-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.info-section-title {
+  font-size: var(--text-l);
+  font-weight: 400;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.experience-empty {
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+  text-align: center;
+  padding: 8px 0;
+}
+
+.experience-card {
+  margin-bottom: 4px;
 }
