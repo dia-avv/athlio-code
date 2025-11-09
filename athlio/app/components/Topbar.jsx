@@ -6,7 +6,8 @@ import ShareIcon from "../assets/icons/share.svg";
 import NotificationsIcon from "../assets/icons/notifications.svg";
 import BackIcon from "../assets/icons/back.svg";
 import CloseIcon from "../assets/icons/close.svg";
-import MainLogo from "../assets/logos/main-logo.svg";
+import MainLogo from "../assets/logos/main-logo.svg?react";
+
 import "./Topbar.css";
 import Button from "./UI/Button";
 
@@ -15,7 +16,7 @@ import Button from "./UI/Button";
 const TOPBAR_CONFIG = {
   "/home": {
     title: null,
-    left: () => <img src={MainLogo} className="main-logo" alt="Athlio" />,
+    left: () => <MainLogo className="main-logo" />,
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>
@@ -81,7 +82,7 @@ const TOPBAR_CONFIG = {
           onClick={() => nav(-1)}
           className="topbar-back"
         />
-        <img src={MainLogo} className="main-logo" alt="Athlio" />
+        <MainLogo className="main-logo" />
       </div>
     ),
     right: (nav, profile) => (
@@ -121,6 +122,19 @@ const TOPBAR_CONFIG = {
         Icon={() => <img src={ShareIcon} alt="Share" />}
       />
     ),
+  },
+  "/profile/me/edit": {
+    title: "Edit profile",
+    left: (nav) => (
+      <button
+        className="topbar-close-btn"
+        onClick={() => nav(-1)}
+        aria-label="Close edit"
+      >
+        <img src={CloseIcon} alt="Close" />
+      </button>
+    ),
+    center: () => <h1 className="topbar-title">Edit profile</h1>,
   },
   "/scouting": {
     title: null,

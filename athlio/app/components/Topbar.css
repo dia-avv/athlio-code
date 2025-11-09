@@ -50,3 +50,30 @@
   width: 61px;
   height: auto;
 }
+
+/* For Edit Profile close icon */
+.topbar-close-btn {
+  background: none; /* no background box */
+  border: none; /* no border */
+  outline: none; /* no outline */
+  padding: 0; /* no extra padding */
+  display: flex; /* center the icon */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.topbar-close-btn img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.topbar-close-btn:hover,
+.topbar-close-btn:focus,
+.topbar-close-btn:active {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
