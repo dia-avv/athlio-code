@@ -14,15 +14,14 @@ export function getSteps(role) {
       "goals",
       "follow",
       "premium",
-      "review",
     ];
   }
 
   if (role === "scout") {
     // Order: choose role/sport -> basic info -> location -> club -> bio -> goals -> follow -> premium -> review
-    return [...base, "basic", "location", "club", "bio", "scout", "follow", "premium", "review"];
+    return [...base, "basic", "location", "club", "bio", "scout", "follow", "premium"];
   }
 
   // organization default flow
-  return [...base, "basic", "sport", "org", "location", "bio", "premium", "review"];
+  return [...base, "basic", "sport", "org", "location", "bio", "premium"];
 }

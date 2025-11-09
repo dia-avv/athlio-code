@@ -375,12 +375,7 @@ export default function Setup() {
           </div>
         )}
 
-        {stepId === "review" && (
-          <div style={{ padding: '24px 0 8px' }}>
-            <h1 className="role-header-title">All set</h1>
-            <p className="role-header-subtitle">Tap finish to complete your profile</p>
-          </div>
-        )}
+        {/* Removed final 'review' step per request (auto-finish after last configured step) */}
       </StepContainer>
       <OnboardingNavbar
         onBack={back}
