@@ -1,13 +1,19 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../../../lib/supabase";
 import GrowingTextArea from "../../inputs/GrowingTextArea";
 import PostPillBar from "./PostPillBar";
 import "./Composer.css";
 import IconButton from "../../UI/IconButton";
 import CloseIcon from "../../../assets/icons/close.svg?react";
 
-export default function Composer({ onSubmit }) {
+export default function Composer({
+  onSubmit /* UI-only: do not insert here */,
+}) {
   const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null); // can be a File or an upload object
+  const postingRef = useRef(false);
+  const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
 
   useEffect(() => {
@@ -15,22 +21,80 @@ export default function Composer({ onSubmit }) {
       setPreview(null);
       return;
     }
+
+    // if PostPillBar provided an uploaded object
+    if (image && typeof image === "object" && image.publicUrl) {
+      setPreview(image.publicUrl);
+      return;
+    }
+
+    // fallback: raw File object case
     const url = URL.createObjectURL(image);
     setPreview(url);
     return () => URL.revokeObjectURL(url);
   }, [image]);
 
-  const canPost = useMemo(() => text.trim().length > 0, [text]);
+  const isUploading = !!(
+    image instanceof File ||
+    (image && typeof image === "object" && image._temp === true)
+  );
+  const canPost = useMemo(
+    () => text.trim().length > 0 && !isUploading,
+    [text, isUploading],
+  );
 
   // Let your existing topbar trigger submit via a custom event
   useEffect(() => {
-    const handler = () => {
+    const handler = async () => {
       if (!canPost) return;
-      onSubmit?.({ text: text.trim(), image });
+      if (postingRef.current) return; // prevent duplicates
+      postingRef.current = true;
+
+      try {
+        const { data: auth, error: authErr } = await supabase.auth.getUser();
+        if (authErr || !auth?.user)
+          throw authErr || new Error("Not authenticated");
+
+        // Only persist a real hosted URL, never a temp blob
+        const hasImage = !!image;
+        const mediaUrl =
+          image && typeof image === "object" && image._temp === false
+            ? image.publicUrl
+            : null;
+
+        // If user attached an image but upload hasn't finished, do not insert yet
+        if (hasImage && !mediaUrl) {
+          console.warn("Blocked submit: image selected but not uploaded yet.");
+          return;
+        }
+
+        const { error } = await supabase.from("posts").insert({
+          author_id: auth.user.id,
+          type: "basic",
+          content: text.trim(),
+          media: mediaUrl, // null only when there was no image
+          aura_count: 0,
+        });
+        if (error) throw error;
+
+        document.dispatchEvent(new CustomEvent("composer:posted"));
+
+        navigate("/home");
+
+        // reset UI
+        setText("");
+        setImage(null);
+        setPreview(null);
+      } catch (err) {
+        console.error("Failed to create post:", err);
+      } finally {
+        postingRef.current = false;
+      }
     };
+
     document.addEventListener("composer:submit", handler);
     return () => document.removeEventListener("composer:submit", handler);
-  }, [canPost, text, onSubmit, image]);
+  }, [canPost, text, image]);
 
   function handleRemoveImage() {
     setImage(null);
@@ -38,7 +102,7 @@ export default function Composer({ onSubmit }) {
   }
 
   return (
-    <div className="composer-wrap">
+    <div className="composer-wrap" aria-busy={isUploading ? "true" : "false"}>
       <GrowingTextArea
         value={text}
         onChange={setText}

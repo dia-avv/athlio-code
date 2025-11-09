@@ -5,6 +5,7 @@ import EventIcon from "../../../assets/icons/event.svg?react";
 import "./PostPillBar.css";
 import { useNavigate } from "react-router";
 import { useRef } from "react";
+import { supabase } from "../../../lib/supabase";
 
 export default function PostPillBar({ onImageSelected }) {
   const navigate = useNavigate();
@@ -22,11 +23,59 @@ export default function PostPillBar({ onImageSelected }) {
     fileInputRef.current?.click();
   }
 
-  function handleFileChange(e) {
+  async function handleFileChange(e) {
     const file = e.target.files?.[0];
-    if (file) {
-      onImageSelected?.(file); // hand the file to parent (Composer)
-      e.target.value = ""; // allow picking the same file again later
+    if (!file) return;
+
+    const BUCKET = "post-media";
+
+    // 0) Show an optimistic preview immediately
+    const tempUrl = URL.createObjectURL(file);
+    onImageSelected?.({ file, publicUrl: tempUrl, _temp: true });
+
+    try {
+      // 1) Get user ID (for folder structure)
+      const { data: auth, error: authErr } = await supabase.auth.getUser();
+      if (authErr) throw authErr;
+      const userId = auth?.user?.id || "anonymous";
+
+      // 2) Create unique safe path
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `posts/${userId}/${Date.now()}_${safeName}`;
+
+      // 3) Upload to Supabase storage bucket `post-media`
+      const { error: upErr } = await supabase.storage
+        .from(BUCKET)
+        .upload(path, file, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: file.type || "application/octet-stream",
+        });
+      if (upErr) throw upErr;
+
+      // 4) Retrieve the public URL (bucket must be public)
+      const { data: pub, error: pubErr } = supabase.storage
+        .from(BUCKET)
+        .getPublicUrl(path);
+      if (pubErr) throw pubErr;
+
+      console.log("Upload complete →", pub.publicUrl);
+
+      // 5) Send final upload info to parent (Composer)
+      onImageSelected?.({
+        file,
+        storagePath: path,
+        publicUrl: pub.publicUrl,
+        mime: file.type,
+        size: file.size,
+        _temp: false,
+      });
+    } catch (err) {
+      console.error("Image upload failed:", err);
+      // Keep the temporary preview in Composer
+    } finally {
+      // Allow selecting same file again
+      e.target.value = "";
     }
   }
 
