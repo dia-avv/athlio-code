@@ -31,11 +31,7 @@ export default function ScoutingIndex() {
       {activeTab === "info" && (
         <>
           <TableInfo players={players} />
-          <InfoCards />
-          <Position
-            label="Preferred Position"
-            value={players[0]?.info?.position || "Midfielder"}
-          />
+
         </>
       )}
       {activeTab === "experience" && (

@@ -87,6 +87,7 @@ const PlayerSelector = ({
             type="primary"
             label="Add a new player"
             Icon={PlusIcon}
+            color="white"
             onClick={() => navigate('/scouting/search')}
             disabled={!canAddMore}
           />

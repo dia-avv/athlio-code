@@ -1,8 +1,8 @@
 import React from 'react';
 import './Availability.css';
+import profilePlaceholder from '../../../assets/icons/profile.png';
 
-const FALLBACK_AVATAR =
-  'https://api.builder.io/api/v1/image/assets/e9cac1e18ae64186984fb4d639c633bc/d55767b1f51442ae0cefcb91f2a22018c88f6732?placeholderIfAbsent=true';
+const FALLBACK_AVATAR = profilePlaceholder;
 const FALLBACK_ICON =
   'https://api.builder.io/api/v1/image/assets/e9cac1e18ae64186984fb4d639c633bc/feca78aec91a801ddc79124b791fa68faaee5023?placeholderIfAbsent=true';
 
@@ -103,6 +103,11 @@ export default function Availability({ players = [] }) {
                   className="availability-avatar"
                   src={player.avatar || FALLBACK_AVATAR}
                   alt={player.name}
+                  onError={(event) => {
+                    if (event.currentTarget.src !== FALLBACK_AVATAR) {
+                      event.currentTarget.src = FALLBACK_AVATAR;
+                    }
+                  }}
                 />
                 <div className="availability-player-name">{player.name}</div>
               </div>

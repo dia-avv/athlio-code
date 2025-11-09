@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './SearchBarCard.css';
-import defaultAvatar from '../../../assets/images/player.jpg';
+import profilePlaceholder from '../../../assets/icons/profile.png';
 import defaultTeamLogo from '../../../assets/logos/main-logo.svg';
 import defaultFlag from '../../../assets/icons/verification.svg';
 import { supabase } from '../../../lib/supabase';
@@ -10,7 +10,7 @@ const SearchBarCard = ({
   playerName: fallbackName = 'Player',
   teamName: fallbackTeam = '—',
   nationality: fallbackCountry = '—',
-  avatar: fallbackAvatar = defaultAvatar,
+  avatar: fallbackAvatar = profilePlaceholder,
   teamLogo: fallbackTeamLogo = defaultTeamLogo,
   flag: fallbackFlag = defaultFlag,
   onSelect,
@@ -77,7 +77,16 @@ const SearchBarCard = ({
   return (
     <button className="search-card-item" onClick={() => onSelect?.(profileId)}>
       <div className="avatar-wrap" aria-hidden>
-        <img src={avatar} alt={`${name} avatar`} className="avatar-img" />
+        <img
+          src={avatar || profilePlaceholder}
+          alt={`${name} avatar`}
+          className="avatar-img"
+          onError={(event) => {
+            if (event.currentTarget.src !== profilePlaceholder) {
+              event.currentTarget.src = profilePlaceholder;
+            }
+          }}
+        />
       </div>
 
       <div className="info">

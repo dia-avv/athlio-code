@@ -1,5 +1,6 @@
 import React from 'react';
 import './ExperienceList.css';
+import profilePlaceholder from '../../../assets/icons/profile.png';
 
 function formatRange(exp) {
   const startYear = exp.start_date ? new Date(exp.start_date).getFullYear() : null;
@@ -37,6 +38,11 @@ export default function ExperienceList({ players = [] }) {
   const displayPlayers = players.slice(0, 3);
   if (!displayPlayers.length) return null;
   const hasAny = displayPlayers.some((player) => player.experiences?.length);
+  const handleImgError = (event) => {
+    if (event.currentTarget.src !== profilePlaceholder) {
+      event.currentTarget.src = profilePlaceholder;
+    }
+  };
 
   return (
     <div className="experience-list">
@@ -46,9 +52,10 @@ export default function ExperienceList({ players = [] }) {
           <div className="experience-header">
             <div className="experience-header-inner">
               <img
-                src={player.avatar || 'https://api.builder.io/api/v1/image/assets/e9cac1e18ae64186984fb4d639c633bc/d55767b1f51442ae0cefcb91f2a22018c88f6732?placeholderIfAbsent=true'}
+                src={player.avatar || profilePlaceholder}
                 alt={player.name}
                 className="experience-avatar"
+                onError={handleImgError}
               />
               <div className="experience-header-name">
                 <div>{player.name}</div>
