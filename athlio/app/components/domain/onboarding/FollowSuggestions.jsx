@@ -4,7 +4,7 @@ import { follow, unfollow, isFollowing } from "../../../lib/follows";
 import "./FollowSuggestions.css";
 import SuggestedFollowCard from "./SuggestedFollowCard";
 
-export default function FollowSuggestions({ sport, position, clubId, country, goals }) {
+export default function FollowSuggestions({ role, sport, position, clubId, country, goals }) {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [followingMap, setFollowingMap] = useState({});
@@ -109,7 +109,7 @@ export default function FollowSuggestions({ sport, position, clubId, country, go
   return (
     <div className="follow-suggestions-root">
       <div className="role-header" style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}>
-        <h1 className="role-header-title">Follow people who share your goals and journey</h1>
+        <h1 className="role-header-title">{role === "scout" ? "Follow these suggested profiles" : "Follow people who share your goals and journey"}</h1>
         <p className="role-header-subtitle">Discover people we think are relevant to your goals — follow a few to personalize your feed.</p>
       </div>
       <div style={{ marginTop: 12 }}>

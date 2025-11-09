@@ -3,6 +3,7 @@ import { supabase } from "../../../lib/supabase.js";
 import TextInput from "../../inputs/TextInput";
 import "./ClubPicker.css";
 import FootballIcon from "../../../assets/icons/football.svg?react";
+import BasketballIcon from "../../../assets/icons/basketball.svg?react";
 import SearchBar from "../../UI/SearchBar";
 
 export default function ClubPicker({ sport, value, onChange }) {
@@ -95,11 +96,18 @@ export default function ClubPicker({ sport, value, onChange }) {
                 type="button"
                 className="club-item-btn club-item-use"
                 onClick={() => addNewClub(query)}
-                aria-label={`Use ${query} as the club`}
+                aria-label={`Use ${query} instead`}
               >
-                <div className="club-logo-placeholder" aria-hidden />
+                {/* sport-specific icon inside placeholder area */}
+                {sport === "football" ? (
+                  <FootballIcon className="club-logo-svg" aria-hidden />
+                ) : sport === "basketball" ? (
+                  <BasketballIcon className="club-logo-svg" aria-hidden />
+                ) : (
+                  <div className="club-logo-placeholder" aria-hidden />
+                )}
                 <div className="club-meta">
-                  <div className="club-name">Use "{query}" this team instead</div>
+                  <div className="club-name">Use "{query}" instead</div>
                 </div>
               </button>
             </li>

@@ -1,8 +1,8 @@
 import "./RoleSelect.css";
 import SelectionCard from "./UI/SelectionCard";
-import AthleteIcon from "../../../assets/icons/post.svg?react";
-import ScoutIcon from "../../../assets/icons/comparison.svg?react";
-import OrgIcon from "../../../assets/icons/home.svg?react";
+import AthleteIcon from "../../../assets/icons/athlete.svg?react";
+import ScoutIcon from "../../../assets/icons/scout.svg?react";
+import OrgIcon from "../../../assets/icons/organisation.svg?react";
 
 const ROLES = [
   {

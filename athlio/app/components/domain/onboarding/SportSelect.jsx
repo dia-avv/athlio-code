@@ -38,7 +38,7 @@ export default function SportsSelect({
               name: "Basketball",
               description:
                 "Play hard, get noticed, and take your game to the next level.",
-              icon: <BasketballIcon className="role-icon-svg--stroke" />,
+              icon: <BasketballIcon />,
             },
           ]);
         } else {
@@ -55,7 +55,7 @@ export default function SportsSelect({
                 : (r.id === "football" || (r.name || "").toLowerCase() === "football")
                 ? <FootballIcon />
                 : (r.id === "basketball" || (r.name || "").toLowerCase() === "basketball")
-                ? <BasketballIcon className="role-icon-svg--stroke" />
+                ? <BasketballIcon />
                 : null,
             }))
           );

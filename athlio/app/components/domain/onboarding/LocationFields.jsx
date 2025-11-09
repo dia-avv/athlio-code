@@ -2,7 +2,7 @@ import TextInput from "../../inputs/TextInput";
 
 export default function LocationFields({ country, city, onChange }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <div
         className="role-header"
         style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}

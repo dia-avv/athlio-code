@@ -267,7 +267,7 @@ export default function Setup() {
         )}
 
         {stepId === "measure" && role === "athlete" && (
-          <div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <UnitInput
               label="Height"
               value={form.height}
@@ -296,7 +296,7 @@ export default function Setup() {
           </div>
         )}
 
-        {stepId === "club" && role === "athlete" && (
+        {(stepId === "club") && (role === "athlete" || role === "scout") && (
           <ClubPicker
             sport={form.primarySport || "football"}
             value={{
@@ -319,21 +319,32 @@ export default function Setup() {
           <GoalsField value={form.goals} onChange={(v) => set({ goals: v })} />
         )}
 
-        {stepId === "follow" && role === "athlete" && (
+        {stepId === "follow" && (role === "athlete" || role === "scout") && (
           <FollowSuggestions
+            role={role}
             sport={form.primarySport}
             position={form.position}
             clubId={form.club_id}
             country={form.country}
-            goals={form.goals}
+            goals={role === "athlete" ? form.goals : (typeof form.talent_preferences === "string" ? form.talent_preferences : "")}
           />
         )}
 
         {stepId === "scout" && role === "scout" && (
-          <Textarea
-            label="Talent preferences"
+          <GoalsField
             value={form.talent_preferences}
             onChange={(v) => set({ talent_preferences: v })}
+            items={[
+              "Discover new talent",
+              "Expand your scouting network",
+              "Find new players",
+              "Build a strong team",
+              "Post tryouts or events",
+              "Build partnerships",
+              "Collaborate with scouts and coaches",
+            ]}
+            title="Select your scouting goals"
+            subtitle="Choose the goals that reflect what you want to accomplish on Athlio. Pick multiple."
           />
         )}
 

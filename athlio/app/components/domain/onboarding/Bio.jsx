@@ -13,7 +13,8 @@ function countryCodeToEmoji(code) {
 }
 
 function positionLabelFromId(id, sport) {
-  if (!id) return "Player";
+  // Guard against non-string values (e.g., empty arrays from form state)
+  if (!id || typeof id !== "string") return "Player";
   const base = id.split("_")[0].toLowerCase();
   const footballMap = {
     lw: "Winger",
@@ -58,7 +59,13 @@ export default function Bio({ value, onChange, sport, position, clubId, clubOthe
 
   // Build suggestions only when we have at least one hint (position, club or country)
   const suggestions = [];
-  const posId = Array.isArray(position) && position.length > 0 ? position[0] : position || null;
+  // Ensure posId is either a string or null, never an array/object
+  let posId = null;
+  if (Array.isArray(position)) {
+    posId = position.length > 0 ? position[0] : null;
+  } else if (typeof position === "string") {
+    posId = position || null;
+  }
   const posLabel = positionLabelFromId(posId, sport);
   const countryEmoji = countryCodeToEmoji(country);
   const club = clubOtherName || clubName || null;

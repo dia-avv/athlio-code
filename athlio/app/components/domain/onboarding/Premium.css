@@ -49,6 +49,16 @@
   gap: 8px;
 }
 
+/* Inline SVG icon usage */
+.premium-icon-svg {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+.premium-icon-svg--accent {
+  color: var(--color-accent);
+}
+
 .premium-card-title {
   font-size: 16px; /* List Item */
   font-weight: 500;
@@ -62,17 +72,7 @@
   line-height: 1.3;
 }
 
-.premium-chart {
-  margin-top: 8px;
-  height: 108px;
-  border-radius: 8px;
-  background:
-    linear-gradient(to top, rgba(64, 81, 253, 0.2), rgba(64, 81, 253, 0.05)),
-    linear-gradient(#e8e8ee 1px, transparent 1px);
-  background-size: 100% 100%, 100% 27px;
-  position: relative;
-  overflow: hidden;
-}
+
 
 .premium-features {
   display: grid;
@@ -80,6 +80,16 @@
   gap: 8px;
 }
 
+/* Premium graph illustration */
+.premium-graph {
+  margin-top: 8px;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* CTA section styles (restored) */
 .premium-cta {
   background: var(--color-accent);
   border-radius: 8px;
@@ -106,44 +116,14 @@
   color: var(--color-background);
 }
 
-/* Simple inline icons built with CSS shapes */
-.premium-icon {
+/* Deprecated CSS-drawn icons removed; all icons now use inline <img> with these sizes */
+.premium-icon-svg {
   width: 24px;
   height: 24px;
   display: inline-block;
-  position: relative;
 }
-
-.premium-icon--stats::before {
-  content: "";
-  position: absolute;
-  inset: 20% 10% 20% 10%;
-  background: linear-gradient(180deg, var(--color-text) 50%, transparent 50%),
-    linear-gradient(180deg, var(--color-text) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-size: 30% 100%, 60% 100%;
-  background-position: left, right;
-}
-
-.premium-icon--ai::before {
-  content: "AI";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text);
-  border: 1px solid var(--color-gray-300);
-  border-radius: 6px;
-}
-
-.premium-icon--trophy::before {
-  content: "🏆";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
+.premium-icon-svg--accent {
+  color: var(--color-accent);
 }
 
 /* Keep two columns even on small devices per design; only stack on very narrow screens */
