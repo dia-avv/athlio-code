@@ -310,7 +310,6 @@ export default function Setup() {
         {stepId === "location" && (
           <LocationFields
             country={form.country}
-            region={form.region}
             city={form.city}
             onChange={(v) => set(v)}
           />

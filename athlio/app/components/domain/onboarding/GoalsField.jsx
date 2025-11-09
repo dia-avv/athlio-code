@@ -54,7 +54,8 @@ export default function GoalsField({ value, onChange }) {
               onClick={() => toggle(g)}
               className={`goal-card ${active ? "active" : ""}`}
             >
-              {g}
+              <span className="goal-radio" aria-hidden="true" />
+              <span className="goal-label list-item">{g}</span>
             </button>
           );
         })}

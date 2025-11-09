@@ -1,6 +1,7 @@
 import Textarea from "../../inputs/TextArea";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase";
+import "./Bio.css";
 
 function countryCodeToEmoji(code) {
   if (!code || typeof code !== "string") return "";
@@ -106,19 +107,13 @@ export default function Bio({ value, onChange, sport, position, clubId, clubOthe
       {uniqueSuggestions.length > 0 && (
         <div style={{ marginTop: 12 }}>
           <div style={{ fontSize: 13, color: "var(--color-gray-600)", marginBottom: 8 }}>Suggestions</div>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <div className="bio-suggestions-wrap">
             {uniqueSuggestions.map((s, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => onChange(s)}
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: 8,
-                  border: "1px solid var(--color-gray-200)",
-                  background: "#fff",
-                  cursor: "pointer",
-                }}
+                className="bio-suggestion"
               >
                 {s}
               </button>

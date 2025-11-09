@@ -1,19 +1,25 @@
 import TextInput from "../../inputs/TextInput";
-export default function LocationFields({ country, region, city, onChange }) {
+
+export default function LocationFields({ country, city, onChange }) {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div
+        className="role-header"
+        style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
+      >
+        <h1 className="role-header-title">Where are you based</h1>
+        <p className="role-header-subtitle">
+          Help us personalize content, events and recommendations relevant to
+          where you live and train.
+        </p>
+      </div>
       <TextInput
-        label="Country"
+        label="Nationality"
         value={country}
         onChange={(v) => onChange({ country: v })}
       />
       <TextInput
-        label="Region"
-        value={region}
-        onChange={(v) => onChange({ region: v })}
-      />
-      <TextInput
-        label="City"
+        label="Location of your base"
         value={city}
         onChange={(v) => onChange({ city: v })}
       />

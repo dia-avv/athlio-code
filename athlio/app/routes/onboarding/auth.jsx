@@ -84,10 +84,10 @@ export default function Auth() {
         <div
           style={{
             background: "var(--color-gray-100)",
-            padding: 10,
+            padding: 0,
             borderRadius: 12,
-            width: 48,
-            height: 48,
+            width: 52,
+            height: 52,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

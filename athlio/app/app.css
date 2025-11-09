@@ -23,6 +23,9 @@ body {
   --text-xs: 0.75rem;
   --text-xxs: 0.5rem;
 
+  /* Design Tokens */
+  --list-item-value: 16px; /* List Item font size (Geist Medium 16 / 120% line-height) */
+
   /* Custom Roles */
   --text-secondary: var(--text-xs);
   --text-button: var(--text-sm);
@@ -59,3 +62,13 @@ p {
   font-size: var(--text-sm);
   font-weight: 500;
 }
+
+/* List Item text style (Geist Medium 16px, line-height 120%) */
+.list-item {
+  font-family: "Geist", sans-serif;
+  font-size: var(--list-item-value);
+  font-weight: 500;
+  line-height: 1.2; /* 120% */
+  font-style: normal;
+}
+
