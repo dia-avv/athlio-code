@@ -142,6 +142,36 @@ const TOPBAR_CONFIG = {
       </div>
     ),
   },
+  "/scouting/search": {
+    title: null,
+    left: (nav) => (
+      <div className="topbar-left-with-back">
+        <img
+          src={BackIcon}
+          alt="Back"
+          onClick={() => nav(-1)}
+          className="topbar-back"
+        />
+        <img src={MainLogo} className="main-logo" alt="Athlio" />
+      </div>
+    ),
+    right: (nav, _profile, counts) => (
+      <div className="topbar-icons">
+        <div className="icon-with-badge" onClick={() => nav("/notifications")}>
+          <img src={NotificationsIcon} alt="Notifications" />
+          {counts.notifications > 0 && (
+            <span className="badge">+{counts.notifications}</span>
+          )}
+        </div>
+        <div className="icon-with-badge" onClick={() => nav("/chat")}>
+          <img src={MessagesIcon} alt="Messages" />
+          {counts.messages > 0 && (
+            <span className="badge">{counts.messages}</span>
+          )}
+        </div>
+      </div>
+    ),
+  },
 };
 
 export default function Topbar() {

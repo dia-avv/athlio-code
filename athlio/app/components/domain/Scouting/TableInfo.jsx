@@ -87,6 +87,9 @@ export default function TableInfo({ players = [] }) {
                   {renderValue(player.info, row)}
                 </div>
               ))}
+              {displayPlayers.length === 1 && (
+                <div className="info-table-value placeholder" />
+              )}
             </div>
           </div>
         ))}
