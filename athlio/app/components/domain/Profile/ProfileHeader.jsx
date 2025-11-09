@@ -34,7 +34,12 @@ export default function ProfileHeader({
     <section className="profile-header">
       {/* === Top row: avatar, name, and tags === */}
       <div className="profile-header-row profile-header-top">
-        <ProfilePicture size="large" verified={true} imgUrl={Player} />
+        <ProfilePicture
+          size="large"
+          verified={profile.verified}
+          imgUrl={profile.avatar_url || Player}
+        />
+
         <div className="profile-top-text">
           <div className="profile-name-row">
             <h2 className="profile-name">{profile.full_name}</h2>
@@ -63,7 +68,11 @@ export default function ProfileHeader({
             </span>
 
             {isMe && (
-              <span className="profile-following">
+              <span
+                className="profile-following"
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/profile/me/following")}
+              >
                 <strong>{profile.following_count ?? 0}</strong> following
               </span>
             )}
