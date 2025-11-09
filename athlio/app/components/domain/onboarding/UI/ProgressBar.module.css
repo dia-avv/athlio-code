@@ -1,6 +1,7 @@
 .progressWrapper {
   width: 100%;
-  margin: 8px 0 20px;
+  /* Remove top margin so it can sit closer to the top on setup profile page */
+  margin: 0 0 20px;
 }
 
 .logoWrapper {

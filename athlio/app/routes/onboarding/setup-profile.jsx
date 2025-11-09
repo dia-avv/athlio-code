@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { supabase } from "../../lib/supabase";
-import Stepper from "../../components/wizard/Stepper";
 import StepContainer from "../../components/wizard/StepContainer";
 import TextInput from "../../components/inputs/TextInput";
 import UnitInput from "../../components/inputs/UnitInput";
@@ -21,6 +20,7 @@ import Textarea from "../../components/inputs/TextArea";
 import ProgressBar from "../../components/domain/onboarding/UI/ProgressBar";
 import OnboardingNavbar from "../../components/domain/onboarding/UI/OnboardingNavbar";
 import Button from "../../components/UI/Button";
+import "./setup-profile.css";
 
 export default function Setup() {
   const navigate = useNavigate();
@@ -173,8 +173,10 @@ export default function Setup() {
 
   return (
     <div className="setup-profile-page">
-      <Stepper steps={steps} current={idx} />
-      <ProgressBar currentStep={idx + 1} totalSteps={steps.length} />
+      {/* Step list (Stepper) hidden per request */}
+      <div style={{ marginTop: 0 }}>
+        <ProgressBar currentStep={idx + 1} totalSteps={steps.length} />
+      </div>
 
       {/* Skip button (subtle, medium) aligned right under the progress bar */}
       <div style={{ display: "flex", justifyContent: "flex-end", padding: "0 16px" }}>
