@@ -10,3 +10,9 @@ main:has(.profile-stats-tab) {
   padding-left: 0;
   padding-right: 0;
 }
+
+.info-tab-header {
+  display: flex;
+  justify-content: flex-end; /* Aligns to the right ✅ */
+  align-items: center;
+}

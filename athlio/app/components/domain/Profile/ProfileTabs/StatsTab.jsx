@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../../../lib/supabase";
 import TableStats from "../../Scouting/TableStats";
+import EditIcon from "../../../../assets/icons/edit.svg?react";
 import "./StatsTab.css";
+import Button from "../../../UI/Button";
 
-export default function StatsTab({ profile }) {
+export default function StatsTab({ profile, isMe = false }) {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
   const [error, setError] = useState(null);
@@ -66,6 +68,17 @@ export default function StatsTab({ profile }) {
   return (
     <main>
       <div className="profile-stats-tab">
+        <div className="info-tab-header">
+          {isMe && (
+            <Button
+              size="medium"
+              type="outline"
+              Icon={EditIcon}
+              className="edit-info-btn"
+              onClick={() => (window.location.href = "/edit-profile")}
+            />
+          )}
+        </div>
         <section className="player-stats">
           <TableStats players={players} />
         </section>
