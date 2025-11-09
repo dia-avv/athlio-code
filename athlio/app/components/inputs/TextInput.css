@@ -1,0 +1,43 @@
+.textinput-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.textinput-label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.textinput-wrapper {
+  display: flex;
+  height: 44px;
+  padding: 13px 12px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  background: var(--Gray-100, #F0F0F3);
+}
+
+.textinput-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1 0 0;
+}
+
+.textinput-field {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+  color: #000;
+}
+
+.textinput-field::placeholder {
+  color: #9b9b9b;
+}

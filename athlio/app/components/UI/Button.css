@@ -38,6 +38,17 @@
   font-size: var(--text-xs);
 }
 
+.button--big {
+  display: flex;
+  width: 100%;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.button--big p {
+  font-size: var(--text-base);
+}
+
 .button--primary {
   background-color: var(--color-accent);
   color: var(--color-background);
