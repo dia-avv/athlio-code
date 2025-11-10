@@ -3,8 +3,9 @@ import { supabase } from "../../../../lib/supabase";
 import BasicPost from "../../Post/BasicPost";
 import MatchPost from "../../Post/MatchPost";
 import "./PostsTab.css";
+import IconButton from "../../../UI/IconButton";
+import PlusIcon from "../../../../assets/icons/plus.svg?react";
 
-// 🔁 same post switcher logic reused from Feed
 function PostSwitcher({ post }) {
   const prof = post.profiles || {};
   const club = prof.club || {};
@@ -57,7 +58,7 @@ function PostSwitcher({ post }) {
   );
 }
 
-export default function PostsTab({ profile }) {
+export default function PostsTab({ profile, isMe = false }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -71,7 +72,6 @@ export default function PostsTab({ profile }) {
       setLoading(true);
       setError(null);
 
-      // 👇 Fetch all posts authored by this profile
       const { data, error } = await supabase
         .from("posts")
         .select(
@@ -127,11 +127,43 @@ export default function PostsTab({ profile }) {
 
   if (loading) return <p>Loading posts…</p>;
   if (error) return <p className="error">Failed to load posts: {error}</p>;
-  if (!posts.length) return <p>No posts yet.</p>;
+
+  // 🧩 Empty state for your own profile
+  if (!posts.length && isMe) {
+    return (
+      <main>
+        <div className="profile-stats-tab">
+          <div className="empty-state-box">
+            <p className="empty-title">You don’t have available posts yet.</p>
+            <p className="empty-subtitle">Add your post manually.</p>
+          </div>
+          <div className="empty-icon-container">
+            <IconButton
+              size="medium"
+              type="primary"
+              icon={PlusIcon}
+              onClick={() => (window.location.href = "/add-post")}
+            />
+            <p className="empty-subtitle">Add a post.</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // 🧩 Empty state for others
+  if (!posts.length)
+    return (
+      <main>
+        <div className="profile-stats-tab">
+          <p className="empty-subtitle">No posts yet.</p>
+        </div>
+      </main>
+    );
 
   return (
     <main>
-      <div className="profile-posts-tab">
+      <div className="profile-stats-tab">
         {posts.map((post) => (
           <PostSwitcher key={post.id} post={post} />
         ))}

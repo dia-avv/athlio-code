@@ -3,9 +3,11 @@ import { supabase } from "../../../../lib/supabase";
 import MatchCard from "../../Post/MatchCard";
 import Button from "../../../UI/Button";
 import Accordion from "../../../UI/Accordion";
+import IconButton from "../../../UI/IconButton";
+import PlusIcon from "../../../../assets/icons/plus.svg?react";
 import "./MatchesTab.css";
 
-export default function MatchesTab({ profile }) {
+export default function MatchesTab({ profile, isMe = false }) {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,7 +23,6 @@ export default function MatchesTab({ profile }) {
       setLoading(true);
       setError(null);
 
-      // Base query
       let query = supabase
         .from("posts")
         .select(
@@ -67,7 +68,7 @@ export default function MatchesTab({ profile }) {
       noImageMatches.forEach((m) => {
         if (!m.date_of_game) return;
         const year = new Date(m.date_of_game).getFullYear();
-        const seasonStart = `${year}-${year + 1}`; // e.g. 2024–2025
+        const seasonStart = `${year}-${year + 1}`;
         seasons.add(seasonStart);
       });
 
@@ -96,17 +97,48 @@ export default function MatchesTab({ profile }) {
           return date >= startDate && date <= endDate;
         });
 
-  // Label for dropdown
   const seasonLabel =
-    season === "all" ? "All Seasons" : season.replace("-", "–"); // e.g. 2024–2025 → 2024–2025
+    season === "all" ? "All Seasons" : season.replace("-", "–");
 
   if (loading) return <p>Loading matches…</p>;
   if (error) return <p className="error">Failed to load matches: {error}</p>;
-  if (!matches.length) return <p>No match posts yet.</p>;
+
+  // 🧩 Empty state for your own profile
+  if (!matches.length && isMe) {
+    return (
+      <main>
+        <div className="profile-stats-tab">
+          <div className="empty-state-box">
+            <p className="empty-title">You don’t have available matches yet.</p>
+            <p className="empty-subtitle">Add your match manually.</p>
+          </div>
+
+          <div className="empty-icon-container">
+            <IconButton
+              size="medium"
+              type="primary"
+              icon={PlusIcon}
+              onClick={() => (window.location.href = "/add-post")}
+            />
+            <p className="empty-subtitle">Add a match.</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // 🧩 Empty state for others
+  if (!matches.length)
+    return (
+      <main>
+        <div className="profile-stats-tab">
+          <p className="empty-subtitle">No match posts yet.</p>
+        </div>
+      </main>
+    );
 
   return (
     <main>
-      {/* 🏟 Match Cards */}
       <div className="profile-matches-tab">
         <Accordion title={`Season ${seasonLabel}`}>
           <Button
@@ -126,6 +158,7 @@ export default function MatchesTab({ profile }) {
             />
           ))}
         </Accordion>
+
         {filteredMatches.map((m) => (
           <MatchCard
             key={m.id}

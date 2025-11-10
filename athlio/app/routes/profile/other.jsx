@@ -113,6 +113,28 @@ export default function OtherProfile() {
 
   const canFollow = meId && meId !== profile.id;
 
+  // === Define role-based tabs ===
+  const tabsByRole = {
+    athlete: [
+      { id: "posts", label: "Posts" },
+      { id: "info", label: "Info" },
+      { id: "stats", label: "Stats" },
+      { id: "matches", label: "Matches" },
+    ],
+    scout: [
+      { id: "posts", label: "Posts" },
+      { id: "info", label: "Info" },
+    ],
+    organization: [
+      { id: "posts", label: "Posts" },
+      { id: "info", label: "Info" },
+      { id: "matches", label: "Matches" },
+      { id: "people", label: "People" },
+    ],
+  };
+
+  const currentTabs = tabsByRole[profile.role] || tabsByRole.athlete;
+
   return (
     <div className="page profile other">
       <ProfileHeader
@@ -123,20 +145,20 @@ export default function OtherProfile() {
         busy={busy}
       />
       <NavigationTabs
-        tabs={[
-          { id: "posts", label: "Posts" },
-          { id: "info", label: "Info" },
-          { id: "stats", label: "Stats" },
-          { id: "matches", label: "Matches " },
-        ]}
+        tabs={currentTabs}
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
       <div className="profile-tab-content">
-        {activeTab === "posts" && <PostsTab profile={profile} />}
-        {activeTab === "stats" && <StatsTab profile={profile} />}
-        {activeTab === "info" && <InfoTab profile={profile} />}
-        {activeTab === "matches" && <MatchesTab profile={profile} />}
+        {activeTab === "posts" && <PostsTab profile={profile} isMe={false} />}
+        {activeTab === "stats" && <StatsTab profile={profile} isMe={false} />}
+        {activeTab === "info" && <InfoTab profile={profile} isMe={false} />}
+        {activeTab === "matches" && (
+          <MatchesTab profile={profile} isMe={false} />
+        )}
+        {activeTab === "people" && (
+          <div className="page">People tab coming soon...</div>
+        )}
       </div>
     </div>
   );

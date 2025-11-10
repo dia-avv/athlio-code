@@ -16,6 +16,7 @@ import IconButton from "./UI/IconButton";
 const TOPBAR_CONFIG = {
   "/home": {
     title: null,
+    left: () => <MainLogo className="main-logo" />,
     left: () => <MainLogo className="main-logo" aria-label="Logo" />,
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
@@ -161,7 +162,7 @@ const TOPBAR_CONFIG = {
           onClick={() => nav(-1)}
           className="topbar-back"
         />
-        <img src={MainLogo} className="main-logo" alt="Athlio" />
+        <MainLogo className="main-logo" />
       </div>
     ),
     right: (nav, profile) => (
@@ -201,6 +202,103 @@ const TOPBAR_CONFIG = {
         Icon={() => <img src={ShareIcon} alt="Share" />}
       />
     ),
+  },
+  "/profile/me/edit": {
+    title: "Edit profile",
+    left: (nav) => (
+      <button
+        className="topbar-close-btn"
+        onClick={() => nav(-1)}
+        aria-label="Close edit"
+      >
+        <img src={CloseIcon} alt="Close" />
+      </button>
+    ),
+    center: () => <h1 className="topbar-title">Edit profile</h1>,
+  },
+  "/scouting": {
+    title: null,
+    left: () => <img src={MainLogo} className="main-logo" alt="Athlio" />,
+    right: (nav, _profile, counts) => (
+      <div className="topbar-icons">
+        <div className="icon-with-badge" onClick={() => nav("/notifications")}>
+          <img src={NotificationsIcon} alt="Notifications" />
+          {counts.notifications > 0 && (
+            <span className="badge">+{counts.notifications}</span>
+          )}
+        </div>
+        <div className="icon-with-badge" onClick={() => nav("/chat")}>
+          <img src={MessagesIcon} alt="Messages" />
+          {counts.messages > 0 && (
+            <span className="badge">{counts.messages}</span>
+          )}
+        </div>
+      </div>
+    ),
+  },
+  "/profile/me": {
+    title: null,
+    left: (nav, profile) => (
+      <div className="topbar-left-with-back">
+        <img
+          src={BackIcon}
+          alt="Back"
+          onClick={() => nav(-1)}
+          className="topbar-back"
+        />
+        <MainLogo className="main-logo" />
+      </div>
+    ),
+    right: (nav, profile) => (
+      <div className="topbar-icons">
+        <img
+          src={BurgerMenuIcon}
+          alt="Menu"
+          className="topbar-menu-icon"
+          onClick={() => {
+            // TODO: open your menu later
+            console.log("Menu clicked");
+          }}
+        />
+      </div>
+    ),
+  },
+  "/profile/other": {
+    title: null,
+    left: (nav) => (
+      <div className="topbar-left-with-back">
+        <img
+          src={BackIcon}
+          alt="Back"
+          onClick={() => nav(-1)}
+          className="topbar-back"
+        />
+        <MainLogo className="main-logo" />
+      </div>
+    ),
+    right: () => (
+      <Button
+        size="small"
+        type="outline"
+        onClick={() => {
+          console.log("Share clicked");
+        }}
+        Icon={() => <img src={ShareIcon} alt="Share" />}
+      />
+    ),
+  },
+  "/profile/me/edit": {
+    title: "Edit profile",
+    left: (nav) => (
+      <button
+        className="topbar-close-btn"
+        onClick={() => nav(-1)}
+        aria-label="Close edit"
+      >
+        <img src={CloseIcon} alt="Close" />
+      </button>
+    ),
+    center: () => <h1 className="topbar-title">Edit profile</h1>,
   },
   "/scouting": {
     title: null,

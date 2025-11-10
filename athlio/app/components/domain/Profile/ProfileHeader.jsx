@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"; // 👈 import this
 import Button from "../../UI/Button";
 import ProfilePicture from "../../UI/ProfilePicture";
 import Tag from "../../UI/Tag";
@@ -19,6 +20,8 @@ export default function ProfileHeader({
   toggleFollow,
   busy,
 }) {
+  const navigate = useNavigate(); // ✅ create the navigate hook
+
   if (!profile) return null;
 
   const hasTags = profile.role || profile.position;
@@ -31,7 +34,12 @@ export default function ProfileHeader({
     <section className="profile-header">
       {/* === Top row: avatar, name, and tags === */}
       <div className="profile-header-row profile-header-top">
-        <ProfilePicture size="large" verified={true} imgUrl={Player} />
+        <ProfilePicture
+          size="large"
+          verified={profile.verified}
+          imgUrl={profile.avatar_url || Player}
+        />
+
         <div className="profile-top-text">
           <div className="profile-name-row">
             <h2 className="profile-name">{profile.full_name}</h2>
@@ -60,13 +68,16 @@ export default function ProfileHeader({
             </span>
 
             {isMe && (
-              <span className="profile-following">
+              <span
+                className="profile-following"
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/profile/me/following")}
+              >
                 <strong>{profile.following_count ?? 0}</strong> following
               </span>
             )}
           </div>
 
-          {/* show location for everyone; on `isMe` it will still sit below follow-line */}
           {locationText && (
             <div className="profile-location">
               <LocationIcon />
@@ -76,7 +87,7 @@ export default function ProfileHeader({
         </div>
       </div>
 
-      {/* ===  Bottom section: buttons === */}
+      {/* === Bottom section: buttons === */}
       <div className="profile-header-row profile-buttons">
         {isMe ? (
           <>
@@ -84,8 +95,8 @@ export default function ProfileHeader({
               size="medium"
               type="outline"
               label="Edit Profile"
-              onClick={() => console.log("Edit Profile clicked")}
               Icon={EditIcon}
+              onClick={() => navigate("/profile/me/edit")} // ✅ navigate to edit page
             />
             <Button
               size="medium"
