@@ -17,6 +17,12 @@ concurrency:
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      # expose client envs to Vite/React Router during build
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      # base path for GH Pages (repo name)
+      BASENAME: "/athlio-code"
     steps:
       - uses: actions/checkout@v4
 
@@ -26,14 +32,15 @@ jobs:
           cache: npm
           cache-dependency-path: athlio/package-lock.json
 
-      - run: npm install --legacy-peer-deps
+      - run: npm ci --legacy-peer-deps
         working-directory: ./athlio
 
-      # Not strictly needed on macOS, but leaving it won’t hurt.
+      # Optional on macOS; harmless to keep
       - run: npm rebuild rollup
         working-directory: ./athlio
 
-      - run: npm run build
+      # force SPA mode so the server bundle won't try to use Supabase on build
+      - run: npm run build -- --ssr=false
         working-directory: ./athlio
 
       - run: cp build/client/index.html build/client/404.html
