@@ -18,7 +18,6 @@ const TOPBAR_CONFIG = {
   "/home": {
     title: null,
     left: () => <MainLogo className="main-logo" />,
-    left: () => <MainLogo className="main-logo" aria-label="Logo" />,
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>

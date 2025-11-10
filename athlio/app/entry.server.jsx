@@ -1,4 +1,4 @@
-import { RemixServer } from "react-router";
+import { RemixServer } from "react-router/dom";
 import { renderToReadableStream } from "react-dom/server";
 
 const BASENAME = "/athlio-code";
