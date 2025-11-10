@@ -40,7 +40,7 @@ export default function Navbar() {
           />
         </Link>
         <span>Loading...</span>
-        <Link to="/profile" className={isActive("/profile") ? "active" : ""}>
+        <Link to="/profile/me" className={isActive("/profile/me") ? "active" : ""}>
           <div className="profile-placeholder" />
         </Link>
       </nav>
@@ -60,9 +60,14 @@ export default function Navbar() {
             height="24"
           />
         </Link>
-        <Link to="/search" className={isActive("/search") ? "active" : ""}>
+        <Link
+          to="/scouting/search"
+          className={isActive("/scouting/search") ? "active" : ""}
+        >
           <img
-            src={isActive("/search") ? SearchActive : SearchIcon}
+            src={
+              isActive("/scouting/search") ? SearchActive : SearchIcon
+            }
             alt="Home"
             width="24"
             height="24"
@@ -96,11 +101,13 @@ export default function Navbar() {
           </Link>
         ) : (
           <Link
-            to="/challenges"
-            className={isActive("/challenges") ? "active" : ""}
+            to="/notifications"
+            className={isActive("/notifications") ? "active" : ""}
           >
             <img
-              src={isActive("/challenges") ? ChallengesActive : ChallengesIcon}
+              src={
+                isActive("/notifications") ? ChallengesActive : ChallengesIcon
+              }
               alt="Home"
               width="24"
               height="24"
