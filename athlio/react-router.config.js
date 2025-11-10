@@ -1,8 +1,8 @@
 /** @type {import('@react-router/dev/config').Config} */
 export default {
-  appDirectory: "app",
+  appDirectory: ".",
   buildDirectory: "build",
-  ssr: false, // disable SSR since you're deploying a client-only SPA
-  basename: "/athlio-code",
-  prerender: ["/"], // you can remove this entirely if not pre-rendering
+  ssr: false, // SPA build for GitHub Pages
+  basename: "/athlio-code", // your repo name
+  prerender: ["/"], // optional
 };
