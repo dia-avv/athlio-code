@@ -1,6 +1,6 @@
 import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { RemixBrowser } from "react-router/dom";
+import { RemixBrowser } from "react-router";
 
 const BASENAME = "/athlio-code";
 
