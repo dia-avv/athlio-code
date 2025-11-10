@@ -84,11 +84,11 @@ export default function Navbar() {
         </button>
         {role === "scout" ? (
           <Link
-            to="/comparison"
-            className={isActive("/comparison") ? "active" : ""}
+            to="/scouting"
+            className={isActive("/scouting") ? "active" : ""}
           >
             <img
-              src={isActive("/comparison") ? ComparisonActive : ComparisonIcon}
+              src={isActive("/scouting") ? ComparisonActive : ComparisonIcon}
               alt="Home"
               width="24"
               height="24"
