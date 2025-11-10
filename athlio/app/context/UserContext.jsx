@@ -36,6 +36,42 @@ export function UserProvider({ children }) {
 
   const [club, setClub] = useState(null);
 
+  // Derive role and permissions from the loaded profile. We accept multiple possible column names.
+  const roleValue = (
+    profile?.role ||
+    profile?.account_type ||
+    profile?.type ||
+    ""
+  )
+    .toString()
+    .toLowerCase();
+  const isScout = roleValue === "scout";
+
+  // Centralized permissions used across the app
+  const permissions = {
+    canPostBasic: true,
+    canPostEvent: true,
+    canPostMatch: !isScout,
+    canPostActivity: !isScout,
+  };
+
+  // Small helper so UI can quickly check
+  function canPost(kind) {
+    switch ((kind || "").toString().toLowerCase()) {
+      case "post":
+      case "basic":
+        return permissions.canPostBasic;
+      case "event":
+        return permissions.canPostEvent;
+      case "match":
+        return permissions.canPostMatch;
+      case "activity":
+        return permissions.canPostActivity;
+      default:
+        return false;
+    }
+  }
+
   async function fetchProfileAndCounts(uid) {
     const { data } = await supabase
       .from("profiles")
@@ -48,7 +84,19 @@ export function UserProvider({ children }) {
   }
 
   return (
-    <UserContext.Provider value={{ user, profile, counts, setCounts, loading }}>
+    <UserContext.Provider
+      value={{
+        user,
+        profile,
+        counts,
+        setCounts,
+        loading,
+        role: roleValue,
+        isScout,
+        permissions,
+        canPost,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

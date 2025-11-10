@@ -18,7 +18,7 @@ export default function ClubPicker({ sport, value, onChange }) {
     deb.current = setTimeout(async () => {
       // If the user hasn't typed much yet, surface a few suggested teams
       // for the current sport to help them pick faster.
-        if (!query || query.length < 2) {
+      if (!query || query.length < 2) {
         const { data, error } = await supabase
           .from("clubs")
           .select("id, name, city, country_code, logo_url")
@@ -74,7 +74,9 @@ export default function ClubPicker({ sport, value, onChange }) {
         style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
       >
         <h1 className="role-header-title">Add the team you play for</h1>
-        <p className="role-header-subtitle">This will help you post match results and stats</p>
+        <p className="role-header-subtitle">
+          This will help you post match results and stats
+        </p>
       </div>
 
       {/* Use the visual SearchBar; when clicked show a real input for typing */}
@@ -123,7 +125,11 @@ export default function ClubPicker({ sport, value, onChange }) {
                   onClick={() => pickClub(c.id)}
                 >
                   {c.logo_url ? (
-                    <img src={c.logo_url} alt={`${c.name} logo`} className="club-logo" />
+                    <img
+                      src={c.logo_url}
+                      alt={`${c.name} logo`}
+                      className="club-logo"
+                    />
                   ) : (
                     <FootballIcon className="club-logo-svg" aria-hidden />
                   )}

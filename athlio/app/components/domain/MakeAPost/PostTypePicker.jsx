@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../../context/UserContext";
 import "./PostTypePicer.css";
 import PostTypeButton from "../../UI/PostTypeButton";
 import PostIcon from "../../../assets/icons/post.svg?react";
@@ -6,6 +8,9 @@ import ActivityIcon from "../../../assets/icons/activity.svg?react";
 import EventIcon from "../../../assets/icons/event.svg?react";
 
 export default function PostTypePicker({ onChoose }) {
+  const navigate = useNavigate();
+  const { isScout, canPost } = useUser();
+
   const types = [
     { key: "post", title: "Post", icon: PostIcon },
     {
@@ -25,14 +30,22 @@ export default function PostTypePicker({ onChoose }) {
     },
   ];
 
+  const visibleTypes = isScout
+    ? types.filter((t) => !["match", "activity"].includes(t.key))
+    : types;
+
   return (
     <div className="post-type-picker">
-      {types.map((t) => (
+      {visibleTypes.map((t) => (
         <PostTypeButton
           key={t.key}
           title={t.title}
           icon={t.icon}
-          onClick={() => onChoose?.(t.key)}
+          onClick={() => {
+            if (!canPost(t.key)) return;
+            if (t.key === "match") navigate("/add-post/match");
+            else onChoose?.(t.key);
+          }}
         />
       ))}
     </div>

@@ -9,9 +9,21 @@ export default function MatchComposer({
   imagePreview,
   onCaptionChange,
 }) {
+  const isLikelyId = (s) => {
+    if (!s || typeof s !== "string") return false;
+    const t = s.trim();
+    if (!t) return false;
+    const isDigits = /^\d+$/.test(t);
+    const isUuid =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+        t,
+      );
+    return isDigits || isUuid;
+  };
+
   const teamToText = (val, fallback) => {
     if (!val) return fallback;
-    if (typeof val === "string") return val;
+    if (typeof val === "string") return isLikelyId(val) ? "" : val;
     if (Array.isArray(val)) return teamToText(val[0], fallback);
     if (typeof val === "object") {
       return (
@@ -21,38 +33,28 @@ export default function MatchComposer({
         val.title ||
         val.club_name ||
         val.club ||
-        String(val.club_id || "") ||
-        fallback
+        ""
       );
     }
     return fallback;
   };
 
-  const [yourTeamText, setYourTeamText] = useState(
-    teamToText(form?.your_team, "Your team"),
-  );
-  const [opponentText, setOpponentText] = useState(
-    teamToText(form?.opponent_team, "Opponent"),
-  );
+  const [yourTeamText, setYourTeamText] = useState("Your team");
+  const [opponentText, setOpponentText] = useState("Opponent");
 
   useEffect(() => {
     const val = form?.your_team;
     const base = teamToText(val, "");
     // if we already have a readable string, keep it
-    if (
-      base &&
-      typeof base === "string" &&
-      base.trim() &&
-      base.indexOf("-") === -1
-    ) {
-      setYourTeamText(base);
+    if (base && typeof base === "string" && base.trim() && !isLikelyId(base)) {
+      setYourTeamText(base.trim());
       return;
     }
     const id = Array.isArray(val)
       ? val[0]?.club_id || val[0]?.id || val[0]
       : typeof val === "object"
         ? val.club_id || val.id || val.value
-        : base;
+        : null;
     if (!id) {
       setYourTeamText("Your team");
       return;
@@ -66,7 +68,7 @@ export default function MatchComposer({
         .maybeSingle();
       if (!ignore) {
         setYourTeamText(
-          data?.name || data?.club_name || data?.title || String(id),
+          data?.name || data?.club_name || data?.title || "Your team",
         );
       }
     })();
@@ -78,20 +80,15 @@ export default function MatchComposer({
   useEffect(() => {
     const val = form?.opponent_team;
     const base = teamToText(val, "");
-    if (
-      base &&
-      typeof base === "string" &&
-      base.trim() &&
-      base.indexOf("-") === -1
-    ) {
-      setOpponentText(base);
+    if (base && typeof base === "string" && base.trim() && !isLikelyId(base)) {
+      setOpponentText(base.trim());
       return;
     }
     const id = Array.isArray(val)
       ? val[0]?.club_id || val[0]?.id || val[0]
       : typeof val === "object"
         ? val.club_id || val.id || val.value
-        : base;
+        : null;
     if (!id) {
       setOpponentText("Opponent");
       return;
@@ -105,7 +102,7 @@ export default function MatchComposer({
         .maybeSingle();
       if (!ignore) {
         setOpponentText(
-          data?.name || data?.club_name || data?.title || String(id),
+          data?.name || data?.club_name || data?.title || "Opponent",
         );
       }
     })();
