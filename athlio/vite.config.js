@@ -1,9 +1,8 @@
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), svgr()],
-  base: "/athlio-code/", // keep this since you're deploying to GitHub Pages
+  plugins: [reactRouter(), svgr()],
+  base: "/athlio-code/",
 });

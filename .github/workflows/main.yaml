@@ -16,7 +16,13 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+    env:
+      # expose client envs to Vite/React Router during build
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      # base path for GH Pages (repo name)
+      BASENAME: "/athlio-code"
     steps:
       - uses: actions/checkout@v4
 
@@ -26,30 +32,27 @@ jobs:
           cache: npm
           cache-dependency-path: athlio/package-lock.json
 
-      - name: Install deps
-        run: npm ci
+      - run: npm ci --legacy-peer-deps
         working-directory: ./athlio
 
-      - name: Build
-        run: npm run build
-        working-directory: ./athlio
-        env:
-          # if you need envs at build-time, expose ONLY safe, public ones
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-
-      - name: SPA 404 fallback
-        run: cp dist/index.html dist/404.html
+      # Optional on macOS; harmless to keep
+      - run: npm rebuild rollup
         working-directory: ./athlio
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      # force SPA mode so the server bundle won't try to use Supabase on build
+      - run: npm run build
+        working-directory: ./athlio
+
+      - run: cp build/client/index.html build/client/404.html
+        working-directory: ./athlio
+
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: athlio/dist
+          path: athlio/build/client
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
