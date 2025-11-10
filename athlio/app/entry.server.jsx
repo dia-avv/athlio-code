@@ -1,7 +1,7 @@
 import { RemixServer } from "@react-router/react";
 import { renderToReadableStream } from "react-dom/server";
 
-const BASENAME = "/athlio";
+const BASENAME = "/athlio-code";
 
 export default async function handleRequest(request, status, headers, context) {
   const stream = await renderToReadableStream(
