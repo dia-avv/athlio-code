@@ -1,22 +1,89 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import TextInput from "../../inputs/TextInput";
-import ClubPicker from "../onboarding/ClubPicker";
+import { TeamSelectFields } from "./ClubPickerPost";
 import { supabase } from "../../../lib/supabase";
+import "./MatchPostForm.css";
+import { PopUp, PopUpActions } from "../../UI/PopUp";
+import Button from "../../UI/Button";
+import CheckIcon from "../../../assets/icons/check.svg?react";
+import CloseIcon from "../../../assets/icons/close.svg?react";
+import MatchComposer from "./MatchComposer";
+import DateInput from "../../inputs/DateInput";
 
 async function resolveClubName(club) {
   if (!club) return null;
-  if (club.club_other_name && club.club_other_name.trim()) {
-    return club.club_other_name.trim();
+
+  // If already a simple string, trust it
+  if (typeof club === "string") return club.trim() || null;
+
+  // Try common name fields first
+  const inlineName =
+    (club.club_other_name && club.club_other_name.trim()) ||
+    club.name ||
+    club.label ||
+    club.title ||
+    club.club_name ||
+    null;
+  if (inlineName) return inlineName;
+
+  // Determine an id we can look up
+  const candidateId = club.club_id || club.id || club.value || null;
+  if (!candidateId) return null;
+
+  // Fetch from DB by id
+  const { data, error } = await supabase
+    .from("clubs")
+    .select("name")
+    .eq("id", candidateId)
+    .maybeSingle();
+
+  if (error) {
+    console.warn("resolveClubName lookup failed", { candidateId, error });
+    return null;
   }
-  if (club.club_id) {
-    const { data, error } = await supabase
-      .from("clubs")
-      .select("name")
-      .eq("id", club.club_id)
-      .single();
-    if (!error && data?.name) return data.name;
+  return data?.name ?? null;
+}
+
+async function uploadMediaIfAny(file, userId) {
+  if (!file || !userId) return null;
+  try {
+    const bucket = "post-media";
+    const ext = (file.name?.split(".").pop() || "bin").toLowerCase();
+    const path = `${userId}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error: upErr } = await supabase.storage
+      .from(bucket)
+      .upload(path, file, {
+        contentType: file.type || "application/octet-stream",
+        upsert: false,
+      });
+    if (upErr) throw upErr;
+    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    return data?.publicUrl || null;
+  } catch (e) {
+    console.error("upload failed", e);
+    return null;
   }
-  return null;
+}
+
+function normalizeClubValue(v) {
+  if (!v) return { club_id: null, club_other_name: "" };
+
+  if (typeof v === "string") {
+    return { club_id: null, club_other_name: v };
+  }
+
+  // Object case: try to preserve id and a readable fallback name
+  const id = v.club_id ?? v.id ?? v.value ?? null;
+  const other =
+    (v.club_other_name && v.club_other_name.trim()) ||
+    v.name ||
+    v.label ||
+    v.title ||
+    v.club_name ||
+    "";
+
+  return { club_id: id, club_other_name: other };
 }
 
 export default function MatchPostForm({ onCreated }) {
@@ -36,12 +103,21 @@ export default function MatchPostForm({ onCreated }) {
     opponent_team: { club_id: null, club_other_name: null },
 
     // score & stats
-    your_score: 0,
-    opponent_score: 0,
-    minutes_played: 0,
-    goals: 0,
-    assists: 0,
+    your_score: null,
+    opponent_score: null,
+    minutes_played: null,
+    goals: null,
+    assists: null,
   });
+
+  const navigate = useNavigate();
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showAskMedia, setShowAskMedia] = useState(false);
+  const [showCompose, setShowCompose] = useState(false);
+  const [caption, setCaption] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const fileRef = React.useRef(null);
 
   // handy patch setter
   function patch(update) {
@@ -56,34 +132,82 @@ export default function MatchPostForm({ onCreated }) {
     })();
   }, []);
 
+  useEffect(() => {
+    const onTopbarPost = () => {
+      if (saving) return; // avoid duplicate clicks
+      if (showCompose) {
+        // already on caption+preview -> save directly
+        savePost();
+      } else {
+        // still on the form -> open confirm flow (same as submit)
+        setShowConfirm(true);
+      }
+    };
+
+    document.addEventListener("composer:submit", onTopbarPost);
+    return () => document.removeEventListener("composer:submit", onTopbarPost);
+  }, [saving, showCompose, savePost]);
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (saving) return;
-    setSaving(true);
+    setShowConfirm(true);
+  }
 
+  function handleConfirmNo() {
+    setShowConfirm(false);
+    navigate("/home");
+  }
+  function handleConfirmYes() {
+    setShowConfirm(false);
+    setShowAskMedia(true);
+  }
+  async function handleAskMediaNo() {
+    setShowAskMedia(false);
+    setShowCompose(true);
+  }
+  function handleAskMediaYes() {
+    if (fileRef.current) fileRef.current.click();
+  }
+  async function onFileChange(e) {
+    const f = e.target.files?.[0];
+    setShowAskMedia(false);
+    if (f) {
+      setImageFile(f);
+      const url = URL.createObjectURL(f);
+      setImagePreview(url);
+    }
+    setShowCompose(true);
+  }
+
+  async function savePost() {
+    if (saving) return;
+    setSaving(true);
     try {
+      // Resolve display names
+      console.log("POSTING NAMES", {
+        your: form.your_team,
+        opp: form.opponent_team,
+      });
       const yourTeamName = await resolveClubName(form.your_team);
       const opponentName = await resolveClubName(form.opponent_team);
+      // Upload media if any
+      const mediaUrl = await uploadMediaIfAny(imageFile, meId);
 
-      // Build row for `posts` table. Adjust keys to your exact schema names.
       const row = {
         type: "match",
         league: form.league?.trim() || null,
         location: form.location?.trim() || null,
         date_of_game: form.date_of_game || null,
-
-        // team names (posts table has no club id columns)
         your_team: yourTeamName,
         opponent: opponentName,
-
-        // numbers
         your_score: Number(form.your_score) || 0,
         opponent_score: Number(form.opponent_score) || 0,
         minutes_played: Number(form.minutes_played) || 0,
         goals: Number(form.goals) || 0,
         assists: Number(form.assists) || 0,
-
-        // optional author if your schema needs it (remove if handled by DB default)
+        content: caption || null,
+        media: mediaUrl,
         author_id: meId || undefined,
         aura_count: 0,
       };
@@ -93,117 +217,166 @@ export default function MatchPostForm({ onCreated }) {
         .insert(row)
         .select("id")
         .single();
-
       if (error) throw error;
-
-      // notify parent and clear light fields
       onCreated?.(data.id);
-      patch({
-        league: "",
-        location: "",
-        date_of_game: "",
-        your_score: 0,
-        opponent_score: 0,
-        minutes_played: 0,
-        goals: 0,
-        assists: 0,
-      });
-      // keep selected clubs so user doesn't have to re-pick every time
+      navigate("/home");
     } catch (err) {
       console.error("Failed to save match post", err);
-      alert(
-        "Couldn't save the post. Check console for details and confirm column names in the `posts` table.",
-      );
+      alert("Couldn't save the post. Check console and your schema.");
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <form className="match-post-form-wrapper" onSubmit={handleSubmit}>
-      <div className="about-match-section">
-        <h2>About the match</h2>
-        <div className="inputs-container">
-          <TextInput
-            label="What league was it?"
-            value={form.league}
-            onChange={(v) => patch({ league: v })}
-          />
+    <>
+      {!showCompose && (
+        <form className="match-post-form-wrapper" onSubmit={handleSubmit}>
+          <div className="match-section">
+            <h2>About the match</h2>
+            <div className="inputs-container">
+              <TextInput
+                label="What league was it?"
+                value={form.league}
+                onChange={(v) => patch({ league: v })}
+              />
 
-          {/* Your team (from your ClubPicker). Do not change the component. */}
-          <ClubPicker
-            sport={form.primarySport || "football"}
-            value={form.your_team}
-            onChange={(v) => patch({ your_team: v })}
-          />
+              <TeamSelectFields
+                sport={form.primarySport || "football"}
+                homeTeam={form.your_team}
+                opponentTeam={form.opponent_team}
+                onChangeHome={(v) =>
+                  patch({
+                    your_team: normalizeClubValue(v),
+                  })
+                }
+                onChangeOpponent={(v) =>
+                  patch({
+                    opponent_team: normalizeClubValue(v),
+                  })
+                }
+              />
 
-          {/* Opponent team */}
-          <ClubPicker
-            sport={form.primarySport || "football"}
-            value={form.opponent_team}
-            onChange={(v) => patch({ opponent_team: v })}
-          />
+              <TextInput
+                label="Where was the game?"
+                value={form.location}
+                onChange={(v) => patch({ location: v })}
+              />
 
-          <TextInput
-            label="Where was the game?"
-            value={form.location}
-            onChange={(v) => patch({ location: v })}
-          />
+              {/* Here will be the calendar component */}
+              <DateInput
+                label="Date of game"
+                value={form.date_of_game}
+                onChange={(e) => patch({ date_of_game: e.target.value })}
+              />
 
-          {/* Here will be the calendar component */}
-          <div className="date-input">
-            <label htmlFor="date_of_game">Date of game</label>
-            <input
-              id="date_of_game"
-              type="date"
-              value={form.date_of_game}
-              onChange={(e) => patch({ date_of_game: e.target.value })}
+              <div className="score-inputs-container">
+                <div className="score">
+                  <p>Your Score*</p>
+                  <TextInput
+                    label="Score"
+                    value={form.your_score}
+                    onChange={(v) => patch({ your_score: Number(v) || 0 })}
+                  />
+                </div>
+                <p>:</p>
+                <div className="score">
+                  <TextInput
+                    label="Score"
+                    value={form.opponent_score}
+                    onChange={(v) => patch({ opponent_score: Number(v) || 0 })}
+                  />
+                  <p>Opponent Score*</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="match-section">
+            <h3>Your Stats</h3>
+            <div className="stats-container">
+              <TextInput
+                label="Minutes Played"
+                value={form.minutes_played}
+                onChange={(v) => patch({ minutes_played: Number(v) || 0 })}
+              />
+              <TextInput
+                label="Goals"
+                value={form.goals}
+                onChange={(v) => patch({ goals: Number(v) || 0 })}
+              />
+              <TextInput
+                label="Assists"
+                value={form.assists}
+                onChange={(v) => patch({ assists: Number(v) || 0 })}
+              />
+            </div>
+          </div>
+        </form>
+      )}
+      {showConfirm && (
+        <PopUp
+          title="Do you want to create a post about this match?"
+          onClose={handleConfirmNo}
+        >
+          <PopUpActions>
+            <Button
+              type="primary"
+              size="small"
+              label="Yes"
+              onClick={handleConfirmYes}
+              Icon={CheckIcon}
             />
-          </div>
+            <Button
+              type="outline"
+              size="small"
+              label="No"
+              onClick={handleConfirmNo}
+              Icon={CloseIcon}
+            />
+          </PopUpActions>
+        </PopUp>
+      )}
 
-          <div className="score-inputs-container">
-            <div className="your-score">
-              <p>Your Score*</p>
-              <TextInput
-                label="Score"
-                value={form.your_score}
-                onChange={(v) => patch({ your_score: Number(v) || 0 })}
-              />
-            </div>
-            <div className="opponent-score">
-              <TextInput
-                label="Score"
-                value={form.opponent_score}
-                onChange={(v) => patch({ opponent_score: Number(v) || 0 })}
-              />
-              <p>Opponent Score*</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="stats-section">
-        <TextInput
-          label="Minutes Played"
-          value={form.minutes_played}
-          onChange={(v) => patch({ minutes_played: Number(v) || 0 })}
-        />
-        <TextInput
-          label="Goals"
-          value={form.goals}
-          onChange={(v) => patch({ goals: Number(v) || 0 })}
-        />
-        <TextInput
-          label="Assists"
-          value={form.assists}
-          onChange={(v) => patch({ assists: Number(v) || 0 })}
-        />
-      </div>
+      {showAskMedia && (
+        <PopUp
+          title="Do you want to add a picture about this match?"
+          onClose={handleAskMediaNo}
+        >
+          <PopUpActions>
+            <Button
+              type="primary"
+              size="small"
+              label="Yes"
+              onClick={handleAskMediaYes}
+              Icon={CheckIcon}
+            />
+            <Button
+              type="outline"
+              size="small"
+              label="No"
+              onClick={handleAskMediaNo}
+              Icon={CloseIcon}
+            />
+          </PopUpActions>
+        </PopUp>
+      )}
 
-      <div style={{ marginTop: 16 }}>
-        <button type="submit" disabled={saving}>
-          {saving ? "Saving…" : "Post match"}
-        </button>
-      </div>
-    </form>
+      {showCompose && (
+        <MatchComposer
+          form={form}
+          caption={caption}
+          imagePreview={imagePreview}
+          onCaptionChange={setCaption}
+        />
+      )}
+
+      <input
+        ref={fileRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={onFileChange}
+      />
+    </>
   );
 }

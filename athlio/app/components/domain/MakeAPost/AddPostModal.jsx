@@ -41,7 +41,7 @@ export default function Modal({
 
   return (
     <div
-      className="modal-overlay"
+      className="addmodal-overlay"
       role="dialog"
       aria-modal="true"
       aria-labelledby={labelledBy}
@@ -50,7 +50,7 @@ export default function Modal({
       <div
         ref={ref}
         tabIndex={-1}
-        className={`modal-sheet ${closing ? "closing" : ""}`}
+        className={`addmodal-sheet ${closing ? "closing" : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

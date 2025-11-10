@@ -43,7 +43,7 @@ export default function Composer({
     [text, isUploading],
   );
 
-  // Let your existing topbar trigger submit via a custom event
+  // topbar submits the post
   useEffect(() => {
     const handler = async () => {
       if (!canPost) return;

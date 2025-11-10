@@ -16,7 +16,7 @@ import IconButton from "./UI/IconButton";
 const TOPBAR_CONFIG = {
   "/home": {
     title: null,
-    left: () => <img src={MainLogo} className="main-logo" alt="Athlio" />,
+    left: () => <MainLogo className="main-logo" aria-label="Logo" />,
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>
