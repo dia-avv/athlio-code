@@ -31,9 +31,10 @@
 }
 
 .post-media {
-  width: 100%;
+  width: auto;
   display: flex;
   justify-content: center;
+  height: 300px;
 }
 
 .post-image {
