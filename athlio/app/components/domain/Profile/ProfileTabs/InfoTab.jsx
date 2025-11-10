@@ -3,7 +3,7 @@ import { supabase } from "../../../../lib/supabase";
 import CardInfoSingle from "../../../UI/InfoCards";
 import EditIcon from "../../../../assets/icons/edit.svg?react";
 import Button from "../../../UI/Button";
-import "./InfoTab.css";
+import "./Infotab.css";
 import ExperienceList from "../../Scouting/ExperienceList";
 import { useNavigate } from "react-router";
 
