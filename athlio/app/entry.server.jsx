@@ -1,11 +1,11 @@
-import { ServerRouter } from "react-router";
+import { RemixServer } from "react-router";
 import { renderToReadableStream } from "react-dom/server";
 
 const BASENAME = "/athlio-code";
 
 export default async function handleRequest(request, status, headers, context) {
   const stream = await renderToReadableStream(
-    <ServerRouter
+    <RemixServer
       request={request}
       context={context}
       statusCode={status}
