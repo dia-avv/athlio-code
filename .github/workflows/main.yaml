@@ -16,13 +16,10 @@ concurrency:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
-      # expose client envs to Vite/React Router during build
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      # base path for GH Pages (repo name)
-      BASENAME: "/athlio-code"
     steps:
       - uses: actions/checkout@v4
 
@@ -32,18 +29,24 @@ jobs:
           cache: npm
           cache-dependency-path: athlio/package-lock.json
 
-      - run: npm ci --legacy-peer-deps
+      - name: Install deps
+        run: npm ci --legacy-peer-deps
         working-directory: ./athlio
 
-      # Optional on macOS; harmless to keep
-      - run: npm rebuild rollup
+      # IMPORTANT: your package.json "build" must be SPA:
+      # "build": "react-router build --ssr=false"
+      - name: Build (SPA)
+        run: npm run build
         working-directory: ./athlio
 
-      # force SPA mode so the server bundle won't try to use Supabase on build
-      - run: npm run build
-        working-directory: ./athlio
-
-      - run: cp build/client/index.html build/client/404.html
+      # Create 404.html for GH Pages deep links, but don't crash if path differs
+      - name: Create 404.html
+        run: |
+          if [ -f build/client/index.html ]; then
+            cp build/client/index.html build/client/404.html
+          elif [ -f build/index.html ]; then
+            cp build/index.html build/404.html
+          fi
         working-directory: ./athlio
 
       - uses: actions/upload-pages-artifact@v3
@@ -52,7 +55,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
