@@ -33,23 +33,26 @@ jobs:
         run: npm ci --legacy-peer-deps
         working-directory: ./athlio
 
-      # IMPORTANT: your package.json "build" must be SPA:
-      # "build": "react-router build --ssr=false"
+      # Ensure your package.json has: "build": "react-router build"
+      # and your react-router.config.js has basename: "/athlio-code/"
       - name: Build (SPA)
         run: npm run build
         working-directory: ./athlio
 
-      # Create 404.html for GH Pages deep links, but don't crash if path differs
-      - name: Create 404.html
+      # Add SPA fallback + nojekyll inside the output dir
+      - name: Prepare GH Pages artifacts
         run: |
-          if [ -f build/client/index.html ]; then
-            cp build/client/index.html build/client/404.html
-          elif [ -f build/index.html ]; then
-            cp build/index.html build/404.html
+          OUTDIR="build/client"
+          if [ ! -d "$OUTDIR" ]; then
+            # fallback for older configs
+            OUTDIR="build"
           fi
+          cp "$OUTDIR/index.html" "$OUTDIR/404.html"
+          touch "$OUTDIR/.nojekyll"
         working-directory: ./athlio
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: athlio/build/client
 

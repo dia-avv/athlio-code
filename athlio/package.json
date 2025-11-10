@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "postbuild": "node scripts/make-404.js",
     "dev": "react-router dev",
     "format": "prettier --write ."
   },
