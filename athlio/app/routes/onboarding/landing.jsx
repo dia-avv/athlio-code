@@ -22,11 +22,6 @@ export async function clientLoader() {
   }
 }
 
-// Optional: makes hydration show something instead of white screen
-export function HydrateFallback() {
-  return <div style={{ padding: 16 }}>Loading…</div>;
-}
-
 // 2) Component fallback: if the loader somehow doesn't fire, push anyway
 export default function LandingGate() {
   const navigate = useNavigate();
