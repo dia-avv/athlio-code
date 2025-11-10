@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -24,12 +24,12 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          # cache lockfile inside subfolder
           cache-dependency-path: athlio/package-lock.json
 
       - run: npm install --legacy-peer-deps
         working-directory: ./athlio
 
+      # Not strictly needed on macOS, but leaving it won’t hurt.
       - run: npm rebuild rollup
         working-directory: ./athlio
 
@@ -41,12 +41,11 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          # artifact path relative to repo root
           path: athlio/build/client
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
