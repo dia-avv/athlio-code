@@ -26,7 +26,7 @@ export default function AddPost() {
       if (error) throw error;
 
       // After successful post, go back to home/feed
-      navigate("home");
+      navigate("/home");
     } catch (err) {
       console.error("Failed to create post:", err.message);
     }

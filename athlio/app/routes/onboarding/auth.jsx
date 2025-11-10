@@ -67,7 +67,7 @@ export default function Auth() {
           .upsert({ id: uid }, { onConflict: "id" });
       }
 
-      return navigate("setup-profile", { replace: true });
+      return navigate("/setup-profile", { replace: true });
     }
 
     const { data: loginData, error: loginErr } =
@@ -81,7 +81,7 @@ export default function Auth() {
       await supabase.from("profiles").upsert({ id: uid }, { onConflict: "id" });
     }
 
-    navigate("home", { replace: true });
+    navigate("/home", { replace: true });
   }
 
   return (

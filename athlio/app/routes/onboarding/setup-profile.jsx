@@ -63,7 +63,7 @@ export default function Setup() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user) return navigate("auth", { replace: true });
+      if (!user) return navigate("/auth", { replace: true });
       const { data: profile, error: readErr } = await supabase
         .from("profiles")
         .select("*")
@@ -138,7 +138,7 @@ export default function Setup() {
       console.error("PROFILE UPSERT ERROR", upsertErr);
     }
 
-    navigate("home");
+    navigate("/home");
   }
 
   // Determine whether the Continue button should be enabled for the current

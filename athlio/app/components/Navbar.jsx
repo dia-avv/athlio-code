@@ -31,7 +31,7 @@ export default function Navbar() {
   if (loading) {
     return (
       <nav className="navbar">
-        <Link to="home" className={isActive("/home") ? "active" : ""}>
+        <Link to="/home" className={isActive("/home") ? "active" : ""}>
           <img
             src={isActive("/home") ? HomeActive : HomeIcon}
             alt="Home"
@@ -40,7 +40,7 @@ export default function Navbar() {
           />
         </Link>
         <span>Loading...</span>
-        <Link to="profile" className={isActive("/profile") ? "active" : ""}>
+        <Link to="/profile" className={isActive("/profile") ? "active" : ""}>
           <div className="profile-placeholder" />
         </Link>
       </nav>
@@ -52,7 +52,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <Link to="home" className={isActive("/home") ? "active" : ""}>
+        <Link to="/home" className={isActive("/home") ? "active" : ""}>
           <img
             src={isActive("/home") ? HomeActive : HomeIcon}
             alt="Home"
@@ -60,7 +60,7 @@ export default function Navbar() {
             height="24"
           />
         </Link>
-        <Link to="search" className={isActive("/search") ? "active" : ""}>
+        <Link to="/search" className={isActive("/search") ? "active" : ""}>
           <img
             src={isActive("/search") ? SearchActive : SearchIcon}
             alt="Home"
@@ -84,7 +84,7 @@ export default function Navbar() {
         </button>
         {role === "scout" ? (
           <Link
-            to="scouting"
+            to="/scouting"
             className={isActive("/scouting") ? "active" : ""}
           >
             <img
@@ -96,7 +96,7 @@ export default function Navbar() {
           </Link>
         ) : (
           <Link
-            to="challenges"
+            to="/challenges"
             className={isActive("/challenges") ? "active" : ""}
           >
             <img
@@ -108,7 +108,7 @@ export default function Navbar() {
           </Link>
         )}
         <Link
-          to="profile/me"
+          to="/profile/me"
           className={isActive("/profile/me") ? "active" : ""}
         >
           <div>

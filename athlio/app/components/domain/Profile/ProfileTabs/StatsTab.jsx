@@ -77,7 +77,7 @@ export default function StatsTab({ profile, isMe = false }) {
               type="outline"
               Icon={EditIcon}
               className="edit-info-btn"
-              onClick={() => navigate("edit-profile")}
+              onClick={() => navigate("/edit-profile")}
             />
           )}
         </div>

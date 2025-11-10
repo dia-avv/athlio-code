@@ -144,7 +144,7 @@ export default function PostsTab({ profile, isMe = false }) {
               size="medium"
               type="primary"
               icon={PlusIcon}
-              onClick={() => navigate("add-post")}
+              onClick={() => navigate("/add-post")}
             />
             <p className="empty-subtitle">Add a post.</p>
           </div>

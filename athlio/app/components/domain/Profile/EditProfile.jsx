@@ -57,7 +57,7 @@ export default function EditProfile() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        navigate("auth", { replace: true });
+        navigate("/auth", { replace: true });
         return;
       }
 
@@ -97,7 +97,7 @@ export default function EditProfile() {
     setSaving(false);
 
     if (error) setError(error.message);
-    else navigate("profile/me");
+    else navigate("/profile/me");
   }
 
   if (loading) return <p>Loading profile...</p>;

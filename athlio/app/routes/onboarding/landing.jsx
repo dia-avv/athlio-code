@@ -6,7 +6,7 @@ export async function clientLoader() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (session) return redirect("home");
+  if (session) return redirect("/home");
 
   const seen = localStorage.getItem("introSeen") === "true";
   return redirect(seen ? "auth" : "intro");

@@ -12,11 +12,11 @@ export default function PostPillBar({ onImageSelected }) {
   const fileInputRef = useRef(null);
 
   function handleMatchClick() {
-    navigate("add-post/match");
+    navigate("/add-post/match");
   }
 
   function handleEventClick() {
-    navigate("add-post/event");
+    navigate("/add-post/event");
   }
 
   function handlePictureClick() {

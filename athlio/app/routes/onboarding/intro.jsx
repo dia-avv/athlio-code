@@ -139,7 +139,7 @@ export default function Intro() {
 
   function goEmail() {
     localStorage.setItem("introSeen", "true");
-    navigate("auth");
+    navigate("/auth");
   }
 
   function goGoogle() {
@@ -154,7 +154,7 @@ export default function Intro() {
         },
       })
       .then(({ error }) => {
-        if (error) navigate("auth");
+        if (error) navigate("/auth");
       });
   }
 
