@@ -18,7 +18,9 @@ export function Layout({ children }) {
   const hideNavbar =
     pathname.startsWith("/auth") ||
     pathname.startsWith("/intro") ||
-    pathname.startsWith("/setup-profile");
+    pathname.startsWith("/setup-profile") ||
+    pathname.startsWith("/add-post") ||
+    pathname.includes("/setup-profile");
   const hideTopbar =
     pathname.startsWith("/auth") ||
     pathname.startsWith("/intro") ||
@@ -30,7 +32,11 @@ export function Layout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Athlio</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
           rel="stylesheet"

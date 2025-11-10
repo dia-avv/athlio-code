@@ -50,3 +50,18 @@
   width: 61px;
   height: auto;
 }
+
+.placeholder {
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-gray-500);
+  border-radius: 50%;
+}
+
+.button-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 24px;
+}

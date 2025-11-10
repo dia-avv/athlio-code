@@ -10,12 +10,21 @@ import {
   follow,
   unfollow,
 } from "../../../lib/follows";
+import { Link } from "react-router";
 
-export default function PostHeader({ name, position, club, date, authorId }) {
+export default function PostHeader({
+  name,
+  position,
+  club,
+  date,
+  authorId,
+  hideFollow = false,
+}) {
   const [isFollowing, setIsFollowing] = useState(null); // null = loading
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    if (hideFollow) return;
     let alive = true;
     (async () => {
       try {
@@ -28,7 +37,7 @@ export default function PostHeader({ name, position, club, date, authorId }) {
     return () => {
       alive = false;
     };
-  }, [authorId]);
+  }, [authorId, hideFollow]);
 
   function onToggle() {
     if (isFollowing === null) return;
@@ -47,13 +56,18 @@ export default function PostHeader({ name, position, club, date, authorId }) {
   }
 
   const loading = isFollowing === null || isPending;
+  const profileHref = `/profile/${authorId}`;
 
   return (
     <div className="post-header">
       <div className="header-left">
-        <ProfilePicture size="medium" verified={true} imgUrl={Player} />
+        <Link to={profileHref} className="author-link">
+          <ProfilePicture size="medium" verified={true} imgUrl={Player} />
+        </Link>
         <div className="header-text">
-          <p className="name">{name}</p>
+          <Link to={profileHref} className="author-link">
+            <p className="name">{name}</p>
+          </Link>
           <div className="subheader-text">
             <p className="role">
               {position && club
@@ -65,14 +79,16 @@ export default function PostHeader({ name, position, club, date, authorId }) {
         </div>
       </div>
 
-      <Button
-        size="small"
-        type={isFollowing ? "following" : "primary"}
-        label={loading ? "..." : isFollowing ? "" : "Follow"}
-        Icon={loading ? undefined : isFollowing ? CheckIcon : PlusIcon}
-        onClick={onToggle}
-        disabled={loading}
-      />
+      {!hideFollow && (
+        <Button
+          size="small"
+          type={isFollowing ? "following" : "primary"}
+          label={loading ? "..." : isFollowing ? "" : "Follow"}
+          Icon={loading ? undefined : isFollowing ? CheckIcon : PlusIcon}
+          onClick={onToggle}
+          disabled={loading}
+        />
+      )}
     </div>
   );
 }

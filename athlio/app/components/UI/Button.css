@@ -5,6 +5,8 @@
   justify-content: center;
   gap: 4px;
   width: auto;
+  /* Ensure Geist applies even on native <button> elements (some UAs don't inherit) */
+  font-family: "Geist", sans-serif;
   transition:
     background-color 200ms ease,
     color 200ms ease,
@@ -21,7 +23,7 @@
 }
 
 .button--medium {
-  padding: 16px;
+  padding: 9px 16px;
   border-radius: 8px;
 }
 
@@ -36,6 +38,18 @@
 
 .button--small p {
   font-size: var(--text-xs);
+}
+
+.button--big {
+  display: flex;
+  width: 100%;
+  /* 8px vertical padding as requested, keep horizontal spacing at 16px */
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.button--big p {
+  font-size: var(--text-base);
 }
 
 .button--primary {
@@ -65,6 +79,15 @@
 .button--outline:disabled {
   background-color: var(--color-gray-100);
   color: var(--color-gray-500);
+}
+
+/* Keep outlined buttons transparent when selected/active/focused
+   Some components toggle a `selected` class — ensure background stays transparent
+   so only the border (and optionally color) indicates selection. */
+.button--outline.selected,
+.button--outline:active,
+.button--outline:focus {
+  background-color: transparent;
 }
 
 .button--subtle {

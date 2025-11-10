@@ -34,3 +34,12 @@
   width: 32px;
   height: 32px;
 }
+
+/* Placeholder appearance when no image URL is provided */
+.profile-picture--placeholder {
+  background: var(--color-gray-100, #f3f4f6);
+  color: var(--color-gray-700, #6b7280);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

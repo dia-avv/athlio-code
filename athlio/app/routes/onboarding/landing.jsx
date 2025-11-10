@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 export async function clientLoader() {
   const {
