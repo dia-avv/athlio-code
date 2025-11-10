@@ -1,5 +1,12 @@
-import { RouterProvider } from "react-router";
+import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { routes } from "@react-router/dev/routes"; // generated automatically
+import { RemixBrowser } from "react-router"; // yes, name is cursed, it’s React Router’s client
 
-hydrateRoot(document, <RouterProvider routes={routes} />);
+startTransition(() => {
+  hydrateRoot(
+    document,
+    <StrictMode>
+      <RemixBrowser basename="/athlio-code" />
+    </StrictMode>,
+  );
+});
