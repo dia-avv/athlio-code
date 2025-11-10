@@ -1,7 +1,7 @@
 import { index, route } from "@react-router/dev/routes";
 
 export default [
-  route("/", "root.jsx", [
+  route("/", "routes/layout.jsx", [
     // landing gate
     index("routes/onboarding/landing.jsx"),
 
