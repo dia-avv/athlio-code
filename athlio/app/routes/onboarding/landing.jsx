@@ -1,18 +1,58 @@
+// routes/onboarding/landing.jsx
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { redirect } from "react-router";
 import { supabase } from "../../lib/supabase";
 
+// 1) Keep the loader (SPA requires `clientLoader`), but make it safe
 export async function clientLoader() {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    // guard window-only APIs in case something compiles weirdly
+    const seen =
+      typeof window !== "undefined" &&
+      localStorage.getItem("introSeen") === "true";
 
-  if (session) return redirect("/home");
+    const { data } = await supabase.auth.getSession();
+    const hasSession = !!data?.session;
 
-  const seen = localStorage.getItem("introSeen") === "true";
-  return redirect(seen ? "/auth" : "/intro");
+    return redirect(hasSession ? "/home" : seen ? "/auth" : "/intro");
+  } catch {
+    // failsafe so the route never renders blank
+    return redirect("/auth");
+  }
 }
 
+// Optional: makes hydration show something instead of white screen
+export function HydrateFallback() {
+  return <div style={{ padding: 16 }}>Loading…</div>;
+}
+
+// 2) Component fallback: if the loader somehow doesn't fire, push anyway
 export default function LandingGate() {
-  console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
-  return null;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let alive = true;
+
+    (async () => {
+      try {
+        const seen =
+          typeof window !== "undefined" &&
+          localStorage.getItem("introSeen") === "true";
+
+        const { data } = await supabase.auth.getSession();
+        const hasSession = !!data?.session;
+        const to = hasSession ? "/home" : seen ? "/auth" : "/intro";
+        if (alive) navigate(to, { replace: true });
+      } catch {
+        if (alive) navigate("/auth", { replace: true });
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, [navigate]);
+
+  return <div style={{ padding: 16 }}>Loading…</div>;
 }

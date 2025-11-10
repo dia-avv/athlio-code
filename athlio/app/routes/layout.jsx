@@ -9,6 +9,7 @@ export default function Layout() {
     pathname === "/add-post" || pathname.startsWith("/add-post/");
 
   const hideNavbar =
+    pathname === "/" ||
     pathname.startsWith("/auth") ||
     pathname.startsWith("/intro") ||
     pathname.startsWith("/setup-profile");
