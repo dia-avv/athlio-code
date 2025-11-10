@@ -13,11 +13,24 @@ export default function InfoTab({ profile, isMe = false }) {
   useEffect(() => {
     if (!profile?.id) return;
 
+    function sanitizeLogo(url) {
+      if (!url || typeof url !== "string") return null;
+      try {
+        const u = new URL(url);
+        if (u.protocol !== "https:") return null; // force https only
+        // hard-block known bad proxy hosts
+        if (u.hostname.includes("edgeone.app")) return null;
+        return url;
+      } catch {
+        return null;
+      }
+    }
+
     async function fetchExperiences() {
       setLoading(true);
 
       const { data, error } = await supabase
-        .from("experiences") // 👈 your table name (adjust if different)
+        .from("experiences")
         .select(
           "team_name, org_name, logo_url, start_date, end_date, is_current",
         )
@@ -27,7 +40,16 @@ export default function InfoTab({ profile, isMe = false }) {
       if (error) {
         console.error("Error fetching experiences:", error);
       } else {
-        setExperiences(data || []);
+        const rows = Array.isArray(data) ? data : [];
+        const processed = rows.map((row) => {
+          const clean = sanitizeLogo(row.logo_url);
+          return {
+            ...row,
+            logo_url: clean, // ExperienceList uses this
+            logo: clean, // optional normalized key
+          };
+        });
+        setExperiences(processed);
       }
 
       setLoading(false);
