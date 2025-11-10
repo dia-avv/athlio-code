@@ -128,13 +128,12 @@ const TOPBAR_CONFIG = {
   "/profile/me/edit": {
     title: "Edit profile",
     left: (nav) => (
-      <button
-        className="topbar-close-btn"
+      <IconButton
+        size="large"
+        type="subtle"
+        icon={CloseIcon}
         onClick={() => nav(-1)}
-        aria-label="Close edit"
-      >
-        <img src={CloseIcon} alt="Close" />
-      </button>
+      />
     ),
     center: () => <h1 className="topbar-title">Edit profile</h1>,
   },
