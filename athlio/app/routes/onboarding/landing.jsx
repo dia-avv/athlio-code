@@ -9,7 +9,7 @@ export async function clientLoader() {
   if (session) return redirect("/home");
 
   const seen = localStorage.getItem("introSeen") === "true";
-  return redirect(seen ? "auth" : "intro");
+  return redirect(seen ? "/auth" : "/intro");
 }
 
 export default function LandingGate() {
