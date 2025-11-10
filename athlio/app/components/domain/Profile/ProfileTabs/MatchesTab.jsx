@@ -6,6 +6,7 @@ import Accordion from "../../../UI/Accordion";
 import IconButton from "../../../UI/IconButton";
 import PlusIcon from "../../../../assets/icons/plus.svg?react";
 import "./MatchesTab.css";
+import { useNavigate } from "react-router-dom";
 
 export default function MatchesTab({ profile, isMe = false }) {
   const [matches, setMatches] = useState([]);
@@ -13,6 +14,7 @@ export default function MatchesTab({ profile, isMe = false }) {
   const [error, setError] = useState(null);
   const [season, setSeason] = useState("all");
   const [availableSeasons, setAvailableSeasons] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
@@ -118,7 +120,7 @@ export default function MatchesTab({ profile, isMe = false }) {
               size="medium"
               type="primary"
               icon={PlusIcon}
-              onClick={() => (window.location.href = "/add-post")}
+              onClick={() => navigate("/add-post")}
             />
             <p className="empty-subtitle">Add a match.</p>
           </div>

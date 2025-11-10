@@ -52,7 +52,9 @@ export default function ProfileHeader({
           </div>
           <div className="profile-tags">
             {profile.role && <Tag label={profile.role} />}
-            {profile.position && <Tag label={profile.position} />}
+            {profile.position && (
+              <Tag label={String(profile.position).replace(/[[\]"]/g, "")} />
+            )}
           </div>
         </div>
       </div>

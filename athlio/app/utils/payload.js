@@ -1,5 +1,32 @@
 import { feetToCm, lbToKg } from "./units";
 
+// somewhere near buildProfilePayload
+const POSITION_LABELS = {
+  // football
+  lw: "Left Winger",
+  st: "Striker",
+  rw: "Right Winger",
+  cm_l: "Central Midfielder (Left)",
+  cdm: "Defensive Midfielder",
+  cm_r: "Central Midfielder (Right)",
+  lb: "Left Back",
+  cb_l: "Center Back (Left)",
+  cb_r: "Center Back (Right)",
+  rb: "Right Back",
+  gk: "Goalkeeper",
+  // basketball
+  pg: "Point Guard",
+  sg: "Shooting Guard",
+  sf: "Small Forward",
+  pf: "Power Forward",
+  c: "Center",
+};
+
+function idsToFullNames(ids) {
+  if (!Array.isArray(ids) || ids.length === 0) return null;
+  return ids.map((id) => POSITION_LABELS[id] || id);
+}
+
 //This is the object that gets sent to Supabase
 export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
   let height_cm = null;
@@ -18,12 +45,12 @@ export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
   }
 
   //This assures that everything is the right data type and converts empty fields to NULL
-   const payload = {
-     role,
-     full_name: form.full_name || null,
-     username: form.username || null,
-     avatar_url: form.avatar_url || null,
-     primary_sport: form.primarySport || null,
+  const payload = {
+    role,
+    full_name: form.full_name || null,
+    username: form.username || null,
+    avatar_url: form.avatar_url || null,
+    primary_sport: form.primarySport || null,
     gender: role === "athlete" ? form.gender || null : null,
     age: role === "athlete" ? (form.age ? Number(form.age) : null) : null,
     height_cm: role === "athlete" ? height_cm : null,
@@ -31,7 +58,7 @@ export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
     position:
       role === "athlete"
         ? form.primarySport
-          ? form.position || null
+          ? idsToFullNames(form.position) // now stores ["Goalkeeper"] etc.
           : null
         : null,
     club_id: role === "athlete" ? form.club_id || null : null,
@@ -66,9 +93,9 @@ export function buildProfilePayload({ role, form, heightUnit, weightUnit }) {
         : null,
     org_description:
       role === "organization" ? form.org_description || null : null,
-     bio: form.bio || null,
-     onboarded: true,
-   };
+    bio: form.bio || null,
+    onboarded: true,
+  };
 
   // NOTE: the `sports` column was removed from the DB schema; we only
   // persist `primary_sport` now. Do NOT include `sports` in the payload.

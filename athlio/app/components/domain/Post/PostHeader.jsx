@@ -114,8 +114,8 @@ export default function PostHeader({
           <div className="subheader-text">
             <p className="role">
               {position && club
-                ? `${position} at @${club}`
-                : position || club || ""}
+                ? `${String(position).replace(/[[\]"]/g, "")} at @${club}`
+                : String(position)?.replace(/[[\]"]/g, "") || club || ""}
             </p>
             <p className="date">{date}</p>
           </div>

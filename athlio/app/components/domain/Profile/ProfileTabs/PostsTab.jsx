@@ -5,6 +5,7 @@ import MatchPost from "../../Post/MatchPost";
 import "./PostsTab.css";
 import IconButton from "../../../UI/IconButton";
 import PlusIcon from "../../../../assets/icons/plus.svg?react";
+import { useNavigate } from "react-router-dom";
 
 function PostSwitcher({ post }) {
   const prof = post.profiles || {};
@@ -62,6 +63,7 @@ export default function PostsTab({ profile, isMe = false }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
@@ -142,7 +144,7 @@ export default function PostsTab({ profile, isMe = false }) {
               size="medium"
               type="primary"
               icon={PlusIcon}
-              onClick={() => (window.location.href = "/add-post")}
+              onClick={() => navigate("/add-post")}
             />
             <p className="empty-subtitle">Add a post.</p>
           </div>
