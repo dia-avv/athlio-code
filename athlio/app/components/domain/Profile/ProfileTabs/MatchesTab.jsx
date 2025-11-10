@@ -43,7 +43,12 @@ export default function MatchesTab({ profile, isMe = false }) {
           opponent,
           your_score,
           opponent_score,
-          author_id
+          author_id,
+          profiles:author_id (
+            id,
+            club_id,
+            club:club_id ( id, name, logo_url )
+          )
         `,
         )
         .eq("author_id", profile.id)
@@ -166,7 +171,7 @@ export default function MatchesTab({ profile, isMe = false }) {
             key={m.id}
             isImage={false}
             imageUrl={null}
-            yourTeam={m.your_team || "—"}
+            yourTeam={m.your_team || m?.profiles?.club?.name || "—"}
             yourScore={m.your_score}
             opponent={m.opponent}
             opponentScore={m.opponent_score}
