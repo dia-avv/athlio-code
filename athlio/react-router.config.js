@@ -3,6 +3,6 @@ export default {
   appDirectory: "app",
   buildDirectory: "build",
   ssr: false, // SPA build for GitHub Pages
-  basename: "/athlio-code", // your repo name
+  basename: "/athlio-code/", // your repo name
   routes: "./routes.js",
 };
