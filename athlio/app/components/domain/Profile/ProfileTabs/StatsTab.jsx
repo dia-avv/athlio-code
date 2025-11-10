@@ -4,11 +4,13 @@ import TableStats from "../../Scouting/TableStats";
 import EditIcon from "../../../../assets/icons/edit.svg?react";
 import "./StatsTab.css";
 import Button from "../../../UI/Button";
+import { useNavigate } from "react-router";
 
 export default function StatsTab({ profile, isMe = false }) {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
   const [error, setError] = useState(null);
+  const navigation = useNavigate();
 
   useEffect(() => {
     if (!profile?.id) return;
@@ -75,7 +77,7 @@ export default function StatsTab({ profile, isMe = false }) {
               type="outline"
               Icon={EditIcon}
               className="edit-info-btn"
-              onClick={() => (window.location.href = "/edit-profile")}
+              onClick={() => navigate("/edit-profile")}
             />
           )}
         </div>

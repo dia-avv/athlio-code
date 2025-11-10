@@ -6,7 +6,11 @@ import Button from "../../components/UI/Button";
 import GoogleIcon from "../../assets/logos/Google.svg";
 import MainLogoSmall from "../../assets/logos/main-logo-small.svg";
 
-const OAUTH_REDIRECT = window.location.origin + "/auth/callback";
+const SITE_ORIGIN =
+  typeof window !== "undefined"
+    ? window.location.origin
+    : import.meta.env?.VITE_SITE_URL || "";
+const OAUTH_REDIRECT = `${SITE_ORIGIN}/auth/callback`;
 
 async function signInWithGoogle(setErr) {
   setErr("");

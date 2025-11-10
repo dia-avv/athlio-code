@@ -3,14 +3,18 @@ import { useEffect, useState } from "react";
 import Button from "../../components/UI/Button";
 import "./intro.css";
 import MainLogoSmall from "../../assets/logos/main-logo-small.svg";
-import HeroImage from "../../assets/images/Image.png"; // existing generic hero
-import PlayerImage from "../../assets/images/player.jpg"; // legacy player image (no longer used for slide 2)
 import BasketballPlayer from "../../assets/images/basketballplayer.png"; // requested second slide image
 import FootballRun from "../../assets/images/footballrun.png"; // requested first slide image
 import HockeyTeam from "../../assets/images/hockeyteam.jpg"; // requested third slide image
 import AmericanFootball from "../../assets/images/americanfootball.jpg"; // requested fourth slide image
 import { supabase } from "../../lib/supabase";
 import GoogleIcon from "../../assets/icons/google.svg";
+
+const SITE_ORIGIN =
+  typeof window !== "undefined"
+    ? window.location.origin
+    : import.meta.env?.VITE_SITE_URL || "";
+const OAUTH_REDIRECT = `${SITE_ORIGIN}/auth/callback`;
 
 // Intro (preboarding) page based on Figma node 2396:15993
 // Reuses existing Button component and Geist font tokens.
@@ -65,7 +69,10 @@ export default function Intro() {
       const switchId = setTimeout(() => {
         setWordIndex((w) => (w + 1) % emphWords.length);
       }, 60);
-      const endId = setTimeout(() => setIsWordFading(false), 60 + TRANSITION_MS + 20);
+      const endId = setTimeout(
+        () => setIsWordFading(false),
+        60 + TRANSITION_MS + 20,
+      );
       return () => {
         clearTimeout(switchId);
         clearTimeout(endId);
@@ -80,7 +87,7 @@ export default function Intro() {
     let startX = 0;
     let startY = 0;
     let dragging = false;
-    const root = document.querySelector('.intro-hero');
+    const root = document.querySelector(".intro-hero");
     if (!root) return;
 
     function onTouchStart(e) {
@@ -119,14 +126,14 @@ export default function Intro() {
       }
     }
 
-    root.addEventListener('touchstart', onTouchStart, { passive: true });
-    root.addEventListener('touchmove', onTouchMove, { passive: false });
-    root.addEventListener('touchend', onTouchEnd, { passive: true });
+    root.addEventListener("touchstart", onTouchStart, { passive: true });
+    root.addEventListener("touchmove", onTouchMove, { passive: false });
+    root.addEventListener("touchend", onTouchEnd, { passive: true });
 
     return () => {
-      root.removeEventListener('touchstart', onTouchStart);
-      root.removeEventListener('touchmove', onTouchMove);
-      root.removeEventListener('touchend', onTouchEnd);
+      root.removeEventListener("touchstart", onTouchStart);
+      root.removeEventListener("touchmove", onTouchMove);
+      root.removeEventListener("touchend", onTouchEnd);
     };
   }, [index, slides.length, TRANSITION_MS]);
 
@@ -137,7 +144,6 @@ export default function Intro() {
 
   function goGoogle() {
     // Trigger same Google OAuth flow as on the Auth screen
-    const OAUTH_REDIRECT = window.location.origin + "/auth/callback";
     localStorage.setItem("introSeen", "true");
     supabase.auth
       .signInWithOAuth({
@@ -160,14 +166,20 @@ export default function Intro() {
             className={`intro-hero-layer intro-hero-layer--prev${isCrossfading ? " fade-out" : ""}`}
             style={{ backgroundImage: `url(${slides[prevIndex].image})` }}
           />
-            <div
-              className={`intro-hero-layer intro-hero-layer--curr${isCrossfading ? " fade-in" : " visible"}`}
-              style={{ backgroundImage: `url(${slides[index].image})`, transitionTimingFunction: 'ease-in-out' }}
-            />
+          <div
+            className={`intro-hero-layer intro-hero-layer--curr${isCrossfading ? " fade-in" : " visible"}`}
+            style={{
+              backgroundImage: `url(${slides[index].image})`,
+              transitionTimingFunction: "ease-in-out",
+            }}
+          />
         </div>
         <div className="intro-overlay" />
         {/* Progress bar */}
-        <div className="intro-progress" aria-label={`Slide ${index + 1} of ${slides.length}`}>
+        <div
+          className="intro-progress"
+          aria-label={`Slide ${index + 1} of ${slides.length}`}
+        >
           {slides.map((_, i) => (
             <div
               key={i}
@@ -186,7 +198,11 @@ export default function Intro() {
                 <span>Every athlete trains</span>
                 <div className="intro-line">
                   <span className="intro-title-break">with a dream to</span>
-                  <span className="intro-title-em intro-emph" aria-live="polite" aria-atomic="true">
+                  <span
+                    className="intro-title-em intro-emph"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
                     <span
                       key={`prev-${prevWordIndex}`}
                       className={`intro-emph-layer intro-emph-layer--prev${isWordFading ? " fade-out" : ""}`}
@@ -203,7 +219,9 @@ export default function Intro() {
                 </div>
               </>
             ) : (
-              <span className="intro-title-block">{slides[index].lines.join(" ")}</span>
+              <span className="intro-title-block">
+                {slides[index].lines.join(" ")}
+              </span>
             )}
           </h1>
           <p className="intro-sub">{slides[index].subtitle}</p>

@@ -5,10 +5,12 @@ import EditIcon from "../../../../assets/icons/edit.svg?react";
 import Button from "../../../UI/Button";
 import "./InfoTab.css";
 import ExperienceList from "../../Scouting/ExperienceList";
+import { useNavigate } from "react-router";
 
 export default function InfoTab({ profile, isMe = false }) {
   const [experiences, setExperiences] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!profile?.id) return;
@@ -76,7 +78,7 @@ export default function InfoTab({ profile, isMe = false }) {
               type="outline"
               Icon={EditIcon}
               className="edit-info-btn"
-              onClick={() => (window.location.href = "/edit-profile")}
+              onClick={() => navigate("/edit-profile")}
             />
           )}
         </div>
