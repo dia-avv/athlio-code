@@ -1,16 +1,14 @@
+// app/lib/supabase.js (or wherever you create the client)
 import { createClient } from "@supabase/supabase-js";
 
-let supabase = null;
+const url = import.meta.env.VITE_SUPABASE_URL;
+const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (typeof window !== "undefined") {
-  const url = import.meta.env.VITE_SUPABASE_URL;
-  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-  if (url && anonKey) {
-    supabase = createClient(url, anonKey);
-  } else {
-    console.warn("Supabase env vars missing!");
-  }
+if (!url || !key) {
+  // Don’t crash the whole app. Show a clear message in console.
+  console.error(
+    "[Athlio] Missing Supabase env vars. Check GH Pages build env.",
+  );
 }
 
-export { supabase };
+export const supabase = url && key ? createClient(url, key) : null;
