@@ -79,7 +79,7 @@ export default function Composer({
 
         document.dispatchEvent(new CustomEvent("composer:posted"));
 
-        navigate("/home");
+        navigate("home");
 
         // reset UI
         setText("");

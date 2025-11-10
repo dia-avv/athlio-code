@@ -96,7 +96,7 @@ export default function ScoutingLayout() {
     const toAdd = params.get("add");
     if (toAdd) {
       handleAddPlayer(toAdd);
-      navigate("/scouting", { replace: true });
+      navigate("scouting", { replace: true });
     }
   }, [location.search]);
 

@@ -63,7 +63,7 @@ export default function Setup() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user) return navigate("/auth", { replace: true });
+      if (!user) return navigate("auth", { replace: true });
       const { data: profile, error: readErr } = await supabase
         .from("profiles")
         .select("*")

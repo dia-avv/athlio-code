@@ -73,7 +73,7 @@ export default function ProfileHeader({
               <span
                 className="profile-following"
                 style={{ cursor: "pointer" }}
-                onClick={() => navigate("/profile/me/following")}
+                onClick={() => navigate("profile/me/following")}
               >
                 <strong>{profile.following_count ?? 0}</strong> following
               </span>
@@ -98,7 +98,7 @@ export default function ProfileHeader({
               type="outline"
               label="Edit Profile"
               Icon={EditIcon}
-              onClick={() => navigate("/profile/me/edit")} // ✅ navigate to edit page
+              onClick={() => navigate("profile/me/edit")} // ✅ navigate to edit page
             />
             <Button
               size="medium"

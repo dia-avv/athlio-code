@@ -156,7 +156,7 @@ export default function MatchPostForm({ onCreated }) {
 
   function handleConfirmNo() {
     setShowConfirm(false);
-    navigate("/home");
+    navigate("home");
   }
   function handleConfirmYes() {
     setShowConfirm(false);
@@ -219,7 +219,7 @@ export default function MatchPostForm({ onCreated }) {
         .single();
       if (error) throw error;
       onCreated?.(data.id);
-      navigate("/home");
+      navigate("home");
     } catch (err) {
       console.error("Failed to save match post", err);
       alert("Couldn't save the post. Check console and your schema.");

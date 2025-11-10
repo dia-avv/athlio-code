@@ -16,7 +16,7 @@ export default function FollowingPage() {
       const user = auth?.user;
 
       if (!user) {
-        navigate("/auth", { replace: true });
+        navigate("auth", { replace: true });
         return;
       }
 

@@ -43,7 +43,7 @@ export default function PostTypePicker({ onChoose }) {
           icon={t.icon}
           onClick={() => {
             if (!canPost(t.key)) return;
-            if (t.key === "match") navigate("/add-post/match");
+            if (t.key === "match") navigate("add-post/match");
             else onChoose?.(t.key);
           }}
         />

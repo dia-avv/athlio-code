@@ -50,7 +50,7 @@ export default function MyProfile() {
     };
   }, []);
 
-  if (state === "unauth") return <Navigate to="/auth" replace />;
+  if (state === "unauth") return <Navigate to="auth" replace />;
   if (state === "loading") return <div className="page">Loading…</div>;
   if (state === "notfound")
     return <div className="page">Your profile isn’t set up yet.</div>;

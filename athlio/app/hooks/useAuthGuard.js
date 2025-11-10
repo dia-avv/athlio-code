@@ -9,7 +9,7 @@ export function useAuthGuard() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user) navigate("/auth" /*{ replace: true }*/);
+      if (!user) navigate("auth" /*{ replace: true }*/);
     })();
   }, [navigate]);
 }
