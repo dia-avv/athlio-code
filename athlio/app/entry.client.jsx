@@ -1,14 +1,8 @@
-import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { RemixBrowser } from "react-router";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
 
-const BASENAME = "/athlio-code";
-
-startTransition(() => {
-  hydrateRoot(
-    document,
-    <StrictMode>
-      <RemixBrowser basename={BASENAME} />
-    </StrictMode>,
-  );
-});
+hydrateRoot(
+  document.getElementById("root"),
+  <RouterProvider router={router} />,
+);
