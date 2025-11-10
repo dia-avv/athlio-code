@@ -1,18 +1,21 @@
 .search-card-item {
     display: flex;
     gap: 10px;
-    padding: 8px 12px;
-    background: var(--background, #fbfbfb);
+    padding: 8px 16px;
+    background: var(--color-background, #FBFBFB);
     border-radius: 8px;
-    border: 1px solid var(--color-gray-300, #dfe0e7);
+    border: none;
     width: 100%;
     cursor: pointer;
     text-align: left;
-    transition: border-color 120ms ease;
+    transition: all 120ms ease;
+    min-height: 60px;
+    align-items: center;
 }
 
 .search-card-item:hover {
-    border-color: var(--color-accent, #4051fd);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .avatar-wrap {
@@ -37,6 +40,7 @@
 .name {
     font-weight: 500;
     font-size: 16px;
+    line-height: 1.2;
     color: #000;
 }
 
@@ -44,26 +48,31 @@
     display: flex;
     gap: 8px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .position {
-    background: #f0f0f3;
-    padding: 4px 8px;
+    background: var(--color-gray-100, #F0F0F3);
+    padding: 5px 8px;
     border-radius: 8px;
-    font-size: 10px;
-    color: var(--buttons, #2631a0);
+    font-size: 8px;
+    font-weight: 500;
+    color: var(--color-buttons, #2631A0);
+    white-space: nowrap;
 }
 
 .team-logo {
-    width: 16px;
-    height: 16px;
-    object-fit: cover;
+    width: 12px;
+    height: 12px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .flag {
     width: 12px;
     height: 12px;
-    object-fit: cover;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .team-name,

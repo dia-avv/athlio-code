@@ -5,6 +5,7 @@ import InfoCards from "../../components/UI/InfoCards";
 import Position from "../../components/domain/Scouting/Position";
 import TableInfo from "../../components/domain/Scouting/TableInfo";
 import ExperienceList from "../../components/domain/Scouting/ExperienceList";
+import Availability from "../../components/domain/Scouting/Availability";
 
 export default function ScoutingIndex() {
   const {
@@ -30,11 +31,7 @@ export default function ScoutingIndex() {
       {activeTab === "info" && (
         <>
           <TableInfo players={players} />
-          <InfoCards />
-          <Position
-            label="Preferred Position"
-            value={players[0]?.info?.position || "Midfielder"}
-          />
+
         </>
       )}
       {activeTab === "experience" && (
@@ -42,6 +39,7 @@ export default function ScoutingIndex() {
           <ExperienceList players={players} />
         </>
       )}
+      {activeTab === "availability" && <Availability players={players} />}
     </>
   );
 }

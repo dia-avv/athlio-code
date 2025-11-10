@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { fetchProfiles, fetchSeasonStats } from "../../lib/stats";
 import { fetchPlayerInfo } from "../../lib/info";
 import { fetchExperiences } from "../../lib/experiences";
+import { fetchInjuries } from "../../lib/injuries";
 
 export default function ScoutingLayout() {
   const [activeTab, setActiveTab] = useState("stats");
@@ -20,17 +21,21 @@ export default function ScoutingLayout() {
         return;
       }
       try {
-        const [profiles, stats, infoRows, experienceRows] = await Promise.all([
+        const [profiles, stats, infoRows, experienceRows, injuryRows] = await Promise.all([
           fetchProfiles(selectedPlayerIds),
           fetchSeasonStats(selectedPlayerIds, { season }),
           fetchPlayerInfo(selectedPlayerIds, { season }),
           fetchExperiences(selectedPlayerIds),
+          fetchInjuries(selectedPlayerIds),
         ]);
 
         const statByPlayer = new Map(stats.map((s) => [s.profile_id, s.stats]));
         const infoByPlayer = new Map(infoRows.map((row) => [row.profile_id, row.info]));
         const expByPlayer = new Map(
           experienceRows.map((row) => [row.profile_id, row.experiences])
+        );
+        const injuriesByPlayer = new Map(
+          injuryRows.map((row) => [row.profile_id, row.injuries])
         );
         const merged = selectedPlayerIds
           .map((id) => {
@@ -48,6 +53,7 @@ export default function ScoutingLayout() {
               avatar: p?.avatar_url || null,
               info: Object.keys(info).length ? info : null,
               experiences: expByPlayer.get(id) || [],
+              injuries: injuriesByPlayer.get(id) || [],
               stats:
                 statByPlayer.get(id) ?? {
                   totalPlayed: 0,
@@ -69,6 +75,7 @@ export default function ScoutingLayout() {
               avatar: null,
               info: null,
               experiences: [],
+              injuries: [],
               stats: {
                 totalPlayed: 0,
                 started: 0,

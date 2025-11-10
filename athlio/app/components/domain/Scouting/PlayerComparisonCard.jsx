@@ -1,15 +1,23 @@
 import React from 'react';
 import './PlayerComparisonCard.css';
+import profilePlaceholder from '../../../assets/icons/profile.png';
 
 const PlayerComparisonCard = ({ playerName, playerAvatar, onRemove, playerIndex, totalPlayers }) => {
+  const handleImgError = (event) => {
+    if (event.currentTarget.src !== profilePlaceholder) {
+      event.currentTarget.src = profilePlaceholder;
+    }
+  };
+
   return (
     <div className={`player-comparison-card player-comparison-card--${totalPlayers}-players player-comparison-card--position-${playerIndex}`}>
       <div className="player-comparison-card-content">
         <div className="player-comparison-card-avatar-wrapper">
           <img
-            src={playerAvatar || "https://api.builder.io/api/v1/image/assets/e9cac1e18ae64186984fb4d639c633bc/ca6a6b3bca92753f7368d77ac0c3b68ccfcd5f6d?placeholderIfAbsent=true"}
+            src={playerAvatar || profilePlaceholder}
             alt={playerName}
             className="player-comparison-card-avatar"
+            onError={handleImgError}
           />
         </div>
         <div className="player-comparison-card-name">

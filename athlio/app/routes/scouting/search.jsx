@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import SearchBar from '../../components/UI/SearchBar';
 import SearchBarCard from '../../components/domain/Scouting/SearchBarCard';
 import { useNavigate } from 'react-router';
+import SearchIcon from '../../assets/icons/search.svg';
+import './search.css';
 
 const RECENTS_KEY = 'recentProfileSearches';
 
@@ -60,7 +61,6 @@ export default function ScoutingSearch() {
     };
   }, [q]);
 
-  // When there are no recents and no query, show suggested profiles
   useEffect(() => {
     let cancel = false;
     async function loadSuggested() {
@@ -90,68 +90,48 @@ export default function ScoutingSearch() {
     navigate(`/scouting?add=${encodeURIComponent(id)}`);
   }
 
+  const displayList = q.trim().length >= 2 ? results : (recents.length > 0 ? recents : suggested);
+  const showRecentHeader = q.trim().length < 2;
+
   return (
-    <main style={{ paddingTop: 64, padding: 16, maxWidth: 720, margin: '0 auto' }}>
-      <h2 style={{ marginBottom: 12 }}>Add a player</h2>
-      <div style={{ marginBottom: 16 }}>
-        <SearchBar label="Search profiles" onClick={() => {}} onClear={() => setQ('')} />
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Type at least 2 characters…"
-          style={{
-            width: '100%',
-            marginTop: 8,
-            padding: '10px 12px',
-            border: '1px solid var(--color-gray-300)',
-            borderRadius: 8,
-            fontSize: 14,
-          }}
-        />
+    <main className="search-page">
+      <div className="search-header">
+        <div className="search-input-wrapper">
+          <img src={SearchIcon} alt="" className="search-input-icon" />
+          <input
+            type="text"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search for a new player"
+            className="search-input-field"
+          />
+        </div>
+        
+        {showRecentHeader && (
+          <h2 className="recently-saved-title">Recently Saved</h2>
+        )}
       </div>
 
-      {loading && <p>Searching…</p>}
+      <div className="search-results">
+        {loading && <p className="search-loading">Searching…</p>}
 
-      {!loading && results.length > 0 && (
-        <section>
-          <h3 style={{ fontSize: 14, margin: '8px 0' }}>Results</h3>
-          <div style={{ display: 'grid', gap: 8 }}>
-            {results.map((r) => (
-              <SearchBarCard key={r.id} profileId={r.id} onSelect={pick} />
-            ))}
+        {!loading && q.trim().length >= 2 && results.length === 0 && (
+          <p className="no-results">No players found. Try a different search.</p>
+        )}
+
+        {!loading && displayList.length > 0 && (
+          <div className="player-cards-list">
+            {displayList.map((item) => {
+              const id = typeof item === 'string' ? item : item.id;
+              return <SearchBarCard key={id} profileId={id} onSelect={pick} />;
+            })}
           </div>
-        </section>
-      )}
+        )}
 
-      {!loading && results.length === 0 && (
-        <section>
-          <h3 style={{ fontSize: 14, margin: '8px 0' }}>Recent profiles</h3>
-          {recents.length > 0 && (
-            <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
-              {recents.map((id) => (
-                <SearchBarCard key={id} profileId={id} onSelect={pick} />
-              ))}
-            </div>
-          )}
-
-          {recents.length === 0 && (
-            <>
-              <p style={{ color: 'var(--color-gray-700)', marginBottom: 8 }}>
-                No recent profiles. Try searching above, or pick a suggestion:
-              </p>
-              <div style={{ display: 'grid', gap: 8 }}>
-                {suggested.length > 0 ? (
-                  suggested.map((p) => (
-                    <SearchBarCard key={p.id} profileId={p.id} onSelect={pick} />
-                  ))
-                ) : (
-                  <p style={{ color: 'var(--color-gray-700)' }}>No profiles yet.</p>
-                )}
-              </div>
-            </>
-          )}
-        </section>
-      )}
+        {!loading && !q.trim() && recents.length === 0 && suggested.length === 0 && (
+          <p className="no-results">No players yet. Start searching above.</p>
+        )}
+      </div>
     </main>
   );
 }
