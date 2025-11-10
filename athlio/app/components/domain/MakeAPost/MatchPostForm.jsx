@@ -243,13 +243,7 @@ export default function MatchPostForm({ onCreated }) {
 
               <TeamSelectFields
                 sport={form.primarySport || "football"}
-                homeTeam={form.your_team}
                 opponentTeam={form.opponent_team}
-                onChangeHome={(v) =>
-                  patch({
-                    your_team: normalizeClubValue(v),
-                  })
-                }
                 onChangeOpponent={(v) =>
                   patch({
                     opponent_team: normalizeClubValue(v),

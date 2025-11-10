@@ -143,25 +143,10 @@ function TeamSelectFields({
   return (
     <div className="clubs-container">
       <FieldButton
-        placeholder="For which team did you play?*"
-        value={homeTeam}
-        onClick={() => setWhichOpen("home")}
-      />
-
-      <FieldButton
         placeholder="Against what team you played?*"
         value={opponentTeam}
         onClick={() => setWhichOpen("opponent")}
       />
-
-      <TeamPickerOverlay
-        open={whichOpen === "home"}
-        sport={sport}
-        initialValue={homeTeam}
-        onClose={() => setWhichOpen(null)}
-        onPick={onChangeHome}
-      />
-
       <TeamPickerOverlay
         open={whichOpen === "opponent"}
         sport={sport}
