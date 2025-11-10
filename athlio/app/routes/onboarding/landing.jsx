@@ -13,5 +13,6 @@ export async function clientLoader() {
 }
 
 export default function LandingGate() {
+  console.log("Supabase URL:", import.meta.env.VITE_SUPABASE_URL);
   return null;
 }
