@@ -1,8 +1,5 @@
+import { RouterProvider } from "react-router";
 import { hydrateRoot } from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes";
+import { routes } from "@react-router/dev/routes"; // generated automatically
 
-hydrateRoot(
-  document.getElementById("root"),
-  <RouterProvider router={router} />,
-);
+hydrateRoot(document, <RouterProvider routes={routes} />);
