@@ -27,7 +27,7 @@ jobs:
           # cache lockfile inside subfolder
           cache-dependency-path: athlio/package-lock.json
 
-      - run: npm ci
+      - run: npm install --legacy-peer-deps
         working-directory: ./athlio
 
       - run: npm run build
