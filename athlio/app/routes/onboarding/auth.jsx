@@ -42,7 +42,10 @@ export default function Auth() {
         // messages like: "Password should be at least 6 characters"
         return "Password must be at least 6 characters";
       }
-      if (message.toLowerCase().includes("missing email") || message.toLowerCase().includes("missing email or phone")) {
+      if (
+        message.toLowerCase().includes("missing email") ||
+        message.toLowerCase().includes("missing email or phone")
+      ) {
         return "Please enter your email";
       }
       return message;
@@ -64,12 +67,12 @@ export default function Auth() {
           .upsert({ id: uid }, { onConflict: "id" });
       }
 
-      return navigate("/setup-profile", { replace: true });
+      return navigate("setup-profile", { replace: true });
     }
 
     const { data: loginData, error: loginErr } =
       await supabase.auth.signInWithPassword({ email, password });
-  if (loginErr) return setErr(formatAuthError(loginErr.message));
+    if (loginErr) return setErr(formatAuthError(loginErr.message));
 
     const uid =
       loginData?.user?.id || (await supabase.auth.getUser()).data?.user?.id;
@@ -78,7 +81,7 @@ export default function Auth() {
       await supabase.from("profiles").upsert({ id: uid }, { onConflict: "id" });
     }
 
-    navigate("/home", { replace: true });
+    navigate("home", { replace: true });
   }
 
   return (
@@ -98,7 +101,11 @@ export default function Auth() {
             marginBottom: 12,
           }}
         >
-          <img src={MainLogoSmall} alt="Auth icon" style={{ width: 32, height: 32 }} />
+          <img
+            src={MainLogoSmall}
+            alt="Auth icon"
+            style={{ width: 32, height: 32 }}
+          />
         </div>
 
         <h1 className="h1">
@@ -110,9 +117,15 @@ export default function Auth() {
             : "Log in to your account to access the biggest database of athletes. Enter your email and password."}
         </p>
 
-
-  {/* ✅ Using TextInput for email + password (24px gap). Added marginTop to match Figma spacing */}
-  <div style={{ display: "flex", flexDirection: "column", gap: 24, marginTop: 28 }}>
+        {/* ✅ Using TextInput for email + password (24px gap). Added marginTop to match Figma spacing */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 24,
+            marginTop: 28,
+          }}
+        >
           <TextInput
             label="Email"
             placeholder="Enter your email"
@@ -143,55 +156,73 @@ export default function Auth() {
         </div>
 
         <div>
-         <div
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              margin: "16px 0",
+            }}
+          >
+            <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                margin: "16px 0",
+                flex: 1,
+                height: "1px",
+                backgroundColor: "#d1d5db",
+              }}
+            ></div>
+            <span
+              style={{
+                margin: "0 24px",
+                color: "#6b7280",
+                fontSize: "14px",
+                whiteSpace: "nowrap",
               }}
             >
-              <div
-                style={{
-                  flex: 1,
-                  height: "1px",
-                  backgroundColor: "#d1d5db",
-                }}
-              ></div>
-              <span
-                style={{
-                  margin: "0 24px",
-                  color: "#6b7280",
-                  fontSize: "14px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                or
-              </span>
-              <div
-                style={{
-                  flex: 1,
-                  height: "1px",
-                  backgroundColor: "#d1d5db",
-                }}
-              ></div>
-            </div>
-
-
+              or
+            </span>
+            <div
+              style={{
+                flex: 1,
+                height: "1px",
+                backgroundColor: "#d1d5db",
+              }}
+            ></div>
+          </div>
 
           <div>
-            <Button size="big" type="outline" label="Continue with Google" Icon={() => <img src={GoogleIcon} alt="Google" />} onClick={() => signInWithGoogle(setErr)} />
+            <Button
+              size="big"
+              type="outline"
+              label="Continue with Google"
+              Icon={() => <img src={GoogleIcon} alt="Google" />}
+              onClick={() => signInWithGoogle(setErr)}
+            />
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 8, flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 12,
+            marginTop: 8,
+            flexWrap: "wrap",
+          }}
+        >
           <p style={{ color: "var(--color-gray-700)", margin: 0 }}>
-            {mode === "signup" ? "I already have an account" : "Don't have an account?"}
+            {mode === "signup"
+              ? "I already have an account"
+              : "Don't have an account?"}
           </p>
           <Button
             type="subtle"
             size="medium"
             label={mode === "signup" ? "Log in" : "Sign up"}
-            onClick={() => setMode((m) => (m === "signup" ? "login" : "signup"))}
+            onClick={() =>
+              setMode((m) => (m === "signup" ? "login" : "signup"))
+            }
           />
         </div>
       </form>

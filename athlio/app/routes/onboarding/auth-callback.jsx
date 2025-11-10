@@ -11,13 +11,13 @@ export default function AuthCallback() {
     async function finishLogin() {
       const { data: sessionData, error } = await supabase.auth.getSession();
       if (error) {
-        navigate("/auth");
+        navigate("auth");
         return;
       }
 
       const user = sessionData?.session?.user;
       if (!user) {
-        navigate("/auth");
+        navigate("auth");
         return;
       }
 
@@ -35,7 +35,7 @@ export default function AuthCallback() {
 
       if (firstLogin) {
         // brand new user → go to setup
-        navigate("/setup-profile");
+        navigate("setup-profile");
         return;
       }
 
@@ -48,13 +48,13 @@ export default function AuthCallback() {
 
       if (selectErr) {
         // if RLS blocks select, safest is to send to setup
-        navigate("/setup-profile");
+        navigate("setup-profile");
         return;
       }
 
       // If profile looks incomplete (e.g., missing name), send to setup
       const incomplete = !existingProfile?.full_name;
-      navigate(incomplete ? "/setup-profile" : "/home");
+      navigate(incomplete ? "setup-profile" : "home");
     }
 
     finishLogin();

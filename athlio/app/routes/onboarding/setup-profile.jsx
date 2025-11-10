@@ -39,8 +39,8 @@ export default function Setup() {
     gender: "",
     height: "",
     weight: "",
-  position: [],
-  bio: "",
+    position: [],
+    bio: "",
     club_id: null,
     club_other_name: "",
     country: "",
@@ -78,7 +78,7 @@ export default function Setup() {
       if (profile) {
         const sports = Array.isArray(profile.sports) ? profile.sports : [];
         setRole(profile.role || "athlete");
-          setForm((f) => ({
+        setForm((f) => ({
           ...f,
           full_name: profile.full_name || "",
           username: profile.username || "",
@@ -138,7 +138,7 @@ export default function Setup() {
       console.error("PROFILE UPSERT ERROR", upsertErr);
     }
 
-    navigate("/home");
+    navigate("home");
   }
 
   // Determine whether the Continue button should be enabled for the current
@@ -160,7 +160,10 @@ export default function Setup() {
             ? true
             : Array.isArray(form.position) && form.position.length > 0;
         case "club":
-          return Boolean(form.club_id) || ((form.club_other_name || "").toString().trim() !== "");
+          return (
+            Boolean(form.club_id) ||
+            (form.club_other_name || "").toString().trim() !== ""
+          );
         case "bio":
           return (form.bio || "").toString().trim() !== "";
         default:
@@ -179,7 +182,13 @@ export default function Setup() {
       </div>
 
       {/* Skip button (subtle, medium) aligned right under the progress bar */}
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "0 16px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          padding: "0 16px",
+        }}
+      >
         <Button
           size="medium"
           type="subtle"
@@ -201,14 +210,21 @@ export default function Setup() {
           <div>
             <div
               className="role-header"
-              style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
+              style={{
+                display: "inline-flex",
+                flexDirection: "column",
+                gap: 8,
+              }}
             >
               <h1 className="role-header-title">Profile setup</h1>
               <p className="role-header-subtitle">tell us about yourself</p>
             </div>
             {/* Avatar picker and input fields grouped together */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <AvatarPicker value={form.avatar_url} onChange={(v) => set({ avatar_url: v })} />
+              <AvatarPicker
+                value={form.avatar_url}
+                onChange={(v) => set({ avatar_url: v })}
+              />
 
               <TextInput
                 label="Full name"
@@ -264,9 +280,7 @@ export default function Setup() {
           />
         )}
 
-        {stepId === "premium" && (
-          <Premium onContinue={() => next()} />
-        )}
+        {stepId === "premium" && <Premium onContinue={() => next()} />}
 
         {stepId === "measure" && role === "athlete" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -298,7 +312,7 @@ export default function Setup() {
           </div>
         )}
 
-        {(stepId === "club") && (role === "athlete" || role === "scout") && (
+        {stepId === "club" && (role === "athlete" || role === "scout") && (
           <ClubPicker
             sport={form.primarySport || "football"}
             value={{
@@ -328,7 +342,13 @@ export default function Setup() {
             position={form.position}
             clubId={form.club_id}
             country={form.country}
-            goals={role === "athlete" ? form.goals : (typeof form.talent_preferences === "string" ? form.talent_preferences : "")}
+            goals={
+              role === "athlete"
+                ? form.goals
+                : typeof form.talent_preferences === "string"
+                  ? form.talent_preferences
+                  : ""
+            }
           />
         )}
 
