@@ -96,7 +96,7 @@ export default function ProfileHeader({
               type="outline"
               label="Edit Profile"
               Icon={EditIcon}
-              onClick={() => navigate("/profile/me/edit")} // ✅ navigate to edit page
+              onClick={() => navigate("/profile/me/edit")}
             />
             <Button
               size="medium"

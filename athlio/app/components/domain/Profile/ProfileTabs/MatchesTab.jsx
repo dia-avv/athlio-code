@@ -63,7 +63,7 @@ export default function MatchesTab({ profile, isMe = false }) {
         media: null,
       }));
 
-      // 🧮 Build available seasons dynamically
+      //  Build available seasons dynamically
       const seasons = new Set();
       noImageMatches.forEach((m) => {
         if (!m.date_of_game) return;
@@ -103,7 +103,7 @@ export default function MatchesTab({ profile, isMe = false }) {
   if (loading) return <p>Loading matches…</p>;
   if (error) return <p className="error">Failed to load matches: {error}</p>;
 
-  // 🧩 Empty state for your own profile
+  // Empty state for your own profile
   if (!matches.length && isMe) {
     return (
       <main>
@@ -127,7 +127,7 @@ export default function MatchesTab({ profile, isMe = false }) {
     );
   }
 
-  // 🧩 Empty state for others
+  // Empty state for others
   if (!matches.length)
     return (
       <main>

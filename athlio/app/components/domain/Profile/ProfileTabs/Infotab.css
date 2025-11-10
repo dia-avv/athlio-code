@@ -2,10 +2,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 24px; /* increased spacing for cleaner separation */
+  gap: 12px; /* increased spacing for cleaner separation */
   background-color: var(--color-gray-100);
   padding: 24px 16px;
-  border-radius: 12px;
 }
 
 main:has(.profile-info-tab) {
@@ -29,7 +28,7 @@ main:has(.profile-info-tab) {
 
 .info-section-title {
   font-size: var(--text-l);
-  font-weight: 400;
+  font-weight: 600;
   color: var(--color-text);
   margin-bottom: 4px;
 }
