@@ -5,26 +5,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLocation,
 } from "react-router";
 
 import "./app.css";
 import { UserProvider } from "./context/UserContext";
-import Navbar from "./components/Navbar";
-import Topbar from "./components/Topbar";
 
 export function Layout({ children }) {
-  const { pathname } = useLocation();
-  const hideNavbar =
-    pathname.includes("/auth") ||
-    pathname.includes("/intro") ||
-    pathname.includes("/setup-profile") ||
-    pathname.includes("/add-post") ||
-    pathname.includes("/setup-profile");
-  const hideTopbar =
-    pathname.includes("/auth") ||
-    pathname.includes("/intro") ||
-    pathname.includes("/setup-profile");
   return (
     <html lang="en">
       <head>
@@ -45,11 +31,7 @@ export function Layout({ children }) {
         <Links />
       </head>
       <body>
-        <UserProvider>
-          {!hideTopbar && <Topbar />}
-          {children}
-          {!hideNavbar && <Navbar />}
-        </UserProvider>
+        <UserProvider>{children}</UserProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
