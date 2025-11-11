@@ -112,7 +112,7 @@ const TOPBAR_CONFIG = {
       </div>
     ),
   },
-  "/profile/me/following/": {
+  "/profile/me/following": {
     title: null,
     left: (nav) => (
       <div className="topbar-left-with-back">
