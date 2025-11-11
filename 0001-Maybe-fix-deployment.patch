@@ -1,0 +1,148 @@
+From 4b731cfbc353cea369492b7b18920dd02b831033 Mon Sep 17 00:00:00 2001
+From: Dan Okkels Brendstrup <dob@eaaa.dk>
+Date: Tue, 11 Nov 2025 11:56:42 +0100
+Subject: [PATCH] Maybe fix deployment?
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Moved @react-router/node to dependencies array (to fix a logged error about identifying runtime), removes unnecessary config and entry files (we'll stick with the defaults) and removes `react()` as a vite plugin.
+
+If you run `npm run build` and then rename `build/client` to `build/athlio-code` and run `npx serve` inside of the `build` directory, it seems to work, so it also ought to when deployed to GitHub Pages 🤞
+---
+ athlio/app/entry.client.jsx   | 12 ------------
+ athlio/app/entry.server.jsx   | 17 -----------------
+ athlio/package-lock.json      |  4 +---
+ athlio/package.json           |  4 ++--
+ athlio/react-router.config.js |  3 ---
+ athlio/vite.config.js         |  3 +--
+ 6 files changed, 4 insertions(+), 39 deletions(-)
+ delete mode 100644 athlio/app/entry.client.jsx
+ delete mode 100644 athlio/app/entry.server.jsx
+
+diff --git a/athlio/app/entry.client.jsx b/athlio/app/entry.client.jsx
+deleted file mode 100644
+index c995130..0000000
+--- a/athlio/app/entry.client.jsx
++++ /dev/null
+@@ -1,12 +0,0 @@
+-import { StrictMode, startTransition } from "react";
+-import { hydrateRoot } from "react-dom/client";
+-import { HydratedRouter } from "react-router/dom";
+-
+-startTransition(() => {
+-  hydrateRoot(
+-    document,
+-    <StrictMode>
+-      <HydratedRouter />
+-    </StrictMode>,
+-  );
+-});
+diff --git a/athlio/app/entry.server.jsx b/athlio/app/entry.server.jsx
+deleted file mode 100644
+index 6c4ab50..0000000
+--- a/athlio/app/entry.server.jsx
++++ /dev/null
+@@ -1,17 +0,0 @@
+-import { ServerRouter } from "react-router";
+-import { renderToString } from "react-dom/server";
+-
+-export default function handleRequest(
+-  request,
+-  responseStatusCode,
+-  responseHeaders,
+-  remixContext,
+-) {
+-  const markup = renderToString(
+-    <ServerRouter context={remixContext} url={request.url} />,
+-  );
+-  return new Response("<!DOCTYPE html>" + markup, {
+-    status: responseStatusCode,
+-    headers: { ...responseHeaders, "Content-Type": "text/html" },
+-  });
+-}
+diff --git a/athlio/package-lock.json b/athlio/package-lock.json
+index 2a6bf6d..67b2d6f 100644
+--- a/athlio/package-lock.json
++++ b/athlio/package-lock.json
+@@ -6,6 +6,7 @@
+     "": {
+       "name": "athlio",
+       "dependencies": {
++        "@react-router/node": "^7.9.5",
+         "axios": "^1.12.2",
+         "dotenv": "^17.2.3",
+         "isbot": "^5.1.27",
+@@ -16,7 +17,6 @@
+       },
+       "devDependencies": {
+         "@react-router/dev": "^7.9.5",
+-        "@react-router/node": "^7.9.5",
+         "@vitejs/plugin-react": "^5.1.0",
+         "prettier": "^3.6.2",
+         "vite": "^7.2.2",
+@@ -1032,7 +1032,6 @@
+       "version": "0.2.0",
+       "resolved": "https://registry.npmjs.org/@mjackson/node-fetch-server/-/node-fetch-server-0.2.0.tgz",
+       "integrity": "sha512-EMlH1e30yzmTpGLQjlFmaDAjyOeZhng1/XCd7DExR8PNAnG/G1tyruZxEoUe11ClnwGhGrtsdnyyUx1frSzjng==",
+-      "dev": true,
+       "license": "MIT"
+     },
+     "node_modules/@npmcli/git": {
+@@ -1177,7 +1176,6 @@
+       "version": "7.9.5",
+       "resolved": "https://registry.npmjs.org/@react-router/node/-/node-7.9.5.tgz",
+       "integrity": "sha512-3mDd32mXh3gEkG0cLPnUaoLkY1pApsTPqn7O1j+P8aLf997uYz5lYDjt33vtMhaotlRM0x+5JziAKtz/76YBpQ==",
+-      "dev": true,
+       "license": "MIT",
+       "dependencies": {
+         "@mjackson/node-fetch-server": "^0.2.0"
+diff --git a/athlio/package.json b/athlio/package.json
+index 0da29bd..32b3e69 100644
+--- a/athlio/package.json
++++ b/athlio/package.json
+@@ -15,11 +15,11 @@
+     "react": "^19.2.0",
+     "react-dom": "^19.2.0",
+     "react-router": "^7.9.5",
+-    "react-router-dom": "^7.9.5"
++    "react-router-dom": "^7.9.5",
++    "@react-router/node": "^7.9.5"
+   },
+   "devDependencies": {
+     "@react-router/dev": "^7.9.5",
+-    "@react-router/node": "^7.9.5",
+     "@vitejs/plugin-react": "^5.1.0",
+     "prettier": "^3.6.2",
+     "vite": "^7.2.2",
+diff --git a/athlio/react-router.config.js b/athlio/react-router.config.js
+index 5ab70c5..d492661 100644
+--- a/athlio/react-router.config.js
++++ b/athlio/react-router.config.js
+@@ -1,8 +1,5 @@
+ /** @type {import('@react-router/dev/config').Config} */
+ export default {
+-  appDirectory: "app",
+-  buildDirectory: "build",
+   ssr: false, // SPA build for GitHub Pages
+   basename: "/athlio-code/", // repo name without trailing slash
+-  routes: "./routes.js",
+ };
+diff --git a/athlio/vite.config.js b/athlio/vite.config.js
+index 6b61bdf..2075630 100644
+--- a/athlio/vite.config.js
++++ b/athlio/vite.config.js
+@@ -1,9 +1,8 @@
+ // vite.config.ts or vite.config.js
+ import { defineConfig } from "vite";
+-import react from "@vitejs/plugin-react";
+ import { reactRouter } from "@react-router/dev/vite";
+ 
+ export default defineConfig({
+-  plugins: [react(), reactRouter()],
++  plugins: [reactRouter()],
+   base: "/athlio-code/",
+ });
+-- 
+2.51.0
+
