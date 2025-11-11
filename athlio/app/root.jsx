@@ -16,15 +16,15 @@ import Topbar from "./components/Topbar";
 export function Layout({ children }) {
   const { pathname } = useLocation();
   const hideNavbar =
-    pathname.startsWith("/auth") ||
-    pathname.startsWith("/intro") ||
-    pathname.startsWith("/setup-profile") ||
-    pathname.startsWith("/add-post") ||
+    pathname.includes("/auth") ||
+    pathname.includes("/intro") ||
+    pathname.includes("/setup-profile") ||
+    pathname.includes("/add-post") ||
     pathname.includes("/setup-profile");
   const hideTopbar =
-    pathname.startsWith("/auth") ||
-    pathname.startsWith("/intro") ||
-    pathname.startsWith("/setup-profile");
+    pathname.includes("/auth") ||
+    pathname.includes("/intro") ||
+    pathname.includes("/setup-profile");
   return (
     <html lang="en">
       <head>

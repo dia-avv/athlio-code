@@ -5,14 +5,13 @@ import Navbar from "../components/Navbar";
 export default function Layout() {
   const { pathname } = useLocation();
 
-  const isAddPost =
-    pathname === "/add-post" || pathname.startsWith("/add-post/");
+  const isAddPost = pathname === "/add-post" || pathname.includes("/add-post/");
 
   const hideNavbar =
     pathname === "/" ||
-    pathname.startsWith("/auth") ||
-    pathname.startsWith("/intro") ||
-    pathname.startsWith("/setup-profile");
+    pathname.includes("/auth") ||
+    pathname.includes("/intro") ||
+    pathname.includes("/setup-profile");
 
   return (
     <div className="app-layout">
