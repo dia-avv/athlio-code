@@ -112,6 +112,20 @@ const TOPBAR_CONFIG = {
       </div>
     ),
   },
+  "/profile/me/following/": {
+    title: null,
+    left: (nav) => (
+      <div className="topbar-left-with-back">
+        <BackIcon
+          aria-label="Go back"
+          className="topbar-back"
+          role="img"
+          onClick={() => nav(-1)}
+        />
+        <MainLogo className="main-logo" aria-label="Athlio" role="img" />
+      </div>
+    ),
+  },
   "/profile/other": {
     title: null,
     left: (nav) => (
@@ -150,7 +164,9 @@ const TOPBAR_CONFIG = {
   },
   "/scouting": {
     title: null,
-    left: () => <MainLogo className="main-logo" aria-label="Athlio" role="img" />,
+    left: () => (
+      <MainLogo className="main-logo" aria-label="Athlio" role="img" />
+    ),
     right: (nav, _profile, counts) => (
       <div className="topbar-icons">
         <div className="icon-with-badge" onClick={() => nav("/notifications")}>

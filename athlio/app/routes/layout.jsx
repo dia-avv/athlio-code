@@ -3,7 +3,7 @@ import Topbar from "../components/Topbar";
 import Navbar from "../components/Navbar";
 
 const NAVBARLESS_PREFIXES = ["/", "/auth", "/intro", "/setup-profile"];
-const TOPBARLESS_PREFIXES = ["/auth", "/intro", "/setup-profile", "/add-post"];
+const TOPBARLESS_PREFIXES = ["/auth", "/intro", "/setup-profile"];
 
 const BASENAME =
   (typeof import.meta !== "undefined" ? import.meta.env?.BASE_URL : "") || "";
