@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import SearchBarCard from '../../components/domain/Scouting/SearchBarCard';
 import { useNavigate } from 'react-router';
-import SearchIcon from '../../assets/icons/search.svg';
+import SearchIcon from '../../assets/icons/search.svg?react';
 import './search.css';
 
 const RECENTS_KEY = 'recentProfileSearches';
@@ -97,7 +97,7 @@ export default function ScoutingSearch() {
     <main className="search-page">
       <div className="search-header">
         <div className="search-input-wrapper">
-          <img src={SearchIcon} alt="" className="search-input-icon" />
+          <SearchIcon aria-hidden="true" className="search-input-icon" />
           <input
             type="text"
             value={q}

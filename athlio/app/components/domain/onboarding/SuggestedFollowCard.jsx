@@ -1,6 +1,6 @@
 import ProfilePicture from "../../UI/ProfilePicture";
 import Button from "../../UI/Button";
-import plusIcon from "../../../assets/icons/plus.svg";
+import PlusIcon from "../../../assets/icons/plus.svg?react";
 import "./SuggestedFollowCard.css";
 
 // Contract
@@ -23,7 +23,7 @@ export default function SuggestedFollowCard({
         size="small"
         type={isFollowing ? "subtle" : "outline"}
         label={isFollowing ? "Following" : "Follow"}
-        Icon={!isFollowing ? plusIcon : undefined}
+        Icon={!isFollowing ? PlusIcon : undefined}
         onClick={() => onToggle && onToggle(id)}
       />
     </div>

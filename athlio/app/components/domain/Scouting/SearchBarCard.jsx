@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './SearchBarCard.css';
 import profilePlaceholder from '../../../assets/icons/profile.png';
-import defaultTeamLogo from '../../../assets/logos/main-logo.svg';
-import defaultFlag from '../../../assets/icons/verification.svg';
+import DefaultTeamLogo from '../../../assets/logos/main-logo.svg?react';
+import DefaultFlag from '../../../assets/icons/verification.svg?react';
 import { supabase } from '../../../lib/supabase';
 
 const SearchBarCard = ({
@@ -11,8 +11,8 @@ const SearchBarCard = ({
   teamName: fallbackTeam = '—',
   nationality: fallbackCountry = '—',
   avatar: fallbackAvatar = profilePlaceholder,
-  teamLogo: fallbackTeamLogo = defaultTeamLogo,
-  flag: fallbackFlag = defaultFlag,
+  teamLogo,
+  flag,
   onSelect,
 }) => {
   const [state, setState] = useState({
@@ -21,8 +21,8 @@ const SearchBarCard = ({
     team: fallbackTeam,
     country: fallbackCountry,
     avatar: fallbackAvatar,
-    teamLogo: fallbackTeamLogo,
-    flag: fallbackFlag,
+    teamLogoUrl: teamLogo || null,
+    flagUrl: flag || null,
   });
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const SearchBarCard = ({
         return;
       }
       let teamName = data?.club_other_name || fallbackTeam;
-      let teamLogo = fallbackTeamLogo;
+      let teamLogoUrl = teamLogo || null;
 
       if (data?.club_id) {
         const { data: clubRow, error: clubErr } = await supabase
@@ -52,7 +52,7 @@ const SearchBarCard = ({
           .maybeSingle();
         if (!clubErr && clubRow) {
           teamName = data?.club_other_name || clubRow.name || fallbackTeam;
-          teamLogo = clubRow.logo_url || fallbackTeamLogo;
+          teamLogoUrl = clubRow.logo_url || null;
         }
       }
       const country = data?.country || fallbackCountry;
@@ -62,8 +62,8 @@ const SearchBarCard = ({
         team: teamName,
         country,
         avatar: data?.avatar_url || fallbackAvatar,
-        teamLogo,
-        flag: fallbackFlag,
+        teamLogoUrl,
+        flagUrl: flag || null,
       });
     }
     load();
@@ -72,7 +72,7 @@ const SearchBarCard = ({
     };
   }, [profileId]);
 
-  const { name, team, country, avatar, teamLogo, flag } = state;
+  const { name, team, country, avatar, teamLogoUrl, flagUrl } = state;
 
   return (
     <button className="search-card-item" onClick={() => onSelect?.(profileId)}>
@@ -94,10 +94,18 @@ const SearchBarCard = ({
         <div className="meta">
           <span className="position">Midfielder</span>
 
-          {teamLogo && <img src={teamLogo} alt={`${team} logo`} className="team-logo" />}
+          {teamLogoUrl ? (
+            <img src={teamLogoUrl} alt={`${team} logo`} className="team-logo" />
+          ) : (
+            <DefaultTeamLogo className="team-logo" aria-hidden="true" />
+          )}
           <span className="team-name">{team}</span>
 
-          {flag && <img src={flag} alt={country} className="flag" />}
+          {flagUrl ? (
+            <img src={flagUrl} alt={country} className="flag" />
+          ) : (
+            <DefaultFlag className="flag" aria-hidden="true" />
+          )}
           <span className="country">{country}</span>
         </div>
       </div>

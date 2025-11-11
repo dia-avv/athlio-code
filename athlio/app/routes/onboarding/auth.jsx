@@ -3,8 +3,8 @@ import { useNavigate } from "react-router";
 import { supabase } from "../../lib/supabase";
 import TextInput from "../../components/inputs/TextInput";
 import Button from "../../components/UI/Button";
-import GoogleIcon from "../../assets/logos/Google.svg";
-import MainLogoSmall from "../../assets/logos/main-logo-small.svg";
+import GoogleIcon from "../../assets/logos/Google.svg?react";
+import MainLogoSmall from "../../assets/logos/main-logo-small.svg?react";
 
 const SITE_ORIGIN =
   typeof window !== "undefined"
@@ -101,9 +101,8 @@ export default function Auth() {
             marginBottom: 12,
           }}
         >
-          <img
-            src={MainLogoSmall}
-            alt="Auth icon"
+          <MainLogoSmall
+            aria-hidden="true"
             style={{ width: 32, height: 32 }}
           />
         </div>
@@ -195,7 +194,7 @@ export default function Auth() {
               size="big"
               type="outline"
               label="Continue with Google"
-              Icon={() => <img src={GoogleIcon} alt="Google" />}
+              Icon={GoogleIcon}
               onClick={() => signInWithGoogle(setErr)}
             />
           </div>

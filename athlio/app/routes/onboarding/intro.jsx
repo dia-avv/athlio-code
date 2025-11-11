@@ -2,13 +2,13 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import Button from "../../components/UI/Button";
 import "./intro.css";
-import MainLogoSmall from "../../assets/logos/main-logo-small.svg";
+import MainLogoSmall from "../../assets/logos/main-logo-small.svg?react";
 import BasketballPlayer from "../../assets/images/basketballplayer.png"; // requested second slide image
 import FootballRun from "../../assets/images/footballrun.png"; // requested first slide image
 import HockeyTeam from "../../assets/images/hockeyteam.jpg"; // requested third slide image
 import AmericanFootball from "../../assets/images/americanfootball.jpg"; // requested fourth slide image
 import { supabase } from "../../lib/supabase";
-import GoogleIcon from "../../assets/icons/google.svg";
+import GoogleIcon from "../../assets/icons/google.svg?react";
 
 const SITE_ORIGIN =
   typeof window !== "undefined"
@@ -190,7 +190,7 @@ export default function Intro() {
         {/* Heading */}
         <div className="intro-heading">
           <div className="intro-logo" aria-hidden="true">
-            <img src={MainLogoSmall} alt="" />
+            <MainLogoSmall />
           </div>
           <h1 className="intro-title">
             {index === 0 ? (

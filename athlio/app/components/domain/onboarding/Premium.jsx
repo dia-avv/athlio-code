@@ -1,8 +1,9 @@
 import Button from "../../UI/Button";
 import "./Premium.css";
-import premiumGraph from "../../../assets/graphics/premium_graph.svg";
-import trophyIcon from "../../../assets/icons/trophy.svg";
-import aiIcon from "../../../assets/icons/ai.svg";
+import PremiumGraph from "../../../assets/graphics/premium_graph.svg?react";
+import TrophyIcon from "../../../assets/icons/trophy.svg?react";
+import AiIcon from "../../../assets/icons/ai.svg?react";
+import StatsIcon from "../../../assets/icons/stats.svg?react";
 
 export default function Premium({ onContinue }) {
   return (
@@ -20,21 +21,27 @@ export default function Premium({ onContinue }) {
       <section className="premium-card">
         <div className="premium-card-header">
           {/* Use stats.svg icon with accent color via CSS */}
-          <img src="/app/assets/icons/stats.svg" alt="stats icon" className="premium-icon-svg premium-icon-svg--accent" aria-hidden="true" />
+          <StatsIcon
+            className="premium-icon-svg premium-icon-svg--accent"
+            aria-hidden="true"
+          />
           <p className="premium-card-title">Training Progress</p>
         </div>
         <p className="premium-card-subtext">
           Track your daily training sessions and see improvement over time
         </p>
         {/* Decorative performance graph illustration */}
-        <img src={premiumGraph} alt="" className="premium-graph" aria-hidden="true" />
+        <PremiumGraph className="premium-graph" aria-hidden="true" />
       </section>
 
       {/* Feature grid */}
       <div className="premium-features">
         <section className="premium-card premium-card--small">
           <div className="premium-card-header">
-            <img src={aiIcon} alt="AI icon" className="premium-icon-svg premium-icon-svg--accent" aria-hidden="true" />
+            <AiIcon
+              aria-hidden="true"
+              className="premium-icon-svg premium-icon-svg--accent"
+            />
             <p className="premium-card-title">Performance Analytics</p>
           </div>
           <p className="premium-card-subtext">
@@ -43,7 +50,10 @@ export default function Premium({ onContinue }) {
         </section>
         <section className="premium-card premium-card--small">
           <div className="premium-card-header">
-            <img src={trophyIcon} alt="Trophy icon" className="premium-icon-svg premium-icon-svg--accent" aria-hidden="true" />
+            <TrophyIcon
+              aria-hidden="true"
+              className="premium-icon-svg premium-icon-svg--accent"
+            />
             <p className="premium-card-title">Goal Tracking</p>
           </div>
           <p className="premium-card-subtext">

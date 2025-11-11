@@ -1,5 +1,5 @@
-import footballPitch from "../../../assets/graphics/football_pitch.svg";
-import basketballCourt from "../../../assets/graphics/basketball-court.svg";
+import FootballPitch from "../../../assets/graphics/football_pitch.svg?react";
+import BasketballCourt from "../../../assets/graphics/basketball-court.svg?react";
 
 export default function PositionPage({ sport, value, onChange }) {
   // Define position layouts. Use the football pitch and football positions by
@@ -59,11 +59,17 @@ export default function PositionPage({ sport, value, onChange }) {
 
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div style={{ position: "relative", width: 202, height: 340 }}>
-          <img
-            src={usingBasketball ? basketballCourt : footballPitch}
-            alt={usingBasketball ? "Basketball court" : "Football pitch"}
-            style={{ width: 202, height: 340, display: "block" }}
-          />
+          {usingBasketball ? (
+            <BasketballCourt
+              aria-label="Basketball court"
+              style={{ width: 202, height: 340, display: "block" }}
+            />
+          ) : (
+            <FootballPitch
+              aria-label="Football pitch"
+              style={{ width: 202, height: 340, display: "block" }}
+            />
+          )}
 
         {positions.map((p) => {
           const selected = Array.isArray(value) && value.includes(p.id);

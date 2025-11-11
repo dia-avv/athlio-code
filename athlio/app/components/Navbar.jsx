@@ -1,15 +1,15 @@
 import { Link, useLocation, useNavigate } from "react-router";
 import { useState } from "react";
 import { useUser } from "../context/UserContext";
-import HomeIcon from "../assets/icons/home.svg";
-import HomeActive from "../assets/icons/home-active.svg";
-import ChallengesIcon from "../assets/icons/challenges.svg";
-import ChallengesActive from "../assets/icons/challenges-active.svg";
-import ComparisonIcon from "../assets/icons/comparison.svg";
-import ComparisonActive from "../assets/icons/comparison-active.svg";
-import SearchIcon from "../assets/icons/search.svg";
-import SearchActive from "../assets/icons/search-active.svg";
-import PlusIcon from "../assets/icons/plus.svg";
+import HomeIcon from "../assets/icons/home.svg?react";
+import HomeActive from "../assets/icons/home-active.svg?react";
+import ChallengesIcon from "../assets/icons/challenges.svg?react";
+import ChallengesActive from "../assets/icons/challenges-active.svg?react";
+import ComparisonIcon from "../assets/icons/comparison.svg?react";
+import ComparisonActive from "../assets/icons/comparison-active.svg?react";
+import SearchIcon from "../assets/icons/search.svg?react";
+import SearchActive from "../assets/icons/search-active.svg?react";
+import PlusIcon from "../assets/icons/plus.svg?react";
 import PostTypePicker from "./domain/MakeAPost/PostTypePicker";
 import AddPostModal from "./domain/MakeAPost/AddPostModal";
 import "./Navbar.css";
@@ -32,12 +32,11 @@ export default function Navbar() {
     return (
       <nav className="navbar">
         <Link to="/home" className={isActive("/home") ? "active" : ""}>
-          <img
-            src={isActive("/home") ? HomeActive : HomeIcon}
-            alt="Home"
-            width="24"
-            height="24"
-          />
+          {isActive("/home") ? (
+            <HomeActive width="24" height="24" aria-hidden="true" />
+          ) : (
+            <HomeIcon width="24" height="24" aria-hidden="true" />
+          )}
         </Link>
         <span>Loading...</span>
         <Link to="/profile/me" className={isActive("/profile/me") ? "active" : ""}>
@@ -53,25 +52,21 @@ export default function Navbar() {
     <>
       <nav className="navbar">
         <Link to="/home" className={isActive("/home") ? "active" : ""}>
-          <img
-            src={isActive("/home") ? HomeActive : HomeIcon}
-            alt="Home"
-            width="24"
-            height="24"
-          />
+          {isActive("/home") ? (
+            <HomeActive width="24" height="24" aria-hidden="true" />
+          ) : (
+            <HomeIcon width="24" height="24" aria-hidden="true" />
+          )}
         </Link>
         <Link
           to="/scouting/search"
           className={isActive("/scouting/search") ? "active" : ""}
         >
-          <img
-            src={
-              isActive("/scouting/search") ? SearchActive : SearchIcon
-            }
-            alt="Home"
-            width="24"
-            height="24"
-          />
+          {isActive("/scouting/search") ? (
+            <SearchActive width="24" height="24" aria-hidden="true" />
+          ) : (
+            <SearchIcon width="24" height="24" aria-hidden="true" />
+          )}
         </Link>
         <button
           type="button"
@@ -85,33 +80,29 @@ export default function Navbar() {
             cursor: "pointer",
           }}
         >
-          <img src={PlusIcon} alt="Add Post" width="24" height="24" />
+          <PlusIcon width="24" height="24" aria-hidden="true" />
         </button>
         {role === "scout" ? (
           <Link
             to="/scouting"
             className={isActive("/scouting") ? "active" : ""}
           >
-            <img
-              src={isActive("/scouting") ? ComparisonActive : ComparisonIcon}
-              alt="Home"
-              width="24"
-              height="24"
-            />
+            {isActive("/scouting") ? (
+              <ComparisonActive width="24" height="24" aria-hidden="true" />
+            ) : (
+              <ComparisonIcon width="24" height="24" aria-hidden="true" />
+            )}
           </Link>
         ) : (
           <Link
             to="/notifications"
             className={isActive("/notifications") ? "active" : ""}
           >
-            <img
-              src={
-                isActive("/notifications") ? ChallengesActive : ChallengesIcon
-              }
-              alt="Home"
-              width="24"
-              height="24"
-            />
+            {isActive("/notifications") ? (
+              <ChallengesActive width="24" height="24" aria-hidden="true" />
+            ) : (
+              <ChallengesIcon width="24" height="24" aria-hidden="true" />
+            )}
           </Link>
         )}
         <Link
