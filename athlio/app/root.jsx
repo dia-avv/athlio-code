@@ -41,7 +41,6 @@ export function Layout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
           rel="stylesheet"
         />
-        <base href="/athlio-code/" />
         <Meta />
         <Links />
       </head>
