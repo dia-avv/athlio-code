@@ -1,4 +1,5 @@
 import { index, route } from "@react-router/dev/routes";
+console.log("[ROUTES] map loaded from routes.js");
 
 export default [
   route("/", "routes/layout.jsx", [
