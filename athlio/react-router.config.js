@@ -1,5 +1,8 @@
+/** @type {import('@react-router/dev/config').Config} */
+
 export default {
-  // Config options...
-  // Server-side render by default, to enable SPA mode set this to `false`
-  ssr: false,
+  appDirectory: "app",
+  buildDirectory: "build",
+  ssr: false, // SPA build for GitHub Pages
+  basename: "/athlio-code",
 };
