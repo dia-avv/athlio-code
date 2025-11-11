@@ -6,6 +6,7 @@ import { supabase } from "../../lib/supabase";
 
 // 1) Keep the loader (SPA requires `clientLoader`), but make it safe
 export async function clientLoader() {
+  console.log("[LandingGate] clientLoader running");
   try {
     // guard window-only APIs in case something compiles weirdly
     const seen =
