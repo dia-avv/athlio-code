@@ -10,11 +10,11 @@ import AmericanFootball from "../../assets/images/americanfootball.jpg"; // requ
 import { supabase } from "../../lib/supabase";
 import GoogleIcon from "../../assets/icons/google.svg?react";
 
-const SITE_ORIGIN =
-  typeof window !== "undefined"
-    ? window.location.origin
-    : import.meta.env?.VITE_SITE_URL || "";
-const OAUTH_REDIRECT = `${SITE_ORIGIN}/auth/callback`;
+const PROD_REDIRECT = "https://dia-avv.github.io/athlio-code/auth/callback";
+const DEV_REDIRECT = "http://localhost:3000/auth/callback";
+const OAUTH_REDIRECT =
+  process.env.REACT_APP_GOOGLE_REDIRECT_URI ??
+  (process.env.NODE_ENV === "production" ? PROD_REDIRECT : DEV_REDIRECT);
 
 // Intro (preboarding) page based on Figma node 2396:15993
 // Reuses existing Button component and Geist font tokens.
