@@ -69,12 +69,10 @@ export default function Setup() {
         .select("*")
         .match({ id: user.id })
         .maybeSingle();
-      if (!profile) {
-        const { error: insertErr } = await supabase
-          .from("profiles")
-          .insert({ id: user.id });
+      if (readErr) {
+        console.error("Failed to load profile", readErr);
+        return;
       }
-
       if (profile) {
         const sports = Array.isArray(profile.sports) ? profile.sports : [];
         setRole(profile.role || "athlete");
