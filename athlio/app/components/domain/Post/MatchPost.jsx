@@ -23,6 +23,8 @@ export default function MatchPost({
   opponentScore,
   position,
   hideFollow = false,
+  likesCount,
+  commentsCount,
 }) {
   const isImage = !!imageUrl;
 
@@ -80,7 +82,11 @@ export default function MatchPost({
         assistsCount={assistsCount}
         minCount={minCount}
       />
-      <PostActions postId={id} auraCount={12} commentCount={2} />
+      <PostActions
+        postId={id}
+        auraCount={likesCount}
+        commentCount={commentsCount}
+      />
     </article>
   );
 }

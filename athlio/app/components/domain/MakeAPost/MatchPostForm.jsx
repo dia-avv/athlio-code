@@ -209,7 +209,6 @@ export default function MatchPostForm({ onCreated }) {
         content: caption || null,
         media: mediaUrl,
         author_id: meId || undefined,
-        aura_count: 0,
       };
 
       const { data, error } = await supabase

@@ -19,7 +19,6 @@ export default function AddPost() {
           content: text,
           author_id: userId,
           type: "basic",
-          aura_count: 0,
         },
       ]);
 

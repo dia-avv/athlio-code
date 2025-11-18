@@ -44,6 +44,8 @@ function PostSwitcher({ post }) {
         yourScore={Number(post.your_score) || 0}
         opponentScore={Number(post.opponent_score) || 0}
         yourTeam={club.name}
+        likesCount={Number(post.likes_count) || 0}
+        commentsCount={Number(post.comments_count) || 0}
       />
     );
   }
@@ -55,6 +57,8 @@ function PostSwitcher({ post }) {
       content={post.content ?? ""}
       imageUrl={post.media || undefined}
       yourTeam={club.name}
+      likesCount={Number(post.likes_count) || 0}
+      commentsCount={Number(post.comments_count) || 0}
     />
   );
 }
@@ -113,33 +117,34 @@ export default function Feed() {
         .from("posts")
         .select(
           `
-  id,
-  type,
-  content,
-  media,
-  created_at,
-  aura_count,
-  goals,
-  assists,
-  minutes_played,
-  date_of_game,
-  league,
-  your_team,
-  opponent,
-  your_score,
-  opponent_score,
-  author_id,
-  profiles:author_id (
-    id,
-    full_name,
-    username,
-    role,
-    position,
-    avatar_url,
-    club_id,
-    club:club_id (id, name, logo_url)
-  )
-  `,
+      id,
+      type,
+      content,
+      media,
+      created_at,
+      likes_count,
+      comments_count,
+      goals,
+      assists,
+      minutes_played,
+      date_of_game,
+      league,
+      your_team,
+      opponent,
+      your_score,
+      opponent_score,
+      author_id,
+      profiles:author_id (
+        id,
+        full_name,
+        username,
+        role,
+        position,
+        avatar_url,
+        club_id,
+        club:club_id (id, name, logo_url)
+      )
+    `,
         )
         .in("author_id", authorIds)
         .order("created_at", { ascending: false })

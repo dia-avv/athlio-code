@@ -83,7 +83,6 @@ export default function PostsTab({ profile, isMe = false }) {
           content,
           media,
           created_at,
-          aura_count,
           goals,
           assists,
           minutes_played,

@@ -13,6 +13,8 @@ export default function BasicPost({
   author_role,
   position,
   yourTeam,
+  likesCount,
+  commentsCount,
   hideFollow = false,
 }) {
   if (!id) return null;
@@ -65,7 +67,11 @@ export default function BasicPost({
         </div>
       )}
 
-      <PostActions postId={id} auraCount={12} commentCount={3} />
+      <PostActions
+        postId={id}
+        auraCount={likesCount}
+        commentCount={commentsCount}
+      />
     </article>
   );
 }

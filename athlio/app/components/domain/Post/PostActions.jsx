@@ -6,6 +6,7 @@ import "./PostActions.css";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase";
 import { getLikeState, like, unlike } from "../../../lib/likes";
+import CommentsOverlay from "./CommentsOverlay";
 
 export default function PostActions({
   postId,
@@ -88,24 +89,37 @@ export default function PostActions({
     }
   }
 
-  async function handleComment() {
-    setShowComments(!showComments);
+  function handleComment() {
+    setShowComments(true);
   }
 
   async function handleRepost() {
     const newReposted = !reposted;
   }
 
+  function handleCommentAdded() {
+    setComments((prev) => (Number(prev) || 0) + 1);
+  }
+
   return (
-    <div className="post-actions">
-      <PostIcon
-        Icon={AuraIcon}
-        count={likes}
-        onClick={handleAura}
-        className={`postIcon ${liked ? "active" : ""}`}
+    <>
+      <div className="post-actions">
+        <PostIcon
+          Icon={AuraIcon}
+          count={likes}
+          onClick={handleAura}
+          className={`postIcon ${liked ? "active" : ""}`}
+        />
+        <PostIcon Icon={CommentIcon} count={comments} onClick={handleComment} />
+        <PostIcon Icon={RepostIcon} onClick={handleRepost} />
+      </div>
+
+      <CommentsOverlay
+        postId={postId}
+        open={showComments}
+        onClose={() => setShowComments(false)}
+        onCommentAdded={handleCommentAdded}
       />
-      <PostIcon Icon={CommentIcon} count={comments} onClick={handleComment} />
-      <PostIcon Icon={RepostIcon} onClick={handleRepost} />
-    </div>
+    </>
   );
 }

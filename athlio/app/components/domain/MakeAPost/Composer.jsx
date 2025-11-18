@@ -73,7 +73,6 @@ export default function Composer({
           type: "basic",
           content: text.trim(),
           media: mediaUrl, // null only when there was no image
-          aura_count: 0,
         });
         if (error) throw error;
 
