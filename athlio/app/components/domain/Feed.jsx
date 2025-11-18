@@ -5,6 +5,7 @@ import MatchPost from "../domain/Post/MatchPost";
 import { supabase } from "../../lib/supabase";
 // adjust this path if your context sits elsewhere
 import { useUser } from "../../context/UserContext";
+import SuggestedAccounts from "../domain/Suggested/SuggestedAccounts";
 
 function PostSwitcher({ post }) {
   // prefer joined profile data if present
@@ -63,6 +64,7 @@ export default function Feed() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [suggested, setSuggested] = useState([]);
 
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -150,6 +152,28 @@ export default function Feed() {
       } else {
         setPosts(Array.isArray(postRows) ? postRows : []);
       }
+      //suggested accounts
+      const excludeIds = authorIds; // me + people I follow
+
+      const { data: suggestedProfiles, error: suggErr } = await supabase
+        .from("profiles")
+        .select(
+          `
+    id,
+    full_name,
+    username,
+    position,
+    avatar_url,
+    club:club_id (name, logo_url)
+  `,
+        )
+        .not("id", "in", `(${excludeIds.join(",")})`)
+        .limit(10);
+
+      if (!suggErr && !cancelled) {
+        setSuggested(Array.isArray(suggestedProfiles) ? suggestedProfiles : []);
+      }
+
       setLoading(false);
     }
 
@@ -164,9 +188,17 @@ export default function Feed() {
 
   return (
     <div className="posts-feed">
-      {posts.map((p) => (
-        <PostSwitcher key={p.id} post={p} />
-      ))}
+      {posts.map((p, index) => {
+        const showSuggestions =
+          suggested.length > 0 && index > 0 && index % 2 === 0;
+
+        return (
+          <div key={p.id} className="feed-item">
+            <PostSwitcher post={p} />
+            {showSuggestions && <SuggestedAccounts profiles={suggested} />}
+          </div>
+        );
+      })}
     </div>
   );
 }
