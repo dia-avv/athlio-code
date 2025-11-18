@@ -13,10 +13,10 @@ export default function PostActions({
   commentCount = 0,
 }) {
   const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(auraCount);
+  const [likes, setLikes] = useState(Number(auraCount) || 0);
   const [reposted, setReposted] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [comments, setComments] = useState(commentCount);
+  const [comments, setComments] = useState(Number(commentCount) || 0);
 
   useEffect(() => {
     let live = true;
@@ -48,7 +48,7 @@ export default function PostActions({
             .from("post_likes")
             .select("*", { count: "exact", head: true })
             .eq("post_id", postId);
-          setLikes(count ?? 0);
+          setLikes(typeof count === "number" ? count : 0);
         },
       )
       .subscribe();
@@ -61,16 +61,30 @@ export default function PostActions({
 
   async function handleAura() {
     const next = !liked;
+
+    // optimistic toggle
     setLiked(next);
-    setLikes((n) => n + (next ? 1 : -1));
+    setLikes((prev) => {
+      const base = Number(prev) || 0;
+      const delta = next ? 1 : -1;
+      return Math.max(0, base + delta);
+    });
+
     try {
-      const newCount = next ? await like(postId) : await unlike(postId);
-      setLikes(newCount); // authoritative sync
+      if (next) {
+        await like(postId);
+      } else {
+        await unlike(postId);
+      }
     } catch (e) {
       console.error("toggle like", e);
-      // revert
+      // revert optimistic update on error
       setLiked(!next);
-      setLikes((n) => Number(n) + (next ? 1 : -1));
+      setLikes((prev) => {
+        const base = Number(prev) || 0;
+        const delta = next ? -1 : 1;
+        return Math.max(0, base + delta);
+      });
     }
   }
 

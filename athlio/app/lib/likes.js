@@ -1,48 +1,58 @@
 import { supabase } from "./supabase";
 
 async function uid() {
-  const { data } = await supabase.auth.getUser();
-  if (!data.user) throw new Error("Not authenticated");
+  const { data, error } = await supabase.auth.getUser();
+  if (error) throw error;
+  if (!data?.user) throw new Error("Not authenticated");
   return data.user.id;
 }
 
 export async function getLikeState(postId) {
   const me = await uid();
 
-  // did I like it?
-  const { data: mine } = await supabase
+  const { data, error, count } = await supabase
     .from("post_likes")
-    .select("post_id")
-    .eq("post_id", postId)
-    .eq("user_id", me)
-    .maybeSingle();
-
-  // count likes; RLS must allow select
-  const { count, error: cErr } = await supabase
-    .from("post_likes")
-    .select("*", { count: "exact", head: true })
+    .select("user_id", { count: "exact" })
     .eq("post_id", postId);
 
-  if (cErr) throw cErr;
+  if (error) throw error;
 
-  return { liked: !!mine, likeCount: count ?? 0 };
+  // make 100% sure this is a number
+  const likeCount =
+    typeof count === "number" ? count : Array.isArray(data) ? data.length : 0;
+
+  const liked = Array.isArray(data)
+    ? data.some((row) => row.user_id === me)
+    : false;
+
+  return { liked, likeCount };
 }
 
 export async function like(postId) {
   const me = await uid();
+
   const { error } = await supabase
     .from("post_likes")
-    .insert([{ post_id: postId, user_id: me }]);
-  // ignore duplicate like
-  if (error && error.code !== "23505") throw error;
+    .insert({ post_id: postId, user_id: me });
+
+  // unique violation → ignore (already liked)
+  if (
+    error &&
+    error.code !== "23505" && // Postgres unique error
+    error.code !== "409" // sometimes comes back as HTTP conflict
+  ) {
+    throw error;
+  }
 }
 
 export async function unlike(postId) {
   const me = await uid();
+
   const { error } = await supabase
     .from("post_likes")
     .delete()
     .eq("post_id", postId)
     .eq("user_id", me);
+
   if (error) throw error;
 }
