@@ -4,6 +4,7 @@
   gap: 8px; /* spacing between posts */
   background-color: var(--color-gray-100);
   padding: 24px 8px;
+  gap: 24px;
 }
 
 main:has(.profile-stats-tab) {
@@ -11,8 +12,98 @@ main:has(.profile-stats-tab) {
   padding-right: 0;
 }
 
-.info-tab-header {
+.stats-grid {
   display: flex;
-  justify-content: flex-end; /* Aligns to the right ✅ */
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* season summary row under tables */
+.season-summary {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  gap: 20px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* left block (label + year) */
+.season-summary__left {
+  display: flex;
+  flex-direction: column;
+}
+.season-summary__tag {
+  font-size: 12px;
+  color: #8b8f9b;
+}
+.season-summary__year {
+  font-weight: 700;
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+/* KPI block */
+.season-summary__kpis {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* single KPI */
+.ss-kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+}
+.ss-kpi__value {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+.ss-kpi__label {
+  font-size: 11px;
+  color: #8b8f9b;
+  margin-top: 2px;
+}
+
+.player-infograph {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* color accents matching chart lines */
+.ss-kpi--matches .ss-kpi__value {
+  color: #4051fd;
+} /* blue */
+.ss-kpi--goals .ss-kpi__value {
+  color: #00ab3d;
+} /* green */
+.ss-kpi--assists .ss-kpi__value {
+  color: #caa2ff;
+} /* purple */
+
+.kpi-value--matches {
+  color: #4051fd; /* Blue – Matches */
+}
+.kpi-value--goals {
+  color: #00ab3d; /* Green – Goals */
+}
+.kpi-value--assists {
+  color: #ff983d; /* Purple – Assists */
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 520px) {
+  .season-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .season-summary__kpis {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

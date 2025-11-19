@@ -1,0 +1,71 @@
+.season-infograph-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  max-width: 720px;
+}
+
+/* HEADER */
+.season-header {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+.season-title {
+  font-size: 12px;
+  color: #8b8f9b;
+}
+
+/* Smaller season number */
+.season-year {
+  font-size: 22px; /* was 28px */
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* KPI SECTION */
+.kpi-row {
+  display: flex;
+  gap: 24px;
+  margin-top: 10px; /* reduced to visually center chart */
+  margin-bottom: 6px; /* added to pull chart up slightly */
+  align-items: center;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Smaller KPI number */
+.kpi-value {
+  font-size: 18px; /* was 22px */
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Colored KPI values */
+.kpi-value--matches {
+  color: #4051fd; /* Blue – Matches */
+}
+.kpi-value--goals {
+  color: #00ab3d; /* Green – Goals */
+}
+.kpi-value--assists {
+  color: #ff983d; /* Purple – Assists */
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: #8b8f9b;
+}
+
+/* CHART */
+.chart-wrap {
+  margin-top: 6px;
+  width: 90%;
+  display: block;
+}
+.chart-wrap > * {
+  width: 100% !important;
+}
