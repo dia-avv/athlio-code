@@ -7,12 +7,15 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase";
 import { getLikeState, like, unlike } from "../../../lib/likes";
 import CommentsOverlay from "./CommentsOverlay";
+import { useUser } from "../../../context/UserContext";
 
 export default function PostActions({
   postId,
   auraCount = 0,
   commentCount = 0,
+  postAuthorId,
 }) {
+  const { profile } = useUser();
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(Number(auraCount) || 0);
   const [reposted, setReposted] = useState(false);
@@ -74,8 +77,22 @@ export default function PostActions({
     try {
       if (next) {
         await like(postId);
+        if (postAuthorId && profile?.id && postAuthorId !== profile.id) {
+          await supabase.from("notifications").insert({
+            recipient_id: postAuthorId, // post owner
+            actor_id: profile.id, // who liked
+            post_id: postId,
+            type: "like",
+          });
+        }
       } else {
         await unlike(postId);
+        await supabase
+          .from("notifications")
+          .delete()
+          .eq("type", "like")
+          .eq("post_id", postId)
+          .eq("actor_id", profile?.id ?? null);
       }
     } catch (e) {
       console.error("toggle like", e);

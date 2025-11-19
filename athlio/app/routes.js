@@ -21,6 +21,7 @@ export default [
     route("profile/:id", "routes/profile/other.jsx"),
 
     route("notifications", "routes/notifications.jsx"),
+    route("post/:id", "routes/post.$id.jsx"),
     route("add-post", "routes/add-post/layout.jsx", [
       index("routes/add-post/index.jsx"), // maybe redirect or show picker
       route("post", "routes/add-post/post.jsx"),

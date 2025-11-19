@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import "./CommentCard.css";
 
 export default function CommentCard({ comment }) {
@@ -5,7 +6,7 @@ export default function CommentCard({ comment }) {
 
   return (
     <div key={comment.id} className="comment-row">
-      <div className="comment-avatar">
+      <Link to={`/profile/${prof.id}`} className="comment-avatar">
         {prof.avatar_url ? (
           <img src={prof.avatar_url} alt={prof.username || "User"} />
         ) : (
@@ -13,12 +14,12 @@ export default function CommentCard({ comment }) {
             {(prof.full_name || prof.username || "?")[0]}
           </div>
         )}
-      </div>
+      </Link>
       <div className="comment-main">
         <div className="comment-meta">
-          <span className="comment-name">
+          <Link to={`/profile/${prof.id}`} className="comment-name">
             {prof.full_name || prof.username || "Unknown"}
-          </span>
+          </Link>
           <span className="comment-time">
             {new Date(comment.created_at).toLocaleTimeString("en-GB", {
               hour: "2-digit",

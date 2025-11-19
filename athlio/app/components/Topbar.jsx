@@ -47,7 +47,16 @@ const TOPBAR_CONFIG = {
     left: (nav) => (
       <div className="topbar-left-with-back">
         <img src={BackIcon} alt="Back" onClick={() => nav(-1)} />
-        <img src={MainLogo} className="main-logo" alt="Athlio" />
+        <MainLogo className="main-logo" aria-label="Logo" />
+      </div>
+    ),
+  },
+  "/post/:id": {
+    title: null,
+    left: (nav) => (
+      <div className="topbar-left-with-back">
+        <img src={BackIcon} alt="Back" onClick={() => nav(-1)} />
+        <MainLogo className="main-logo" aria-label="Logo" />
       </div>
     ),
   },

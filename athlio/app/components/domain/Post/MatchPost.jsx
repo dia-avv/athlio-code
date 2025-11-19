@@ -86,6 +86,7 @@ export default function MatchPost({
         postId={id}
         auraCount={likesCount}
         commentCount={commentsCount}
+        postAuthorId={authorId}
       />
     </article>
   );

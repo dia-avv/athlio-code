@@ -73,14 +73,38 @@ export function UserProvider({ children }) {
   }
 
   async function fetchProfileAndCounts(uid) {
-    const { data } = await supabase
+    // 1) Fetch profile + club
+    const { data: profileRow } = await supabase
       .from("profiles")
       .select("*, club:club_id (id, name, logo_url)")
       .eq("id", uid)
       .maybeSingle();
-    setProfile(data);
-    setClub(data?.club || null);
+
+    setProfile(profileRow);
+    setClub(profileRow?.club || null);
+
+    // 2) Fetch unread notifications count
+    const { count: notifCount } = await supabase
+      .from("notifications")
+      .select("*", { count: "exact", head: true })
+      .eq("recipient_id", uid)
+      .is("read_at", null);
+
+    // 3) (Optional) Messages count placeholder; keep 0 for now
+    const messageCount = 0;
+
+    setCounts({
+      messages: messageCount || 0,
+      notifications: notifCount || 0,
+    });
+
     setLoading(false);
+  }
+
+  async function refreshCounts() {
+    if (user?.id) {
+      await fetchProfileAndCounts(user.id);
+    }
   }
 
   return (
@@ -90,6 +114,7 @@ export function UserProvider({ children }) {
         profile,
         counts,
         setCounts,
+        refreshCounts,
         loading,
         role: roleValue,
         isScout,

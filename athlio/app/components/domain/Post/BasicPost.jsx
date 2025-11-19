@@ -71,6 +71,7 @@ export default function BasicPost({
         postId={id}
         auraCount={likesCount}
         commentCount={commentsCount}
+        postAuthorId={authorId}
       />
     </article>
   );
