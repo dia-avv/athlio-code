@@ -1,5 +1,6 @@
 import footballPitch from "../../../assets/graphics/football_pitch.svg";
 import basketballCourt from "../../../assets/graphics/basketball-court.svg";
+import "./PositionPage.css";
 
 export default function PositionPage({ sport, value, onChange }) {
   // Define position layouts. Use the football pitch and football positions by
@@ -32,6 +33,9 @@ export default function PositionPage({ sport, value, onChange }) {
 
   const usingBasketball = String(sport).toLowerCase() === "basketball";
   const positions = usingBasketball ? basketballPositions : footballPositions;
+  const selectedFullNames = positions
+    .filter((p) => Array.isArray(value) && value.includes(p.id))
+    .map((p) => p.full);
 
   function toggle(id) {
     // Multi-select semantics: maintain an array of selected ids. Add the id
@@ -47,22 +51,18 @@ export default function PositionPage({ sport, value, onChange }) {
   }
 
   return (
-    <div>
-      <div
-        className="role-header"
-        style={{ display: "inline-flex", flexDirection: "column", gap: 8 }}
-      >
+    <div className="position-page">
+      <div className="role-header position-role-header">
         <h1 className="role-header-title">Choose your position</h1>
         <p className="role-header-subtitle">You can select multiple</p>
       </div>
 
-
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ position: "relative", width: 202, height: 340 }}>
+      <div className="position-pitch-wrapper">
+        <div className="position-pitch-field">
           <img
             src={usingBasketball ? basketballCourt : footballPitch}
             alt={usingBasketball ? "Basketball court" : "Football pitch"}
-            style={{ width: 202, height: 340, display: "block" }}
+            className="position-pitch-image"
           />
 
         {positions.map((p) => {
@@ -75,31 +75,31 @@ export default function PositionPage({ sport, value, onChange }) {
               aria-pressed={selected}
               aria-label={p.full}
               title={p.full}
+              className={`position-button${selected ? " position-button--selected" : ""}`}
               style={{
-                position: "absolute",
                 left: `${p.left}%`,
                 top: `${p.top}%`,
-                transform: "translate(-50%, -50%)",
-                minWidth: 36,
-                height: 36,
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 0,
-                borderRadius: 18,
-                border: `1px solid ${selected ? "var(--color-accent)" : "#E1E4FE"}`,
-                background: selected ? "var(--color-accent)" : "#E1E4FE",
-                color: selected ? "#ffffff" : "#000000",
-                cursor: "pointer",
-                boxShadow: selected ? "0 6px 18px rgba(59, 130, 246, 0.18)" : "none",
               }}
             >
-              <span style={{ margin: 0, fontSize: 12, fontWeight: 600 }}>{p.short}</span>
+              <span className="position-button-label">{p.short}</span>
             </button>
           );
         })}
         </div>
       </div>
+
+      {selectedFullNames.length > 0 && (
+        <div className="position-selection-summary">
+          <p className="position-selection-title">Preffered Posititon</p>
+          <div className="position-chip-list">
+            {selectedFullNames.map((label) => (
+              <span key={label} className="position-chip">
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
