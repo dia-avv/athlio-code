@@ -25,10 +25,7 @@ export default function ProfileHeader({
   if (!profile) return null;
 
   const hasTags = profile.role || profile.position;
-  const locationText =
-    profile.city && profile.country
-      ? `${profile.city}, ${profile.country}`
-      : profile.city || profile.country || null;
+  const locationText = profile.city || null;
 
   return (
     <section className="profile-header">
