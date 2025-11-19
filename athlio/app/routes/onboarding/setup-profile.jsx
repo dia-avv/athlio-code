@@ -53,6 +53,9 @@ export default function Setup() {
     org_team_size: "",
     org_description: "",
   });
+  const [userId, setUserId] = useState(null);
+  const [usernameErr, setUsernameErr] = useState("");
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
 
   const steps = useMemo(() => getSteps(role), [role]);
   const [idx, setIdx] = useState(0);
@@ -64,6 +67,7 @@ export default function Setup() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return navigate("/auth", { replace: true });
+      setUserId(user.id);
       const { data: profile, error: readErr } = await supabase
         .from("profiles")
         .select("*")
@@ -113,6 +117,48 @@ export default function Setup() {
     })();
   }, [navigate]);
 
+  useEffect(() => {
+    const trimmed = (form.username || "").trim();
+    if (!trimmed || !userId) {
+      setUsernameErr("");
+      setIsCheckingUsername(false);
+      return;
+    }
+
+    let ignore = false;
+    setIsCheckingUsername(true);
+
+    const timer = setTimeout(async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id")
+        .ilike("username", trimmed)
+        .maybeSingle();
+
+      if (ignore) return;
+
+      if (error) {
+        if (error.code === "PGRST116") {
+          setUsernameErr("username already used");
+        } else {
+          console.error("USERNAME CHECK ERROR", error);
+          setUsernameErr("");
+        }
+      } else if (data && data.id && data.id !== userId) {
+        setUsernameErr("username already used");
+      } else {
+        setUsernameErr("");
+      }
+
+      setIsCheckingUsername(false);
+    }, 300);
+
+    return () => {
+      ignore = true;
+      clearTimeout(timer);
+    };
+  }, [form.username, userId]);
+
   function set(v) {
     setForm((f) => ({ ...f, ...v }));
   }
@@ -149,7 +195,9 @@ export default function Setup() {
         case "basic":
           return (
             (form.full_name || "").toString().trim() !== "" &&
-            (form.username || "").toString().trim() !== ""
+            (form.username || "").toString().trim() !== "" &&
+            !usernameErr &&
+            !isCheckingUsername
           );
         case "role":
           return Boolean(role);
@@ -220,6 +268,9 @@ export default function Setup() {
                 value={form.username}
                 onChange={(v) => set({ username: v })}
               />
+              {usernameErr && (
+                <p className="text-red-600 text-sm">{usernameErr}</p>
+              )}
               <TextInput
                 label="Age"
                 value={form.age}
