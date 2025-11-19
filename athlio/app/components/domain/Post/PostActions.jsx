@@ -133,6 +133,7 @@ export default function PostActions({
 
       <CommentsOverlay
         postId={postId}
+        postAuthorId={postAuthorId}
         open={showComments}
         onClose={() => setShowComments(false)}
         onCommentAdded={handleCommentAdded}

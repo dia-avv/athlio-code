@@ -8,6 +8,7 @@ import CommentCard from "./CommentCard";
 
 export default function CommentsOverlay({
   postId,
+  postAuthorId,
   open,
   onClose,
   onCommentAdded,
@@ -103,13 +104,29 @@ export default function CommentsOverlay({
       )
       .single();
 
-    setSubmitting(false);
-
     if (error) {
       console.error("submit comment", error);
       setError(error.message);
+      setSubmitting(false);
       return;
     }
+
+    // create notification for post owner if someone else commented
+    if (postAuthorId && profile?.id && postAuthorId !== profile.id) {
+      try {
+        await supabase.from("notifications").insert({
+          recipient_id: postAuthorId,
+          actor_id: profile.id,
+          post_id: postId,
+          comment_id: data.id,
+          type: "comment",
+        });
+      } catch (e) {
+        console.error("insert comment notification", e);
+      }
+    }
+
+    setSubmitting(false);
 
     // add new comment to list
     setComments((prev) => {

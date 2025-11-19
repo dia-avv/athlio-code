@@ -3,6 +3,7 @@ import { supabase } from "../../../lib/supabase";
 import { useUser } from "../../../context/UserContext";
 import NotificationCard from "./NotificationCard";
 import { useLocation } from "react-router";
+import "./NotificationBlock.css";
 
 export default function NotificationsPage() {
   const { profile, setCounts } = useUser();
@@ -28,13 +29,18 @@ export default function NotificationsPage() {
           created_at,
           read_at,
           post:post_id (
-            id
+            id,
+            media
           ),
           actor:actor_id (
             id,
             full_name,
             username,
             avatar_url
+          ),
+          comment:comment_id (
+            id,
+            content
           )
         `,
         )
@@ -77,6 +83,44 @@ export default function NotificationsPage() {
     };
   }, [profile?.id, location.key]);
 
+  function groupNotificationsByDate(list) {
+    const now = new Date();
+    const todayStart = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+    );
+
+    function diffInDays(date) {
+      const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const diffMs = todayStart - d;
+      return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    }
+
+    const groups = {};
+
+    for (const n of list) {
+      const created = new Date(n.created_at);
+      const daysAgo = diffInDays(created);
+
+      let label;
+      if (daysAgo === 0) {
+        label = "Today";
+      } else if (daysAgo === 1) {
+        label = "Yesterday";
+      } else if (daysAgo < 7) {
+        label = "Last week";
+      } else {
+        label = "Earlier";
+      }
+
+      if (!groups[label]) groups[label] = [];
+      groups[label].push(n);
+    }
+
+    return groups;
+  }
+
   if (loading) {
     return <div className="notifications-page">Loading...</div>;
   }
@@ -89,11 +133,24 @@ export default function NotificationsPage() {
     );
   }
 
+  const grouped = groupNotificationsByDate(items);
+  const sectionOrder = ["Today", "Yesterday", "Last week", "Earlier"];
+
   return (
     <div className="notifications-page">
-      {items.map((n) => (
-        <NotificationCard key={n.id} notif={n} />
-      ))}
+      {sectionOrder.map((section) => {
+        const group = grouped[section];
+        if (!group || !group.length) return null;
+
+        return (
+          <div key={section} className="notifications-section">
+            <h2 className="notifications-section-title">{section}</h2>
+            {group.map((n) => (
+              <NotificationCard key={n.id} notif={n} />
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }

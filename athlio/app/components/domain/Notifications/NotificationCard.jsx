@@ -12,6 +12,7 @@ export default function NotificationCard({ notif }) {
   });
 
   const isUnread = !notif.read_at;
+  const postImage = notif?.post?.media;
 
   return (
     <Link
@@ -23,12 +24,23 @@ export default function NotificationCard({ notif }) {
         <p className="notif-text">
           <span className="notif-actor">{actorName}</span>
           {notif.type === "like" && " just boosted your aura."}
-          {notif.type === "comment" && " commented on your post."}
+          {notif.type === "comment" && " commented on your post:"}
+          {notif.type === "comment" && (
+            <span className="notif-comment-preview">
+              {" "}
+              "{notif.comment?.content}"
+            </span>
+          )}
           {notif.type !== "like" &&
             notif.type !== "comment" &&
             " did something"}
         </p>
       </div>
+      {postImage && (
+        <div className="notif-post-preview">
+          <img src={postImage} alt="Post preview" />
+        </div>
+      )}
     </Link>
   );
 }
