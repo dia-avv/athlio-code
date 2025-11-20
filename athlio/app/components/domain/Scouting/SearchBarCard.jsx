@@ -1,3 +1,5 @@
+// SearchBarCard: displays a player result row.
+// If given profileId, fetches profile + club for richer display.
 import React, { useEffect, useState } from 'react';
 import './SearchBarCard.css';
 import profilePlaceholder from '../../../assets/icons/profile.png';
@@ -25,6 +27,7 @@ const SearchBarCard = ({
     flag: fallbackFlag,
   });
 
+  // Load profile (and club) if profileId is provided
   useEffect(() => {
     let cancelled = false;
     async function load() {

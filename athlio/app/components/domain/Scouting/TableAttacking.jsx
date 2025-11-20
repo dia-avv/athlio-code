@@ -1,3 +1,4 @@
+// Attacking metrics wrapper for TableCategory
 import TableCategory from './TableCategory';
 
 const ATTACKING_ROWS = [

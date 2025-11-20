@@ -1,3 +1,5 @@
+// PlayerSelector: season filter, add-player button, and player slots.
+// Limits comparison to MAX_PLAYERS and routes to search to add players.
 import React, { useState, useRef, useEffect } from 'react';
 import './PlayerSelector.css';
 import Button from '../../UI/Button';
@@ -5,6 +7,7 @@ import PlusIcon from '../../../assets/icons/plus.svg';
 import { useNavigate } from 'react-router';
 import PlayerComparisonCard from './PlayerComparisonCard';
 
+// Season dropdown options (strings parsed by layout handler)
 const SEASONS = [
   "Season 2025-26",
   "Season 2024-25",
@@ -25,6 +28,7 @@ const PlayerSelector = ({
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+  // Close dropdown on outside click when open
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -41,6 +45,7 @@ const PlayerSelector = ({
     };
   }, [isDropdownOpen]);
 
+  // Update selected season and notify parent
   const handleSeasonSelect = (season) => {
     setSelectedSeason(season);
     setIsDropdownOpen(false);

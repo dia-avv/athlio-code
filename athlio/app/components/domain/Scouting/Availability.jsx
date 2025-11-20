@@ -1,3 +1,5 @@
+// Availability: shows current availability/injuries per selected player.
+// Derives a status badge from injuries and lists injury periods.
 import React from 'react';
 import './Availability.css';
 import profilePlaceholder from '../../../assets/icons/profile.png';
@@ -6,6 +8,7 @@ const FALLBACK_AVATAR = profilePlaceholder;
 const FALLBACK_ICON =
   'https://api.builder.io/api/v1/image/assets/e9cac1e18ae64186984fb4d639c633bc/feca78aec91a801ddc79124b791fa68faaee5023?placeholderIfAbsent=true';
 
+// Format a date string to a short, locale-friendly label
 function formatDate(value) {
   if (!value) return null;
   const date = new Date(value);
@@ -17,6 +20,7 @@ function formatDate(value) {
   });
 }
 
+// Build a human-readable range for an injury record
 function formatRange(injury) {
   const start = formatDate(injury.start_date);
   const end = formatDate(injury.end_date);
@@ -28,6 +32,7 @@ function formatRange(injury) {
   return 'Timeline unavailable';
 }
 
+// Compute player availability status from latest active injury
 function getStatus(injuries = []) {
   if (!injuries.length) {
     return { badge: 'Available', text: 'No injuries reported', tone: 'available' };
@@ -56,6 +61,7 @@ function getStatus(injuries = []) {
   };
 }
 
+// Render a list of injury entries or an empty message
 function InjuryList({ injuries = [] }) {
   if (!injuries.length) {
     return <p className="availability-empty">No recorded injuries.</p>;
@@ -85,6 +91,7 @@ function InjuryList({ injuries = [] }) {
   ));
 }
 
+// Main component: iterates selected players and shows status + injuries
 export default function Availability({ players = [] }) {
   if (!players.length) return null;
   const displayPlayers = players.slice(0, 3);

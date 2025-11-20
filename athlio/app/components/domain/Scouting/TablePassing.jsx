@@ -1,3 +1,4 @@
+// Passing metrics wrapper for TableCategory
 import TableCategory from './TableCategory';
 
 const PASSING_ROWS = [

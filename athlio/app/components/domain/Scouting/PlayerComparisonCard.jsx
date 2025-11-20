@@ -1,3 +1,4 @@
+// PlayerComparisonCard: small avatar/name chip with a remove button.
 import React from 'react';
 import './PlayerComparisonCard.css';
 import profilePlaceholder from '../../../assets/icons/profile.png';

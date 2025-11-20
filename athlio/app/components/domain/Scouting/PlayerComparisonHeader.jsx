@@ -1,3 +1,5 @@
+// PlayerComparisonHeader: page title, actions (archive/save), tabs,
+// and the PlayerSelector controls below.
 import React from 'react';
 import './PlayerComparisonHeader.css';
 import NavigationTabs from '../../UI/NavTabs';
@@ -34,11 +36,13 @@ const PlayerComparisonHeader = ({ onSave, onArchive, activeTab, onTabChange, onA
         </div>
 
         <div className="header-bottom">
+          {/* Tab navigation is driven by parent via props */}
           <NavigationTabs activeTab={activeTab} onTabChange={onTabChange} />
         </div>
       </header>
 
       <div>
+        {/* Player compare controls: season, add/remove player slots */}
         <PlayerSelector
           players={players}
           onAddPlayer={onAddPlayer}

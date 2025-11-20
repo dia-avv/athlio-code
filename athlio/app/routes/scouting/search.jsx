@@ -1,3 +1,5 @@
+// Scouting search route: search profiles, show recents/suggestions,
+// and navigate back to the comparison page with a selected player.
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import SearchBarCard from '../../components/domain/Scouting/SearchBarCard';
@@ -7,6 +9,7 @@ import './search.css';
 
 const RECENTS_KEY = 'recentProfileSearches';
 
+// LocalStorage helpers for recent profile ids
 function loadRecents() {
   try {
     const raw = localStorage.getItem(RECENTS_KEY);
@@ -25,6 +28,7 @@ function saveRecent(id) {
 }
 
 export default function ScoutingSearch() {
+  // Query, results, loading state, and local recents/suggestions
   const [q, setQ] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,6 +37,7 @@ export default function ScoutingSearch() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Live search when query has >=2 chars
     let cancel = false;
     async function run() {
       const term = q.trim();
@@ -62,6 +67,7 @@ export default function ScoutingSearch() {
   }, [q]);
 
   useEffect(() => {
+    // When no query and no recents, show latest profiles as suggestions
     let cancel = false;
     async function loadSuggested() {
       if (q.trim() !== '' || recents.length > 0) return;
@@ -85,11 +91,13 @@ export default function ScoutingSearch() {
   }, [q, recents.length]);
 
   function pick(id) {
+    // Save to recents and return to scouting page with ?add=
     saveRecent(id);
     setRecents(loadRecents());
     navigate(`/scouting?add=${encodeURIComponent(id)}`);
   }
 
+  // Decide which list to show: search results, recents, or suggestions
   const displayList = q.trim().length >= 2 ? results : (recents.length > 0 ? recents : suggested);
   const showRecentHeader = q.trim().length < 2;
 
@@ -113,12 +121,15 @@ export default function ScoutingSearch() {
       </div>
 
       <div className="search-results">
+        {/* Loading indicator while querying */}
         {loading && <p className="search-loading">Searching…</p>}
 
+        {/* No matches for query */}
         {!loading && q.trim().length >= 2 && results.length === 0 && (
           <p className="no-results">No players found. Try a different search.</p>
         )}
 
+        {/* Render list of player cards from current source */}
         {!loading && displayList.length > 0 && (
           <div className="player-cards-list">
             {displayList.map((item) => {
@@ -128,6 +139,7 @@ export default function ScoutingSearch() {
           </div>
         )}
 
+        {/* Empty state when nothing to show yet */}
         {!loading && !q.trim() && recents.length === 0 && suggested.length === 0 && (
           <p className="no-results">No players yet. Start searching above.</p>
         )}

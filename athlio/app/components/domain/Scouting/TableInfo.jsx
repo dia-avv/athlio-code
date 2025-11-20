@@ -1,6 +1,9 @@
+// TableInfo: general player info (country, age, team, etc.).
+// Uses a fixed ROWS schema and formats values for display.
 import React from 'react';
 import './TableInfo.css';
 
+// Define table rows to render and their keys
 const ROWS = [
   { key: 'country', label: 'Nationality' },
   { key: 'age', label: 'Age' },
@@ -13,6 +16,7 @@ const ROWS = [
   { key: 'preferredFoot', label: 'Preferred Foot' },
 ];
 
+// Format birthdate as locale date or placeholder
 function formatDate(value) {
   if (!value) return '—';
   const d = new Date(value);
@@ -24,6 +28,7 @@ function formatDate(value) {
   });
 }
 
+// Derive age from birthdate, fallback to provided age
 function formatAge(info) {
   if (info?.birthdate) {
     const d = new Date(info.birthdate);
@@ -36,6 +41,7 @@ function formatAge(info) {
   return info?.age ? `${info.age} years` : '—';
 }
 
+// Render a cell for a given row based on info fields
 function renderValue(info, row) {
   if (!info) return '—';
   switch (row.key) {

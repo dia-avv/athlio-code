@@ -1,3 +1,4 @@
+// Defending metrics wrapper for TableCategory
 import TableCategory from './TableCategory';
 
 const DEFENDING_ROWS = [

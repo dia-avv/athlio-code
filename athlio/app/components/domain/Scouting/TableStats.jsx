@@ -1,3 +1,4 @@
+// TableStats: core match stats with row-wise max highlighting.
 import React from 'react';
 import './TableStats.css';
 
@@ -8,6 +9,7 @@ const ROWS = [
   { key: 'totalMinutes', label: 'Total minutes played', format: 'int' },
 ];
 
+// Format numeric values as int or decimal
 function formatValue(value, format) {
   const num = Number(value ?? 0);
   if (!Number.isFinite(num)) return '0';

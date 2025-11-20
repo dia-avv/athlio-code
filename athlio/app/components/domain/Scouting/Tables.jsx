@@ -1,3 +1,4 @@
+// Tables: aggregates the stats sub-tables for selected players.
 import React from 'react';
 import TableStats from './TableStats';
 import './Tables.css';

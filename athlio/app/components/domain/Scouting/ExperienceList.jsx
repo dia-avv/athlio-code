@@ -1,8 +1,11 @@
+// ExperienceList: shows prior teams/orgs for each selected player.
+// Uses safeLogo to avoid insecure/bad hosts and formats date ranges.
 import "./ExperienceList.css";
 import profilePlaceholder from "../../../assets/icons/profile.png";
 
 const BAD_HOSTS = ["edgeone.app"]; // block busted cert proxy
 
+// Only allow https logos and filter known-bad hosts
 function safeLogo(url) {
   if (!url || typeof url !== "string") return null;
   try {
@@ -15,6 +18,7 @@ function safeLogo(url) {
   }
 }
 
+// Make a simple year range like "2022 to Present"
 function formatRange(exp) {
   const startYear = exp.start_date
     ? new Date(exp.start_date).getFullYear()
@@ -28,6 +32,7 @@ function formatRange(exp) {
   return `${startYear ?? "—"}${endYear ? ` to ${endYear}` : ""}`;
 }
 
+// Single experience row with logo + time range
 function ExperienceCard({ experience, isLast }) {
   const logoSrc =
     safeLogo(experience.logo_url) ||
@@ -65,6 +70,7 @@ function ExperienceCard({ experience, isLast }) {
   );
 }
 
+// Main component: one card per player, listing experience entries
 export default function ExperienceList({ players = [] }) {
   const displayPlayers = players.slice(0, 3);
   if (!displayPlayers.length) return null;

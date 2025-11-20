@@ -1,6 +1,8 @@
+// TableCategory: generic metric table; takes a title and row schema.
 import React from 'react';
 import './TableCategory.css';
 
+// Format numeric values as int or decimal
 function formatValue(value, format) {
   const num = Number(value ?? 0);
   if (!Number.isFinite(num)) return '0';

@@ -1,3 +1,5 @@
+// Scouting layout: manages selected players, season/tab state,
+// fetches combined player data, and exposes it via Outlet context.
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { fetchProfiles, fetchSeasonStats } from "../../lib/stats";
@@ -6,14 +8,19 @@ import { fetchExperiences } from "../../lib/experiences";
 import { fetchInjuries } from "../../lib/injuries";
 
 export default function ScoutingLayout() {
+  // UI state
   const [activeTab, setActiveTab] = useState("stats");
   const [season, setSeason] = useState("all");
+  // Up to 3 player IDs to compare
   const [selectedPlayerIds, setSelectedPlayerIds] = useState([]);
+  // Aggregated player view-model for children
   const [players, setPlayers] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Load and merge player data when selection/season changes.
+    // Uses a cancellation flag to avoid setting state after unmount/rerender.
     let cancelled = false;
     (async () => {
       if (!selectedPlayerIds.length) {
@@ -41,6 +48,7 @@ export default function ScoutingLayout() {
           .map((id) => {
             const p = profiles.find((x) => x.id === id);
             const info = { ...(infoByPlayer.get(id) || {}) };
+            // Fallbacks for team name/logo if info is incomplete
             if (!info.teamName) {
               info.teamName = p?.club_other_name || p?.club?.name || null;
             }
@@ -67,6 +75,7 @@ export default function ScoutingLayout() {
         if (!cancelled) setPlayers(merged);
       } catch (e) {
         console.error("load scouting stats", e);
+        // Graceful fallback to placeholder players on error
         if (!cancelled)
           setPlayers(
             selectedPlayerIds.slice(0, 3).map((id) => ({
@@ -92,6 +101,7 @@ export default function ScoutingLayout() {
   }, [selectedPlayerIds, season]);
 
   useEffect(() => {
+    // Support adding a player via `?add=<playerId>` and then clean URL.
     const params = new URLSearchParams(location.search);
     const toAdd = params.get("add");
     if (toAdd) {
@@ -101,6 +111,7 @@ export default function ScoutingLayout() {
   }, [location.search]);
 
   function handleAddPlayer(newPlayerId) {
+    // Add a player (max 3, ignore duplicates/empty)
     setSelectedPlayerIds((prev) => {
       if (prev.length >= 3) return prev;
       if (!newPlayerId || prev.includes(newPlayerId)) return prev;
@@ -109,6 +120,7 @@ export default function ScoutingLayout() {
   }
 
   function handleRemovePlayer(playerId) {
+    // Remove a specific player or the last one when no id is provided.
     setSelectedPlayerIds((prev) => {
       if (!playerId) {
         if (prev.length <= 1) return prev;
@@ -119,6 +131,7 @@ export default function ScoutingLayout() {
   }
 
   function handleSeasonChange(label) {
+    // Normalize incoming labels like "2023-24" / "2023/24" to "2023-24".
     if (!label || label === "all") {
       setSeason("all");
       return;
@@ -131,6 +144,7 @@ export default function ScoutingLayout() {
     }
   }
 
+  // Context exposed to nested scouting routes via Outlet
   const context = {
     players,
     activeTab,
